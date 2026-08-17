@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Cadastro de Tabelas</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+    nav ul > li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul > li:hover > a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:20px; margin-bottom:20px; color:#2c3e50; }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:24px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
+    .grid-3 { display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:16px; }
+
+    .btn-primary { background:#3498db; color:#fff; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#2980b9; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .form-actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:12px; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+
+    .list-actions { display:flex; justify-content:flex-end; gap:12px; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Cadastro de Tabelas</h2>
+
+    <!-- Cadastro -->
+    <div class="card">
+      <h3>Nova tabela</h3>
+      <form id="tabForm" class="grid-2">
+        <input type="hidden" id="editIndex" />
+        <div class="form-row">
+          <label>Banco*</label>
+          <select id="bank" required></select>
+        </div>
+
+        <div class="form-row">
+          <label>Convênio*</label>
+          <select id="agreement" required></select>
+        </div>
+
+        <div class="form-row">
+          <label>Tipo de contrato*</label>
+          <select id="contractType" required></select>
+        </div>
+
+        <div class="form-row">
+          <label>Promotora*</label>
+          <select id="promotora" required></select>
+        </div>
+
+        <div class="form-row">
+          <label>Nome da tabela*</label>
+          <input type="text" id="tableName" placeholder="Ex: Normal, Flex, CARTÃO BENEFÍCIO ..." required />
+        </div>
+
+        <div class="form-row">
+          <label>Data início vigência*</label>
+          <input type="date" id="startDate" required />
+        </div>
+
+        <div class="form-row">
+          <label>Status</label>
+          <select id="status">
+            <option value="true">Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+      </form>
+
+      <h3>Prazos, fatores e comissão</h3>
+      <div id="prazoContainer"></div>
+      <button type="button" class="btn-small" onclick="addPrazo()">➕ Adicionar prazo</button>
+
+      <div class="form-actions">
+        <button class="btn-primary" onclick="saveTable()">Salvar</button>
+        <button class="btn-secondary" onclick="resetForm()">Cancelar edição</button>
+      </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="card">
+      <h3>Filtros</h3>
+      <div class="grid-3">
+        <div class="form-row">
+          <label>Banco</label>
+          <select id="fBank"><option value="">— Todos —</option></select>
+        </div>
+        <div class="form-row">
+          <label>Convênio</label>
+          <select id="fAgreement"><option value="">— Todos —</option></select>
+        </div>
+        <div class="form-row">
+          <label>Tipo de contrato</label>
+          <select id="fContractType"><option value="">— Todos —</option></select>
+        </div>
+      </div>
+      <div class="grid-3">
+        <div class="form-row">
+          <label>Promotora</label>
+          <select id="fPromotora"><option value="">— Todos —</option></select>
+        </div>
+        <div class="form-row">
+          <label>Status</label>
+          <select id="fStatus">
+            <option value="">— Todos —</option>
+            <option value="true">Ativo</option>
+            <option value="false">Inativo</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Nome da tabela</label>
+          <input type="text" id="fTableName" placeholder="Pesquisar por nome" />
+        </div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-secondary" type="button" onclick="limparFiltros()">Limpar filtros</button>
+      </div>
+      <div id="resultadoInfo" style="font-size:13px;color:#7f8c8d;margin-top:6px;"></div>
+    </div>
+
+    <!-- Lista -->
+    <div class="card">
+      <h3>Tabelas cadastradas</h3>
+      <div class="list-actions">
+        <button class="btn-small" type="button" onclick="exportCSV()">Exportar CSV</button>
+      </div>
+      <table class="table" id="tablesList">
+        <thead>
+          <tr>
+            <th>Banco</th>
+            <th>Convênio</th>
+            <th>Tipo de contrato</th>
+            <th>Promotora</th>
+            <th>Tabela</th>
+            <th>Início vigência</th>
+            <th>Prazos</th>
+            <th>Status</th>
+            <th style="width:140px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js"
+
+    let tables = []
+    const bankEl = document.getElementById('bank')
+    const agreementEl = document.getElementById('agreement')
+    const contractEl = document.getElementById('contractType')
+    const promotoraEl = document.getElementById('promotora')
+    const tableNameEl = document.getElementById('tableName')
+    const startDateEl = document.getElementById('startDate')
+    const statusEl = document.getElementById('status')
+    const editIndexEl = document.getElementById('editIndex')
+    const tbody = document.querySelector('#tablesList tbody')
+
+    // Filtros
+    const fBankEl = document.getElementById('fBank')
+    const fAgreementEl = document.getElementById('fAgreement')
+    const fContractEl = document.getElementById('fContractType')
+    const fPromotoraEl = document.getElementById('fPromotora')
+    const fStatusEl = document.getElementById('fStatus')
+    const fTableNameEl = document.getElementById('fTableName')
+    const resultadoInfoEl = document.getElementById('resultadoInfo')
+
+    ;[fBankEl, fAgreementEl, fContractEl, fPromotoraEl, fStatusEl].forEach(el => {
+      el.addEventListener('change', renderTables)
+    })
+    fTableNameEl.addEventListener('input', renderTables)
+
+    function limparFiltros() {
+      fBankEl.value = ''
+      fAgreementEl.value = ''
+      fContractEl.value = ''
+      fPromotoraEl.value = ''
+      fStatusEl.value = ''
+      fTableNameEl.value = ''
+      renderTables()
+    }
+    window.limparFiltros = limparFiltros
+
+    function aplicaFiltros(arr) {
+      const bankFiltro = (fBankEl.value || '').trim()
+      const agreementFiltro = (fAgreementEl.value || '').trim()
+      const contractFiltro = (fContractEl.value || '').trim()
+      const promotoraFiltro = (fPromotoraEl.value || '').trim()
+      const statusFiltro = (fStatusEl.value || '').trim()
+      const nomeFiltro = (fTableNameEl.value || '').trim().toLowerCase()
+
+      return (arr || []).filter(t => {
+        const bankId = String(t.bancos?.id ?? t.bank_id ?? '')
+        const agreementId = String(t.convenios?.id ?? t.agreement_id ?? '')
+        const contractId = String(t.tipos_contrato?.id ?? t.contract_id ?? '')
+        const promotoraId = String(t.promotoras?.id ?? t.promotora_id ?? '')
+
+        if (bankFiltro && bankId !== bankFiltro) return false
+        if (agreementFiltro && agreementId !== agreementFiltro) return false
+        if (contractFiltro && contractId !== contractFiltro) return false
+        if (promotoraFiltro && promotoraId !== promotoraFiltro) return false
+        if (statusFiltro && String(!!t.status) !== statusFiltro) return false
+        if (nomeFiltro && !String(t.table_name || '').toLowerCase().includes(nomeFiltro)) return false
+        return true
+      })
+    }
+
+    function fillSelect(el, items, label = 'name', placeholder = 'Selecione') {
+      el.innerHTML = `<option value="">${placeholder}</option>` +
+        (items || []).map(a => `<option value="${a.id}">${a[label]}</option>`).join('')
+    }
+
+    function addPrazo(p = {}) {
+      const div = document.createElement('div')
+      div.className = 'grid-3 prazo-item'
+      div.innerHTML = `
+        <div class="form-row">
+          <label>Prazo</label>
+          <input type="number" class="prazo" value="${p.prazo ?? ''}" />
+        </div>
+        <div class="form-row">
+          <label>Fator</label>
+          <input type="number" step="0.000001" class="fator" value="${p.fator ?? ''}" />
+        </div>
+        <div class="form-row">
+          <label>Comissão (%)</label>
+          <input type="number" step="0.01" class="comissao" value="${p.comissao ?? ''}" />
+        </div>
+      `
+      document.getElementById('prazoContainer').appendChild(div)
+    }
+    window.addPrazo = addPrazo
+
+    function coletarPrazosForm() {
+      return [...document.querySelectorAll('#prazoContainer .prazo-item')].map(div => {
+        const prazo = parseInt(div.querySelector('.prazo').value || '0', 10)
+        const fator = parseFloat(div.querySelector('.fator').value || '0')
+        const comissao = parseFloat(div.querySelector('.comissao').value || '0')
+        return { prazo, fator, comissao }
+      }).filter(p => p.prazo && p.fator)
+    }
+
+    async function carregarBases() {
+      // Carrega dados para os selects (inclui promotoras)
+      const [bRes, aRes, cRes, pRes] = await Promise.all([
+        supabase.from("bancos").select("id,name").order("name", { ascending: true }),
+        supabase.from("convenios").select("id,name").order("name", { ascending: true }),
+        supabase.from("tipos_contrato").select("id,name").order("name", { ascending: true }),
+        supabase.from("promotoras").select("id,promotora").order("promotora", { ascending: true })
+      ])
+
+      if (bRes.error) alert("Erro ao carregar bancos: " + bRes.error.message)
+      if (aRes.error) alert("Erro ao carregar convênios: " + aRes.error.message)
+      if (cRes.error) alert("Erro ao carregar tipos de contrato: " + cRes.error.message)
+      if (pRes.error) alert("Erro ao carregar promotoras: " + pRes.error.message)
+
+      fillSelect(bankEl, bRes.data || [], 'name')
+      fillSelect(agreementEl, aRes.data || [], 'name')
+      fillSelect(contractEl, cRes.data || [], 'name')
+      fillSelect(promotoraEl, pRes.data || [], 'promotora')
+
+      // Mesmas opções nos filtros, com placeholder "— Todos —"
+      fillSelect(fBankEl, bRes.data || [], 'name', '— Todos —')
+      fillSelect(fAgreementEl, aRes.data || [], 'name', '— Todos —')
+      fillSelect(fContractEl, cRes.data || [], 'name', '— Todos —')
+      fillSelect(fPromotoraEl, pRes.data || [], 'promotora', '— Todos —')
+    }
+
+    async function carregarTabelas() {
+      // Usa join para trazer nomes dos relacionados, prazos e promotora
+      const { data, error } = await supabase
+        .from("tabelas_produto")
+        .select(`
+          id, table_name, start_date, status,
+          bancos:bank_id (id, name),
+          convenios:agreement_id (id, name),
+          tipos_contrato:contract_id (id, name),
+          promotoras:promotora_id (id, promotora),
+          prazos:tabelas_produto_prazos (id, prazo, fator, comissao)
+        `)
+        .order("table_name", { ascending: true })
+
+      if (error) {
+        alert("Erro ao carregar tabelas: " + error.message)
+        return
+      }
+      tables = data || []
+      renderTables()
+    }
+
+    function renderTables() {
+      tbody.innerHTML = ''
+      const filtradas = aplicaFiltros(tables)
+
+      filtradas.forEach(t => {
+        const bankName = t.bancos?.name || '-'
+        const agName = t.convenios?.name || '-'
+        const ctName = t.tipos_contrato?.name || '-'
+        const promName = t.promotoras?.promotora || '-'
+        const prazosStr = Array.isArray(t.prazos) && t.prazos.length
+          ? t.prazos.map(p => `${p.prazo}x (Fator: ${p.fator}, Comissão: ${p.comissao}%)`).join('<br>')
+          : '-'
+
+        const tr = document.createElement('tr')
+        tr.innerHTML = `
+          <td>${bankName}</td>
+          <td>${agName}</td>
+          <td>${ctName}</td>
+          <td>${promName}</td>
+          <td>${t.table_name}</td>
+          <td>${t.start_date}</td>
+          <td>${prazosStr}</td>
+          <td>${t.status ? 'Ativo' : 'Inativo'}</td>
+          <td>
+            <button class="btn-small" onclick="editTable(${t.id})">Editar</button>
+            <button class="btn-small" onclick="deleteTable(${t.id})">Excluir</button>
+          </td>
+        `
+        tbody.appendChild(tr)
+      })
+
+      if (resultadoInfoEl) {
+        resultadoInfoEl.textContent = filtradas.length === tables.length
+          ? `${tables.length} tabela(s) cadastrada(s)`
+          : `Mostrando ${filtradas.length} de ${tables.length} tabela(s)`
+      }
+    }
+
+    async function saveTable() {
+      const bankId = parseInt(bankEl.value, 10)
+      const agreementId = parseInt(agreementEl.value, 10)
+      const contractId = parseInt(contractEl.value, 10)
+      const promotoraId = parseInt(promotoraEl.value, 10)
+      const tableName = (tableNameEl.value || '').trim()
+      const startDate = startDateEl.value
+      const status = statusEl.value === 'true'
+
+      if (!bankId || !agreementId || !contractId || !promotoraId || !tableName || !startDate) {
+        alert('Preencha os campos obrigatórios.')
+        return
+      }
+
+      const editId = editIndexEl.value !== '' ? parseInt(editIndexEl.value, 10) : null
+
+      // Verificação de duplicidade (mesmo conjunto, promotora e vigência)
+      const duplicado = tables.some(t =>
+        t.id !== editId &&
+        (t.bancos?.id || t.bank_id) === bankId &&
+        (t.convenios?.id || t.agreement_id) === agreementId &&
+        (t.tipos_contrato?.id || t.contract_id) === contractId &&
+        (t.promotoras?.id || t.promotora_id) === promotoraId &&
+        (t.table_name || '').toLowerCase() === tableName.toLowerCase() &&
+        t.start_date === startDate
+      )
+      if (duplicado) {
+        alert('Já existe uma tabela cadastrada com esses dados.')
+        return
+      }
+
+      const prazos = coletarPrazosForm()
+
+      if (editId !== null) {
+        const tabelaId = editId
+
+        const { error: upErr } = await supabase
+          .from("tabelas_produto")
+          .update({
+            bank_id: bankId,
+            agreement_id: agreementId,
+            contract_id: contractId,
+            promotora_id: promotoraId,
+            table_name: tableName,
+            start_date: startDate,
+            status
+          })
+          .eq("id", tabelaId)
+
+        if (upErr) { alert("Erro ao atualizar tabela: " + upErr.message); return }
+
+        // Atualiza prazos (apaga todos e insere os atuais)
+        const { error: delErr } = await supabase
+          .from("tabelas_produto_prazos")
+          .delete()
+          .eq("tabela_id", tabelaId)
+        if (delErr) { alert("Erro ao atualizar prazos (delete): " + delErr.message); return }
+
+        if (prazos.length) {
+          const payload = prazos.map(p => ({ tabela_id: tabelaId, prazo: p.prazo, fator: p.fator, comissao: p.comissao }))
+          const { error: prErr } = await supabase
+            .from("tabelas_produto_prazos")
+            .insert(payload)
+          if (prErr) { alert("Erro ao atualizar prazos (insert): " + prErr.message); return }
+        }
+
+        alert("Tabela atualizada com sucesso!")
+      } else {
+        // Insere master
+        const { data: insData, error: insErr } = await supabase
+          .from("tabelas_produto")
+          .insert([{
+            bank_id: bankId,
+            agreement_id: agreementId,
+            contract_id: contractId,
+            promotora_id: promotoraId,
+            table_name: tableName,
+            start_date: startDate,
+            status
+          }])
+          .select("id")
+          .single()
+
+        if (insErr) { alert("Erro ao salvar tabela: " + insErr.message); return }
+
+        // Insere prazos
+        if (prazos.length) {
+          const payload = prazos.map(p => ({ tabela_id: insData.id, prazo: p.prazo, fator: p.fator, comissao: p.comissao }))
+          const { error: prErr } = await supabase
+            .from("tabelas_produto_prazos")
+            .insert(payload)
+          if (prErr) { alert("Erro ao salvar prazos: " + prErr.message); return }
+        }
+
+        alert("Tabela salva com sucesso!")
+      }
+
+      await carregarTabelas()
+      resetForm()
+    }
+    window.saveTable = saveTable
+
+    function exportCSV() {
+      const header = ['Banco','Convênio','Tipo de contrato','Promotora','Tabela','Início vigência','Status','Prazos']
+      const rows = aplicaFiltros(tables).map(t => {
+        const bankName = t.bancos?.name || ''
+        const agName = t.convenios?.name || ''
+        const ctName = t.tipos_contrato?.name || ''
+        const promName = t.promotoras?.promotora || ''
+        const prazosStr = Array.isArray(t.prazos) && t.prazos.length
+          ? t.prazos.map(p => `${p.prazo}x (Fator:${p.fator}, Comissão:${p.comissao}%)`).join(' | ')
+          : ''
+        return [bankName, agName, ctName, promName, t.table_name, t.start_date, t.status ? 'Ativo' : 'Inativo', prazosStr]
+      })
+      const csv = [header.join(';'), ...rows.map(r => r.map(c => String(c).replace(/;/g, ',')).join(';'))].join('\n')
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url; a.download = 'tabelas.csv'; a.click()
+      URL.revokeObjectURL(url)
+    }
+    window.exportCSV = exportCSV
+
+    function editTable(id) {
+      const t = tables.find(x => x.id === id)
+      if (!t) return
+      bankEl.value = t.bancos?.id || t.bank_id
+      agreementEl.value = t.convenios?.id || t.agreement_id
+      contractEl.value = t.tipos_contrato?.id || t.contract_id
+      promotoraEl.value = t.promotoras?.id || t.promotora_id
+      tableNameEl.value = t.table_name
+      startDateEl.value = t.start_date
+      statusEl.value = String(!!t.status)
+      editIndexEl.value = t.id
+
+      document.getElementById('prazoContainer').innerHTML = ''
+      ;(t.prazos || []).forEach(p => addPrazo(p))
+      if (!t.prazos || !t.prazos.length) addPrazo()
+    }
+    window.editTable = editTable
+
+    async function deleteTable(id) {
+      if (!confirm('Confirmar exclusão desta tabela?')) return
+
+      // Se sua FK tem ON DELETE CASCADE, bastaria excluir a master.
+      // Para segurança, apaga prazos explicitamente e depois a master.
+      const { error: delP } = await supabase.from("tabelas_produto_prazos").delete().eq("tabela_id", id)
+      if (delP) { alert("Erro ao excluir prazos: " + delP.message); return }
+
+      const { error: delM } = await supabase.from("tabelas_produto").delete().eq("id", id)
+      if (delM) { alert("Erro ao excluir tabela: " + delM.message); return }
+
+      alert("Tabela excluída com sucesso!")
+      await carregarTabelas()
+    }
+    window.deleteTable = deleteTable
+
+    function resetForm() {
+      document.getElementById('tabForm').reset()
+      editIndexEl.value = ''
+      document.getElementById('prazoContainer').innerHTML = ''
+      addPrazo()
+      startDateEl.value = new Date().toISOString().split('T')[0]
+    }
+    window.resetForm = resetForm
+
+    async function init() {
+      startDateEl.value = new Date().toISOString().split('T')[0]
+      addPrazo()
+      await carregarBases()
+      await carregarTabelas()
+    }
+    init()
+  </script>
+</body>
+</html>

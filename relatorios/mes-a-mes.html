@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Relatório Mês a Mês</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:22px; margin-bottom:20px; color:#2c3e50; }
+
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:20px; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .btn-primary { background:#1abc9c; color:#fff; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#16a085; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+    .table tfoot td { font-weight:700; background:#f7f8f9; }
+
+    footer { margin:20px; text-align:center; color:#7f8c8d; font-size:13px; }
+
+    @media (max-width:860px) {
+      thead { display:none; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tbody tr { border-top:1px solid #eee; padding:8px 10px; }
+      tbody td { border:none; padding:6px 0; }
+      tbody td::before { content:attr(data-label); display:block; font-size:12px; color:#7f8c8d; margin-bottom:3px; }
+      tfoot td { display:block; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Relatório Mês a Mês</h2>
+
+    <div class="card">
+      <h3>Filtros</h3>
+      <div class="grid-2">
+        <div class="form-row">
+          <label>Data inicial</label>
+          <input type="date" id="fStart" />
+        </div>
+        <div class="form-row">
+          <label>Data final</label>
+          <input type="date" id="fEnd" />
+        </div>
+        <div class="form-row">
+          <label>Banco</label>
+          <select id="fBank"><option value="">Todos</option></select>
+        </div>
+        <div class="form-row">
+          <label>Vendedor</label>
+          <select id="fSeller"><option value="">Todos</option></select>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button class="btn-primary" onclick="renderMonthly()">Gerar relatório</button>
+        <button class="btn-small" onclick="exportCSV()">Exportar CSV</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Consolidado por mês</h3>
+      <table class="table" id="monthlyTable">
+        <thead>
+          <tr>
+            <th>Mês</th>
+            <th>Contratos</th>
+            <th>Produção paga</th>
+            <th>Comissão prevista</th>
+            <th>Receitas recebidas</th>
+            <th>Despesas quitadas</th>
+            <th>Resultado líquido (previsto)</th>
+            <th>Resultado líquido (recebido)</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot id="monthlyTotals"></tfoot>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Evolução mensal</h3>
+      <canvas id="chartMes" height="120"></canvas>
+    </div>
+  </main>
+
+  <footer><p>DVN Soluções © 2025 — Todos os direitos reservados</p></footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    function dinheiro(n){ return 'R$ '+(Number(n||0)).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+    // Trata strings de data como calendário puro, extraindo o YYYY-MM-DD literal em vez de
+    // deixar o JS reconverter para o fuso local. Sem isso, uma data salva como meia-noite UTC
+    // (ex: início do mês) podia cair no dia/mês ANTERIOR aqui no fuso de Brasília (UTC-3),
+    // distorcendo o agrupamento mês a mês (mesmo bug corrigido no relatório Geral).
+    function parseDate(str){
+      if(!str) return null;
+      const s = String(str).trim();
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      const m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})[T ]/);
+      if (m2) return new Date(Number(m2[1]), Number(m2[2]) - 1, Number(m2[3]));
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function monthKey(dateStr){ const d=parseDate(dateStr); if(!d) return ''; return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }
+
+    let contratos = [], bancos = [], receitas = [], despesas = [], chartInstance = null;
+    let lastGrouped = {}; // guarda o último agrupamento para uso no exportCSV e totais
+
+    // Normaliza status: trim, toLowerCase, remove acentos, colapsa espaços e mapeia sinônimos
+    function removeAccents(str){
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    }
+    function normalizeStatus(raw){
+      if(!raw && raw !== 0) return '';
+      let s = String(raw).trim().toLowerCase();
+      s = removeAccents(s).replace(/\s+/g,' ');
+      const map = {
+        'pago':'pago',
+        'paga':'pago',
+        'quitado':'quitado',
+        'liquidado':'quitado',
+        'liquidada':'quitado',
+        'recebido':'recebido',
+        'recebida':'recebido',
+        'a receber':'a receber',
+        'areceber':'a receber',
+        'a_receber':'a receber',
+        'pendente':'a receber',
+        'em aberto':'a receber',
+        'cancelado':'cancelado',
+        'cancelada':'cancelado'
+      };
+      return map[s] ?? s;
+    }
+
+    // O Supabase/PostgREST limita cada requisição a 1000 linhas por padrão.
+    // Esta função busca TODOS os registros de uma tabela, em lotes de 1000, até não sobrar mais nada.
+    async function fetchTodosRegistros(tabela, selectStr = "*", orderCol = null, ascending = true) {
+      const TAMANHO_LOTE = 1000;
+      let de = 0;
+      let todasLinhas = [];
+      while (true) {
+        let query = supabase.from(tabela).select(selectStr);
+        if (orderCol) query = query.order(orderCol, { ascending });
+        query = query.range(de, de + TAMANHO_LOTE - 1);
+        const { data, error } = await query;
+
+        if (error) return { data: null, error };
+
+        todasLinhas = todasLinhas.concat(data || []);
+
+        if (!data || data.length < TAMANHO_LOTE) break; // último lote (menor que o tamanho do lote = acabou)
+        de += TAMANHO_LOTE;
+      }
+      return { data: todasLinhas, error: null };
+    }
+
+    async function carregarDados(){
+      const [cRes,bRes,rRes,dRes] = await Promise.all([
+        fetchTodosRegistros("contratos", "*", "typing_date", true),
+        fetchTodosRegistros("bancos", "*"),
+        fetchTodosRegistros("receitas", "*"),
+        fetchTodosRegistros("despesas", "*")
+      ]);
+      if(cRes.error) console.error(cRes.error);
+      if(bRes.error) console.error(bRes.error);
+      if(rRes.error) console.error(rRes.error);
+      if(dRes.error) console.error(dRes.error);
+      contratos = cRes.data || [];
+      bancos = bRes.data || [];
+      receitas = rRes.data || [];
+      despesas = dRes.data || [];
+      initFilters();
+      renderMonthly();
+    }
+
+    function nomeBanco(id){
+      const b = bancos.find(x => String(x.id) === String(id));
+      return b ? (b.nome || b.name || String(id)) : String(id);
+    }
+
+    function initFilters(){
+      const fBank = document.getElementById('fBank');
+      const fSeller = document.getElementById('fSeller');
+      fBank.innerHTML = '<option value="">Todos</option>';
+      fSeller.innerHTML = '<option value="">Todos</option>';
+      const bankIds = new Set();
+      const sellerNames = new Set();
+      contratos.forEach(c => {
+        if(c.bank_id) bankIds.add(String(c.bank_id));
+        if(c.vendedor) sellerNames.add(String(c.vendedor));
+      });
+      Array.from(bankIds).sort().forEach(bid => {
+        const opt = document.createElement('option'); opt.value = bid; opt.textContent = nomeBanco(bid); fBank.appendChild(opt);
+      });
+      Array.from(sellerNames).sort().forEach(s => {
+        const opt = document.createElement('option'); opt.value = s; opt.textContent = s; fSeller.appendChild(opt);
+      });
+    }
+
+    function aplicarFiltrosContratos(){
+      const start = parseDate(document.getElementById('fStart').value);
+      const end = parseDate(document.getElementById('fEnd').value);
+      const fBankVal = document.getElementById('fBank').value;
+      const fSellerVal = document.getElementById('fSeller').value;
+      return contratos.filter(c => {
+        const typing = parseDate(c.typing_date);
+        if(start && (!typing || typing < start)) return false;
+        if(end && (!typing || typing > end)) return false;
+        if(fBankVal && String(c.bank_id) !== String(fBankVal)) return false;
+        if(fSellerVal && String(c.vendedor) !== String(fSellerVal)) return false;
+        return true;
+      });
+    }
+
+    function comissaoPrevista(c){
+      // calcula comissão com base no contrato (percentual ou valor fixo)
+      const base = Number(c.released_amount ?? c.requested_amount ?? 0);
+      if(c.percentual) return base * (Number(c.percentual)/100);
+      if(c.commission) return Number(c.commission);
+      return 0;
+    }
+
+    function renderMonthly(){
+      const tbody = document.querySelector('#monthlyTable tbody');
+      const tfoot = document.getElementById('monthlyTotals');
+      tbody.innerHTML = '';
+      tfoot.innerHTML = '';
+      const grouped = {}; // key -> { contratos, producao, comissao, receitas, despesas }
+
+      // aplicar filtros e agrupar contratos
+      const lista = aplicarFiltrosContratos();
+      lista.forEach(c => {
+        // PRODUÇÃO E COMISSÃO AGRUPADAS PELA DATA DE PAGAMENTO (payment_date)
+        const key = monthKey(c.payment_date);
+        if(!key) {
+          // se não houver payment_date, não contabiliza como produção paga neste agrupamento
+          return;
+        }
+        if(!grouped[key]) grouped[key] = { contratos:0, producao:0, comissao:0, receitas:0, despesas:0 };
+        grouped[key].contratos++;
+
+        const rawStatus = c.status ?? c.situacao ?? '';
+        const status = normalizeStatus(rawStatus);
+
+        // Produção paga: apenas contratos com status pago/quitado/recebido (considerando payment_date)
+        if(['pago','quitado','recebido'].includes(status)){
+          grouped[key].producao += Number(c.released_amount || 0);
+
+          // Comissão prevista: soma a comissão dos contratos pagos (agrupada por payment_date)
+          grouped[key].comissao += comissaoPrevista(c);
+        }
+      });
+
+      // período para receitas/despesas (filtros de data aplicados)
+      const start = parseDate(document.getElementById('fStart').value);
+      const end = parseDate(document.getElementById('fEnd').value);
+
+      // Receitas quitadas (recebido/quitado/pago)
+      receitas.filter(i => {
+        const d = parseDate(i.date || i.data || i.payment_date);
+        const status = normalizeStatus(i.status ?? i.situacao ?? '');
+        if(start && (!d || d < start)) return false;
+        if(end && (!d || d > end)) return false;
+        return ['recebido','quitado','pago'].includes(status);
+      }).forEach(i => {
+        const key = monthKey(i.date || i.data || i.payment_date);
+        if(!key) return;
+        if(!grouped[key]) grouped[key] = { contratos:0, producao:0, comissao:0, receitas:0, despesas:0 };
+        grouped[key].receitas += Number(i.amount || i.valor || 0);
+      });
+
+      // Despesas quitadas (quitado/pago)
+      despesas.filter(e => {
+        const d = parseDate(e.due_date || e.data || e.payment_date);
+        const status = normalizeStatus(e.status ?? e.situacao ?? '');
+        if(start && (!d || d < start)) return false;
+        if(end && (!d || d > end)) return false;
+        return ['quitado','pago'].includes(status);
+      }).forEach(e => {
+        const key = monthKey(e.due_date || e.data || e.payment_date);
+        if(!key) return;
+        if(!grouped[key]) grouped[key] = { contratos:0, producao:0, comissao:0, receitas:0, despesas:0 };
+        grouped[key].despesas += Number(e.amount || e.valor || 0);
+      });
+
+      // guardar agrupamento para export/uso posterior
+      lastGrouped = grouped;
+
+      // Totais acumulados
+      const totals = { contratos:0, producao:0, comissao:0, receitas:0, despesas:0, resultado_previsto:0, resultado_recebido:0 };
+
+      // montar tabela
+      Object.keys(grouped).sort().forEach(key => {
+        const g = grouped[key];
+        const [year, month] = key.split('-');
+
+        // Resultado líquido (previsto) = Comissão prevista - Despesas quitadas
+        const resultado_previsto = Number((g.comissao || 0) - (g.despesas || 0));
+
+        // Resultado líquido (recebido) = Receitas recebidas - Despesas quitadas
+        const resultado_recebido = Number((g.receitas || 0) - (g.despesas || 0));
+
+        // acumula totais
+        totals.contratos += Number(g.contratos || 0);
+        totals.producao += Number(g.producao || 0);
+        totals.comissao += Number(g.comissao || 0);
+        totals.receitas += Number(g.receitas || 0);
+        totals.despesas += Number(g.despesas || 0);
+        totals.resultado_previsto += resultado_previsto;
+        totals.resultado_recebido += resultado_recebido;
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Mês">${month}/${year}</td>
+          <td data-label="Contratos">${g.contratos}</td>
+          <td data-label="Produção paga">${dinheiro(g.producao)}</td>
+          <td data-label="Comissão prevista">${dinheiro(g.comissao)}</td>
+          <td data-label="Receitas recebidas">${dinheiro(g.receitas)}</td>
+          <td data-label="Despesas quitadas">${dinheiro(g.despesas)}</td>
+          <td data-label="Resultado líquido (previsto)">${dinheiro(resultado_previsto)}</td>
+          <td data-label="Resultado líquido (recebido)">${dinheiro(resultado_recebido)}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // adicionar linha de totais no tfoot
+      const trow = document.createElement('tr');
+      trow.innerHTML = `
+        <td>Total</td>
+        <td>${totals.contratos}</td>
+        <td>${dinheiro(totals.producao)}</td>
+        <td>${dinheiro(totals.comissao)}</td>
+        <td>${dinheiro(totals.receitas)}</td>
+        <td>${dinheiro(totals.despesas)}</td>
+        <td>${dinheiro(totals.resultado_previsto)}</td>
+        <td>${dinheiro(totals.resultado_recebido)}</td>
+      `;
+      tfoot.appendChild(trow);
+
+      renderChartMes(grouped);
+    }
+
+    function renderChartMes(grouped){
+      const ctx = document.getElementById('chartMes').getContext('2d');
+      const keys = Object.keys(grouped).sort();
+      const labels = keys.map(k => { const [y,m] = k.split('-'); return `${m}/${y}`; });
+      const receitasData = keys.map(k => grouped[k].receitas);
+      const despesasData = keys.map(k => grouped[k].despesas);
+      if(chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Receitas', data: receitasData, borderColor: '#4e73df', backgroundColor: 'transparent', tension: 0.25 },
+            { label: 'Despesas', data: despesasData, borderColor: '#e74a3b', backgroundColor: 'transparent', tension: 0.25 }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            tooltip: { callbacks: { label: (ctx) => ' ' + dinheiro(ctx.parsed.y) } }
+          },
+          scales: { y: { ticks: { callback: (v) => dinheiro(v) } } }
+        }
+      });
+    }
+
+    function exportCSV(){
+      const rows = [['Mês','Contratos','Produção paga','Comissão prevista','Receitas recebidas','Despesas quitadas','Resultado líquido (previsto)','Resultado líquido (recebido)']];
+      // linhas da tabela
+      document.querySelectorAll('#monthlyTable tbody tr').forEach(tr => {
+        const cols = Array.from(tr.querySelectorAll('td')).map(td => td.textContent);
+        rows.push(cols);
+      });
+
+      // adicionar totais a partir de lastGrouped (se existir)
+      if(lastGrouped && Object.keys(lastGrouped).length > 0){
+        const totals = { contratos:0, producao:0, comissao:0, receitas:0, despesas:0, resultado_previsto:0, resultado_recebido:0 };
+        Object.keys(lastGrouped).forEach(k => {
+          const g = lastGrouped[k];
+          const resultado_previsto = Number((g.comissao || 0) - (g.despesas || 0));
+          const resultado_recebido = Number((g.receitas || 0) - (g.despesas || 0));
+          totals.contratos += Number(g.contratos || 0);
+          totals.producao += Number(g.producao || 0);
+          totals.comissao += Number(g.comissao || 0);
+          totals.receitas += Number(g.receitas || 0);
+          totals.despesas += Number(g.despesas || 0);
+          totals.resultado_previsto += resultado_previsto;
+          totals.resultado_recebido += resultado_recebido;
+        });
+        rows.push(['Total', totals.contratos, dinheiro(totals.producao), dinheiro(totals.comissao), dinheiro(totals.receitas), dinheiro(totals.despesas), dinheiro(totals.resultado_previsto), dinheiro(totals.resultado_recebido)]);
+      }
+
+      const csv = rows.map(r => r.map(v => String(v ?? '').replace(/;/g,',')).join(';')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'relatorio-mes-a-mes.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // inicialização
+    await carregarDados();
+    document.getElementById('fStart').addEventListener('change', renderMonthly);
+    document.getElementById('fEnd').addEventListener('change', renderMonthly);
+    document.getElementById('fBank').addEventListener('change', renderMonthly);
+    document.getElementById('fSeller').addEventListener('change', renderMonthly);
+  </script>
+</body>
+</html>

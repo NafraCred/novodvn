@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Relatório Geral</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    /* Header / logo */
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    /* Nav */
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    /* Main */
+    main { padding:30px 20px; }
+    main h2 { font-size:22px; margin-bottom:20px; color:#2c3e50; }
+
+    /* Layout */
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:20px; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .btn-primary { background:#1abc9c; color:#fff; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#16a085; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; margin-top:8px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+
+    .totals-row { font-weight:700; background:#f6f9f7; }
+
+    select[multiple] { min-height:120px; }
+
+    @media (max-width:860px) {
+      thead { display:none; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tbody tr { border-top:1px solid #eee; padding:8px 10px; }
+      tbody td { border:none; padding:6px 0; }
+      tbody td::before { content:attr(data-label); display:block; font-size:12px; color:#7f8c8d; margin-bottom:3px; }
+    }
+  </style>
+
+  <!-- SheetJS for Excel export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <!-- Menu completo restaurado -->
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/metas.html">Metas do Mês</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Relatório Geral</h2>
+
+    <div class="card">
+      <h3>Filtros</h3>
+      <div class="grid-2">
+        <div class="form-row">
+          <label>Data inicial</label>
+          <input type="date" id="fStart" />
+        </div>
+        <div class="form-row">
+          <label>Data final</label>
+          <input type="date" id="fEnd" />
+        </div>
+        <div class="form-row">
+          <label>Tipo de data</label>
+          <select id="fDateType">
+            <option value="digitacao">Data de digitação (typing_date)</option>
+            <option value="pagamento">Data de pagamento (payment_date)</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Banco</label>
+          <select id="fBank"><option value="">Todos</option></select>
+        </div>
+        <div class="form-row">
+          <label>Convênio</label>
+          <select id="fConvenio"><option value="">Todos</option></select>
+        </div>
+        <div class="form-row">
+          <label>Vendedor</label>
+          <select id="fSeller"><option value="">Todos</option></select>
+        </div>
+
+        <!-- Grupo filter -->
+        <div class="form-row">
+          <label>Grupo</label>
+          <select id="fGrupo"><option value="">Todos</option></select>
+        </div>
+
+        <div class="form-row">
+          <label>Status (marque um ou mais)</label>
+          <select id="fStatus" multiple></select>
+        </div>
+      </div>
+
+      <div style="display:flex; gap:10px; margin-top:12px;">
+        <button id="btnRender" class="btn-primary">Gerar relatório</button>
+        <button id="btnCSV" class="btn-small">Exportar CSV (detalhado)</button>
+        <button id="btnXLS" class="btn-small">Exportar Excel (contratos + agregados)</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Consolidado por banco</h3>
+      <table class="table" id="bankTable">
+        <thead>
+          <tr>
+            <th>Banco</th>
+            <th>Contratos</th>
+            <th>Valor liberado</th>
+            <th>Comissão prevista</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Consolidado por vendedor (sem coluna banco)</h3>
+      <table class="table" id="sellerTable">
+        <thead>
+          <tr>
+            <th>Vendedor</th>
+            <th>Contratos</th>
+            <th>Valor liberado</th>
+            <th>Comissão prevista</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot></tfoot>
+      </table>
+    </div>
+
+    <div class="card">
+      <h3>Gráfico de valor liberado por vendedor</h3>
+      <canvas id="chartGeral" height="120"></canvas>
+    </div>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    // --- Helpers ---
+    function dinheiro(n) { return 'R$ ' + (Number(n || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+    // Trata strings de data (typing_date, created_at, payment_date) como calendário puro,
+    // extraindo o YYYY-MM-DD literal da string em vez de deixar o JS converter para o fuso
+    // local (o que causava contratos "de hoje" aparecerem só filtrando por "ontem",
+    // já que typing_date é salvo como meia-noite UTC e não como um horário real).
+    function parseDate(str) {
+      if (!str) return null;
+      const s = String(str).trim();
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m) return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      const m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})[T ]/);
+      if (m2) return new Date(Number(m2[1]), Number(m2[2]) - 1, Number(m2[3]));
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function isoDateForInput(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
+
+    // Helper para identificar grupo interno (case-insensitive)
+    function isGrupoInterno(nomeGrupo) {
+      if (!nomeGrupo && nomeGrupo !== 0) return false;
+      return String(nomeGrupo).trim().toUpperCase() === 'INTERNO';
+    }
+
+    // --- State ---
+    let contratos = [], bancos = [], vendedores = [], convenios = [], grupos = [];
+    let bankMap = {}, convenioMap = {}, grupoMap = {};
+    let lastBankLines = [], lastSellerLines = [], lastFilteredContracts = [];
+    let chartInstance = null;
+
+    // --- Nome helpers ---
+    function nomeBanco(id) {
+      if (!id && id !== 0) return '—';
+      const key = String(id);
+      if (bankMap[key]) return bankMap[key];
+      const b = bancos.find(x => String(x.id) === key);
+      return b ? (b.nome || b.name || key) : key;
+    }
+    function nomeVendedor(id) {
+      const v = vendedores.find(x => String(x.id) === String(id));
+      return v ? (v.nome || v.name || String(id)) : (id ? String(id) : 'Sem vendedor');
+    }
+    function nomeConvenio(id) {
+      if (!id && id !== 0) return '—';
+      const key = String(id);
+      if (convenioMap[key]) return convenioMap[key];
+      const c = convenios.find(x => String(x.id) === key);
+      return c ? (c.nome || c.name || key) : key;
+    }
+    function nomeGrupo(id) {
+      if (!id && id !== 0) return '';
+      const key = String(id);
+      if (grupoMap[key]) return grupoMap[key];
+      const g = grupos.find(x => String(x.id) === key);
+      return g ? (g.nome || g.name || key) : (id ? String(id) : '');
+    }
+
+    // Helper: get grupo id for a contract (tries multiple sources)
+    function obterGrupoIdDoContrato(c) {
+      if (c.raw && (c.raw.grupo_id || c.raw.group_id || c.raw.grupo)) {
+        return c.raw.grupo_id ?? c.raw.group_id ?? c.raw.grupo;
+      }
+      if (c.vendedor_id) {
+        const v = vendedores.find(x => String(x.id) === String(c.vendedor_id));
+        if (v && (v.grupo_id || v.group_id)) return v.grupo_id ?? v.group_id;
+      }
+      if (c._meta && (c._meta.grupo || c._meta.group)) return c._meta.grupo ?? c._meta.group;
+      return null;
+    }
+
+    // Busca TODOS os contratos, ignorando o limite padrão de 1000 linhas do Supabase.
+    // Faz várias requisições em lotes (páginas de 1000) usando .range() até não sobrar mais nada.
+    async function fetchTodosContratos() {
+      const TAMANHO_LOTE = 1000;
+      let de = 0;
+      let todasLinhas = [];
+      while (true) {
+        const { data, error } = await supabase
+          .from("contratos")
+          .select(`
+            *,
+            promotoras:promotora_id (promotora),
+            clientes:cliente_id (name, cpf_cnpj, birth_date, registration_number, mobile),
+            bancos:bank_id (name),
+            convenios:agreement_id (name),
+            tipos_contrato:contract_type_id (name),
+            tabelas_produto:product_table_id (table_name)
+          `)
+          .order("id", { ascending: false })
+          .range(de, de + TAMANHO_LOTE - 1);
+
+        if (error) return { data: null, error };
+
+        todasLinhas = todasLinhas.concat(data || []);
+
+        if (!data || data.length < TAMANHO_LOTE) break; // último lote (menor que o tamanho do lote = acabou)
+        de += TAMANHO_LOTE;
+      }
+      return { data: todasLinhas, error: null };
+    }
+
+    // --- Load data ---
+    async function carregarContratos() {
+      try {
+        const [bancosRes, vendedoresRes, conveniosRes, gruposRes] = await Promise.all([
+          supabase.from('bancos').select('id, nome, name'),
+          supabase.from('vendedores').select('id, nome, grupo_id'),
+          supabase.from('convenios').select('id, nome, name'),
+          supabase.from('grupos').select('id, nome')
+        ]);
+
+        if (bancosRes.error) console.warn('bancosRes.error', bancosRes.error);
+        if (vendedoresRes.error) console.warn('vendedoresRes.error', vendedoresRes.error);
+        if (conveniosRes.error) console.warn('conveniosRes.error', conveniosRes.error);
+        if (gruposRes.error) console.warn('gruposRes.error', gruposRes.error);
+
+        bancos = bancosRes.data || [];
+        vendedores = vendedoresRes.data || [];
+        convenios = conveniosRes.data || [];
+        grupos = gruposRes.data || [];
+
+        bankMap = {}; bancos.forEach(b => bankMap[String(b.id)] = b.nome || b.name || String(b.id));
+        convenioMap = {}; convenios.forEach(c => convenioMap[String(c.id)] = c.nome || c.name || String(c.id));
+        grupoMap = {}; grupos.forEach(g => grupoMap[String(g.id)] = g.nome || g.name || String(g.id));
+
+        // O Supabase/PostgREST limita cada requisição a 1000 linhas por padrão.
+        // Para trazer TODOS os contratos (mesmo com mais de 1000), buscamos em lotes usando .range().
+        const { data, error } = await fetchTodosContratos();
+
+        if (error) {
+          console.error("Erro ao carregar contratos (supabase):", error);
+          contratos = [];
+        } else {
+          contratos = (data || []).map(row => {
+            if (row.bank_id && row.bancos?.name) bankMap[String(row.bank_id)] = row.bancos.name;
+            if (row.agreement_id && row.convenios?.name) convenioMap[String(row.agreement_id)] = row.convenios.name;
+            return {
+              raw: row,
+              id: row.id,
+              proposta_id: row.proposta_id,
+              vendedor_id: row.vendedor_id || null,
+              client: { name: row.clientes?.name || '', cpf_cnpj: row.clientes?.cpf_cnpj || '', mobile: row.clientes?.mobile || '' },
+              data: {
+                typing_date: row.typing_date || row.created_at || null,
+                payment_date: row.payment_date || null,
+                requested_amount: row.requested_amount || 0,
+                released_amount: row.released_amount || 0,
+                installment_amount: row.installment_amount || 0,
+                bank_id: row.bank_id || null,
+                agreement_id: row.agreement_id || null,
+                status: row.status || ''
+              },
+              percentual: row.percentual ?? row.percentual_value ?? null,
+              commission: row.commission ?? null,
+              _meta: {
+                tabela: row.tabelas_produto?.table_name ?? row.tabela ?? row.table ?? row.tabela_contrato ?? '',
+                prazo: row.prazo ?? row.term ?? row.parcelas ?? '',
+                tipo: row.tipos_contrato?.name ?? row.tipo ?? row.type ?? row.contract_type ?? '',
+                contrato: row.contrato ?? row.contract_number ?? row.numero_contrato ?? row.id ?? '',
+                contato: row.clientes?.mobile ?? row.contato ?? row.contact ?? row.nome_cliente ?? ''
+              }
+            };
+          });
+        }
+
+        initFilters();
+
+        const fStartEl = document.getElementById('fStart');
+        const fEndEl = document.getElementById('fEnd');
+        const today = new Date();
+        const firstOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+        if (!fStartEl.value) fStartEl.value = isoDateForInput(firstOfMonth);
+        if (!fEndEl.value) fEndEl.value = isoDateForInput(today);
+
+        renderReport();
+      } catch (err) {
+        console.error('Erro carregarContratos catch:', err);
+        contratos = []; bancos = []; vendedores = []; convenios = []; grupos = []; bankMap = {}; convenioMap = {}; grupoMap = {};
+        initFilters(); renderReport();
+      }
+    }
+
+    // --- Init filters ---
+    function initFilters() {
+      const fBank = document.getElementById('fBank'), fSeller = document.getElementById('fSeller'), fStatus = document.getElementById('fStatus'), fConvenio = document.getElementById('fConvenio'), fGrupo = document.getElementById('fGrupo');
+      fBank.innerHTML = '<option value="">Todos</option>'; fSeller.innerHTML = '<option value="">Todos</option>'; fStatus.innerHTML = ''; fConvenio.innerHTML = '<option value="">Todos</option>'; if (fGrupo) fGrupo.innerHTML = '<option value="">Todos</option>';
+
+      const bankIds = new Set(), statusSet = new Set(), convenioIds = new Set(), grupoIds = new Set();
+      contratos.forEach(c => {
+        if (c.data?.bank_id) bankIds.add(String(c.data.bank_id));
+        if (c.data?.status) statusSet.add(String(c.data.status));
+        if (c.data?.agreement_id) convenioIds.add(String(c.data.agreement_id));
+        const gid = obterGrupoIdDoContrato(c);
+        if (gid) grupoIds.add(String(gid));
+      });
+
+      Array.from(bankIds).sort().forEach(bid => { const opt = document.createElement('option'); opt.value = bid; opt.textContent = nomeBanco(bid); fBank.appendChild(opt); });
+      Array.from(convenioIds).sort().forEach(cid => { const opt = document.createElement('option'); opt.value = cid; opt.textContent = nomeConvenio(cid); fConvenio.appendChild(opt); });
+      convenios.forEach(cv => { const id = String(cv.id); if (!convenioIds.has(id)) { const opt = document.createElement('option'); opt.value = id; opt.textContent = cv.nome || cv.name || id; fConvenio.appendChild(opt); } });
+
+      const sellerIds = new Set(); contratos.forEach(c => { if (c.vendedor_id) sellerIds.add(String(c.vendedor_id)); }); vendedores.forEach(v => sellerIds.add(String(v.id)));
+      Array.from(sellerIds).sort().forEach(vid => { const opt = document.createElement('option'); opt.value = vid; opt.textContent = nomeVendedor(vid); fSeller.appendChild(opt); });
+
+      if (fGrupo) {
+        const added = new Set();
+        grupos.forEach(g => {
+          const opt = document.createElement('option'); opt.value = String(g.id); opt.textContent = g.nome || g.name || String(g.id); fGrupo.appendChild(opt); added.add(String(g.id));
+        });
+        Array.from(grupoIds).sort().forEach(gid => {
+          if (!added.has(gid)) {
+            const opt = document.createElement('option'); opt.value = gid; opt.textContent = gid; fGrupo.appendChild(opt); added.add(gid);
+          }
+        });
+      }
+
+      const excluded = new Set(['PENDENTE','RECUSADO','REPROVADO']);
+      const defaults = ['EM ANDAMENTO','NOVA SOLICITAÇÃO','PAGO','CANCELADO','PENDENTE PARCEIRO','PENDENTE PROMOTORA'];
+      defaults.forEach(s => { if (!excluded.has(s)) statusSet.add(s); });
+      Array.from(statusSet).sort().forEach(st => { if (excluded.has(st)) return; const opt = document.createElement('option'); opt.value = st; opt.textContent = st; fStatus.appendChild(opt); });
+    }
+
+    // ---------- FILTRO POR DATA EXCLUSIVO ----------
+    function filtroContratos() {
+      const fStartVal = document.getElementById('fStart').value;
+      const fEndVal = document.getElementById('fEnd').value;
+      const fDateType = document.getElementById('fDateType').value; // 'digitacao' or 'pagamento'
+      const fBankVal = document.getElementById('fBank').value;
+      const fSellerVal = document.getElementById('fSeller').value;
+      const fConvenioVal = document.getElementById('fConvenio').value;
+      const fGrupoVal = document.getElementById('fGrupo') ? document.getElementById('fGrupo').value : '';
+      const fStatusEl = document.getElementById('fStatus');
+
+      const start = fStartVal ? new Date(fStartVal + 'T00:00:00') : null;
+      const end = fEndVal ? new Date(fEndVal + 'T23:59:59.999') : null;
+      const selectedStatuses = Array.from(fStatusEl.selectedOptions || []).map(o => o.value).filter(Boolean);
+
+      return contratos.filter(c => {
+        let dateRef = null;
+        if (fDateType === 'pagamento') {
+          dateRef = parseDate(c.data?.payment_date);
+        } else {
+          dateRef = parseDate(c.data?.typing_date) || parseDate(c.data?.created_at);
+        }
+
+        if (start || end) {
+          if (!dateRef) return false;
+          if (start && dateRef < start) return false;
+          if (end && dateRef > end) return false;
+        }
+
+        if (fBankVal && String(c.data?.bank_id) !== String(fBankVal)) return false;
+        if (fSellerVal && String(c.vendedor_id) !== String(fSellerVal)) return false;
+        if (fConvenioVal && String(c.data?.agreement_id) !== String(fConvenioVal)) return false;
+
+        if (fGrupoVal) {
+          const contratoGrupoId = obterGrupoIdDoContrato(c);
+          if (!contratoGrupoId || String(contratoGrupoId) !== String(fGrupoVal)) return false;
+        }
+
+        if (selectedStatuses.length > 0) {
+          const s = String(c.data?.status || '').trim();
+          if (!selectedStatuses.includes(s)) return false;
+        }
+
+        return true;
+      });
+    }
+    // ------------------------------------------------------------------
+
+    function calcularComissaoPrevista(c) {
+      const base = Number(c.data?.released_amount ?? c.data?.requested_amount ?? 0);
+      const percentual = (typeof c.data?.percentual !== 'undefined') ? c.data.percentual : (c.percentual ?? null);
+      if (percentual) return base * (Number(percentual) / 100);
+      const commissionVal = (typeof c.data?.commission !== 'undefined') ? c.data.commission : (c.commission ?? null);
+      if (commissionVal) return Number(commissionVal);
+      return 0;
+    }
+
+    // --- Render report ---
+    function renderReport() {
+      const bankTbody = document.querySelector('#bankTable tbody'), bankTfoot = document.querySelector('#bankTable tfoot');
+      const sellerTbody = document.querySelector('#sellerTable tbody'), sellerTfoot = document.querySelector('#sellerTable tfoot');
+      bankTbody.innerHTML = ''; bankTfoot.innerHTML = ''; sellerTbody.innerHTML = ''; sellerTfoot.innerHTML = '';
+
+      const lista = filtroContratos();
+      lastFilteredContracts = lista.map(c => c);
+
+      const byBank = {}, bySeller = {};
+      lista.forEach(c => {
+        const bancoId = c.data?.bank_id ? String(c.data.bank_id) : '';
+        const vendedorId = c.vendedor_id ? String(c.vendedor_id) : '';
+
+        if (!byBank[bancoId]) byBank[bancoId] = { bancoId, contratos:0, liberado:0, comissao:0 };
+        byBank[bancoId].contratos++;
+        byBank[bancoId].liberado += Number(c.data?.released_amount || 0);
+        byBank[bancoId].comissao += calcularComissaoPrevista(c);
+
+        const sellerKey = vendedorId || 'sem';
+        if (!bySeller[sellerKey]) bySeller[sellerKey] = { vendedorId: vendedorId, vendedorNome: nomeVendedor(vendedorId), contratos:0, comissao:0, liberado:0 };
+        bySeller[sellerKey].contratos++;
+        bySeller[sellerKey].comissao += calcularComissaoPrevista(c);
+        bySeller[sellerKey].liberado += Number(c.data?.released_amount || 0);
+      });
+
+      const bankLines = Object.values(byBank).sort((a,b)=>b.liberado-a.liberado);
+      const sellerLines = Object.values(bySeller).sort((a,b)=>b.comissao-a.comissao);
+
+      lastBankLines = bankLines; lastSellerLines = sellerLines;
+
+      // preencher banco
+      let totalBankContratos=0, totalBankLiberado=0, totalBankComissao=0;
+      bankLines.forEach(b => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td data-label="Banco">${nomeBanco(b.bancoId)}</td><td data-label="Contratos">${b.contratos}</td><td data-label="Valor liberado">${dinheiro(b.liberado)}</td><td data-label="Comissão prevista">${dinheiro(b.comissao)}</td>`;
+        bankTbody.appendChild(tr);
+        totalBankContratos += b.contratos; totalBankLiberado += b.liberado; totalBankComissao += b.comissao;
+      });
+      const trTotalBank = document.createElement('tr'); trTotalBank.className='totals-row';
+      trTotalBank.innerHTML = `<td>Total</td><td>${totalBankContratos}</td><td>${dinheiro(totalBankLiberado)}</td><td>${dinheiro(totalBankComissao)}</td>`;
+      bankTfoot.appendChild(trTotalBank);
+
+      // preencher vendedor
+      let totalSellerContratos=0, totalSellerComissao=0, totalSellerLiberado=0;
+      sellerLines.forEach(s => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td data-label="Vendedor">${s.vendedorNome}</td><td data-label="Contratos">${s.contratos}</td><td data-label="Valor liberado">${dinheiro(s.liberado)}</td><td data-label="Comissão prevista">${dinheiro(s.comissao)}</td>`;
+        sellerTbody.appendChild(tr);
+        totalSellerContratos += s.contratos; totalSellerComissao += s.comissao; totalSellerLiberado += s.liberado;
+      });
+      const trTotalSeller = document.createElement('tr'); trTotalSeller.className='totals-row';
+      trTotalSeller.innerHTML = `<td>Total</td><td>${totalSellerContratos}</td><td>${dinheiro(totalSellerLiberado)}</td><td>${dinheiro(totalSellerComissao)}</td>`;
+      sellerTfoot.appendChild(trTotalSeller);
+
+      renderChartGeral(sellerLines);
+    }
+
+    function renderChartGeral(linhas) {
+      const ctx = document.getElementById('chartGeral').getContext('2d');
+      const labels = linhas.map(g => g.vendedorNome);
+      const dataVals = linhas.map(g => g.liberado);
+      if (chartInstance) chartInstance.destroy();
+      chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: { labels, datasets: [{ label: 'Valor liberado', data: dataVals, backgroundColor: '#1abc9c', borderRadius: 6 }] },
+        options: { responsive: true, plugins: { legend: { display: false }, tooltip: { callbacks: { label: (ctx) => ' ' + dinheiro(ctx.parsed.y) } } }, scales: { y: { ticks: { callback: (v) => dinheiro(v) } } } }
+      });
+    }
+
+    // Export CSV (detailed contracts CSV including Grupo and ValorRepasse formatted without 'R$')
+    function exportCSV() {
+      try {
+        const data = lastFilteredContracts.map(c => {
+          const typing = parseDate(c.data?.typing_date);
+          const payment = parseDate(c.data?.payment_date);
+          const percentual = (typeof c.data?.percentual !== 'undefined') ? c.data.percentual : (c.percentual ?? '');
+          const valorComissao = calcularComissaoPrevista(c);
+
+          const tabela = (c._meta && c._meta.tabela) || '';
+          const prazo = (c._meta && c._meta.prazo) || '';
+          const tipo = (c._meta && c._meta.tipo) || '';
+          const contrato = (c._meta && c._meta.contrato) || '';
+          const telefone = (c.client?.mobile ?? (c._meta && c._meta.contato)) || '';
+
+          // determine grupo name for CSV
+          const grupoNomeCSV = (obterGrupoIdDoContrato(c) ? nomeGrupo(obterGrupoIdDoContrato(c)) : '');
+
+          // calcular ValorRepasse (numérico) considerando grupo interno
+          const tipoContratoCSV = (tipo || '').toString().trim().toUpperCase();
+          let valorRepasseNum = 0;
+          if (!isGrupoInterno(grupoNomeCSV) && !isNaN(Number(valorComissao))) {
+            if (tipoContratoCSV === 'CONTRATO NOVO') valorRepasseNum = Number(valorComissao) * 0.5;
+            else valorRepasseNum = Number(valorComissao) * 0.4;
+          }
+          // formatar sem prefixo 'R$' (formato pt-BR)
+          const valorRepasseStr = valorRepasseNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+          return {
+            ID: c.id ?? '',
+            PropostaID: c.proposta_id ?? '',
+            Nome: c.client?.name ?? '',
+            CPF_CNPJ: c.client?.cpf_cnpj ?? '',
+            DataDigitacao: typing ? typing.toISOString().slice(0,10) : '',
+            DataPagamento: payment ? payment.toISOString().slice(0,10) : '',
+            ValorSolicitado: Number(c.data?.requested_amount ?? 0),
+            ValorLiberado: Number(c.data?.released_amount ?? 0),
+            Parcela: Number(c.data?.installment_amount ?? 0),
+            Banco: nomeBanco(c.data?.bank_id),
+            Vendedor: nomeVendedor(c.vendedor_id),
+            Convenio: nomeConvenio(c.data?.agreement_id),
+            PercentualComissao: percentual,
+            ValorComissao: Number(valorComissao),
+            Status: c.data?.status ?? '',
+            Tabela: tabela,
+            Prazo: prazo,
+            Tipo: tipo,
+            Contrato: contrato,
+            Telefone: telefone,
+            Grupo: (grupoNomeCSV || ''),
+            ValorRepasse: valorRepasseStr
+          };
+        });
+
+        if (!data.length) { alert('Nenhum contrato para exportar.'); return; }
+
+        const headers = Object.keys(data[0]);
+        const csvRows = [headers.join(';')];
+        data.forEach(row => {
+          const vals = headers.map(h => {
+            const v = row[h];
+            return String(v ?? '').replace(/;/g, ',');
+          });
+          csvRows.push(vals.join(';'));
+        });
+
+        const csv = csvRows.join('\n');
+        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'relatorio-geral-contratos.csv'; a.click(); URL.revokeObjectURL(url);
+      } catch (err) { console.error('Erro exportCSV:', err); alert('Erro ao exportar CSV: ' + (err?.message || err)); }
+    }
+
+    // Export Excel with detailed "Contratos" sheet (includes ValorRepasse formatted without 'R$')
+    function exportExcel() {
+      try {
+        const XLSX = window.XLSX;
+        if (!XLSX) { alert('Biblioteca XLSX não encontrada.'); console.error('XLSX não disponível'); return; }
+
+        const contratosSheetData = lastFilteredContracts.map(c => {
+          const typing = parseDate(c.data?.typing_date);
+          const payment = parseDate(c.data?.payment_date);
+          const percentual = (typeof c.data?.percentual !== 'undefined') ? c.data.percentual : (c.percentual ?? '');
+          const valorComissao = calcularComissaoPrevista(c);
+
+          const tabela = (c._meta && c._meta.tabela) || '';
+          const prazo = (c._meta && c._meta.prazo) || '';
+          const tipo = (c._meta && c._meta.tipo) || '';
+          const contrato = (c._meta && c._meta.contrato) || '';
+          const telefone = (c.client?.mobile ?? (c._meta && c._meta.contato)) || '';
+
+          // determine grupo name
+          const grupoId = obterGrupoIdDoContrato(c);
+          const grupoNome = grupoId ? nomeGrupo(grupoId) : '';
+
+          // calcular ValorRepasse (numérico) considerando grupo interno
+          const tipoContrato = (tipo || '').toString().trim().toUpperCase();
+          let valorRepasseNum = 0;
+          if (!isGrupoInterno(grupoNome) && !isNaN(Number(valorComissao))) {
+            if (tipoContrato === 'CONTRATO NOVO') valorRepasseNum = Number(valorComissao) * 0.5;
+            else valorRepasseNum = Number(valorComissao) * 0.4;
+          }
+          // formatar sem prefixo 'R$' (formato pt-BR)
+          const valorRepasseStr = valorRepasseNum.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+
+          return {
+            ID: c.id ?? '',
+            PropostaID: c.proposta_id ?? '',
+            Nome: c.client?.name ?? '',
+            CPF_CNPJ: c.client?.cpf_cnpj ?? '',
+            DataDigitacao: typing ? typing.toISOString().slice(0,10) : '',
+            DataPagamento: payment ? payment.toISOString().slice(0,10) : '',
+            ValorSolicitado: Number(c.data?.requested_amount ?? 0),
+            ValorLiberado: Number(c.data?.released_amount ?? 0),
+            Parcela: Number(c.data?.installment_amount ?? 0),
+            Banco: nomeBanco(c.data?.bank_id),
+            Vendedor: nomeVendedor(c.vendedor_id),
+            Convenio: nomeConvenio(c.data?.agreement_id),
+            PercentualComissao: percentual,
+            ValorComissao: Number(valorComissao),
+            Status: c.data?.status ?? '',
+            Tabela: tabela,
+            Prazo: prazo,
+            Tipo: tipo,
+            Contrato: contrato,
+            Telefone: telefone,
+            Grupo: grupoNome,
+            ValorRepasse: valorRepasseStr
+          };
+        });
+
+        const bankData = lastBankLines.map(b => ({ Banco: nomeBanco(b.bancoId), Contratos: b.contratos, ValorLiberado: Number(b.liberado||0), ComissaoPrevista: Number(b.comissao||0) }));
+        const sellerData = lastSellerLines.map(s => ({ Vendedor: s.vendedorNome, Contratos: s.contratos, ValorLiberado: Number(s.liberado||0), ComissaoPrevista: Number(s.comissao||0) }));
+
+        const wb = XLSX.utils.book_new();
+
+        const contratosHeaders = [
+          "ID","PropostaID","Nome","CPF_CNPJ","DataDigitacao","DataPagamento",
+          "ValorSolicitado","ValorLiberado","Parcela","Banco","Vendedor","Convenio",
+          "PercentualComissao","ValorComissao","Status","Tabela","Prazo","Tipo","Contrato","Telefone","Grupo","ValorRepasse"
+        ];
+
+        const wsContratos = XLSX.utils.json_to_sheet(contratosSheetData, { header: contratosHeaders });
+        XLSX.utils.book_append_sheet(wb, wsContratos, "Contratos");
+
+        const wsBank = XLSX.utils.json_to_sheet(bankData, { header: ["Banco","Contratos","ValorLiberado","ComissaoPrevista"] });
+        XLSX.utils.book_append_sheet(wb, wsBank, "Por Banco");
+
+        const wsSeller = XLSX.utils.json_to_sheet(sellerData, { header: ["Vendedor","Contratos","ValorLiberado","ComissaoPrevista"] });
+        XLSX.utils.book_append_sheet(wb, wsSeller, "Por Vendedor");
+
+        const wbout = XLSX.write(wb, { bookType:'xlsx', type:'array' });
+        const blob = new Blob([wbout], { type:'application/octet-stream' });
+        const url = URL.createObjectURL(blob); const a = document.createElement('a'); a.href = url; a.download = 'relatorio-geral.xlsx'; a.click(); URL.revokeObjectURL(url);
+      } catch (err) { console.error('Erro exportExcel:', err); alert('Erro ao exportar Excel: ' + (err?.message || err)); }
+    }
+
+    // Expose and wire buttons
+    window.renderReport = renderReport; window.exportCSV = exportCSV; window.exportExcel = exportExcel;
+    document.getElementById('btnRender').addEventListener('click', () => renderReport());
+    document.getElementById('btnCSV').addEventListener('click', () => exportCSV());
+    document.getElementById('btnXLS').addEventListener('click', () => exportExcel());
+
+    // auto re-render on filter change (added fGrupo)
+    ['fStart','fEnd','fDateType','fBank','fConvenio','fSeller','fStatus','fGrupo'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.addEventListener('change', renderReport);
+    });
+
+    // init
+    carregarContratos();
+  </script>
+</body>
+</html>

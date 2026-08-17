@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Grupos de vendedores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    /* Cabeçalho com logo */
+    header {
+      background: #2c3e50;
+      text-align: center;
+      padding: 10px;
+    }
+    header img.logo {
+      height: 60px;
+      opacity: 0;
+      transform: scale(0.5);
+      animation: logoFade 1.2s ease-out forwards;
+    }
+    @keyframes logoFade { to { opacity: 1; transform: scale(1); } }
+
+    /* Menu horizontal com submenus */
+    nav { background: #34495e; font-size: 14px; }
+    nav ul {
+      list-style: none; margin: 0; padding: 0 10px;
+      display: flex; gap: 20px; align-items: center; flex-wrap: wrap;
+    }
+    nav ul > li { position: relative; }
+    nav a { display: block; color: #ecf0f1; text-decoration: none; padding: 12px 10px; }
+    nav ul > li:hover > a { color: #1abc9c; background: #3d566e; border-radius: 6px; }
+    nav ul li ul {
+      position: absolute; top: 100%; left: 0; background: #3d566e;
+      min-width: 220px; display: none; flex-direction: column; padding: 8px 0;
+      border-radius: 6px; box-shadow: 0 2px 6px rgba(0,0,0,0.15); z-index: 10;
+    }
+    nav ul li:hover ul { display: flex; }
+    nav ul li ul li a { padding: 10px 14px; color: #ecf0f1; font-size: 14px; white-space: nowrap; }
+    nav ul li ul li a:hover { background: #435d78; color: #1abc9c; }
+
+    /* Conteúdo e cards */
+    main { padding: 30px 20px; }
+    main h2 { font-size: 20px; margin-bottom: 20px; color: #2c3e50; }
+
+    .card {
+      background: #fff; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      padding: 20px; margin-bottom: 24px;
+    }
+    .card h3 {
+      font-size: 16px; color: #2c3e50; margin-bottom: 12px;
+      border-bottom: 1px solid #eee; padding-bottom: 6px;
+    }
+
+    /* Formulário */
+    .form-row { margin-bottom: 12px; }
+    .form-row label {
+      display: block; font-size: 13px; color: #34495e; margin-bottom: 4px;
+    }
+    .form-row input, .form-row select {
+      width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px; background: #fff;
+    }
+
+    .grid-2 {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px;
+    }
+
+    /* Botões */
+    .actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+    .btn-primary {
+      background: #3498db; color: #fff; border: none; padding: 12px 20px;
+      font-size: 14px; border-radius: 6px; cursor: pointer;
+    }
+    .btn-primary:hover { background: #2980b9; }
+    .btn-secondary {
+      background: #bdc3c7; color: #2c3e50; border: none; padding: 12px 20px;
+      font-size: 14px; border-radius: 6px; cursor: pointer;
+    }
+    .btn-secondary:hover { background: #aeb6bf; }
+    .btn-small {
+      background: #ecf0f1; color: #2c3e50; border: none; padding: 8px 12px;
+      font-size: 13px; border-radius: 6px; cursor: pointer;
+    }
+    .btn-small:hover { background: #d5d8dc; }
+
+    /* Tabela e busca */
+    .table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .table th, .table td { border: 1px solid #eee; padding: 10px; text-align: left; vertical-align: middle; }
+    .table thead th { background: #f7f8f9; color: #2c3e50; font-weight: 600; }
+
+    .list-actions {
+      display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 10px;
+    }
+    .search-input {
+      width: 280px; max-width: 100%;
+      padding: 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Grupos de vendedores</h2>
+
+    <section class="grid-2">
+      <!-- Formulário -->
+      <form id="groupForm" class="card">
+        <h3>Cadastrar grupo</h3>
+        <div class="grid-2">
+          <div class="form-row"><label>Nome*</label><input id="gName" required /></div>
+          <div class="form-row">
+            <label>Status</label>
+            <select id="gStatus">
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn-primary">Cadastrar</button>
+          <button type="button" class="btn-secondary" onclick="document.getElementById('groupForm').reset()">Limpar</button>
+        </div>
+      </form>
+
+      <!-- Lista -->
+      <div class="card">
+        <h3>Lista de grupos</h3>
+        <div class="list-actions">
+          <input type="text" id="gSearch" class="search-input" placeholder="Procurar por nome..." />
+          <button class="btn-small" type="button" onclick="exportCSV()">Exportar CSV</button>
+        </div>
+        <table class="table" id="gTable">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Status</th>
+              <th style="width:120px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    const tbody = document.querySelector('#gTable tbody');
+
+    async function carregarGrupos() {
+      const q = (document.getElementById('gSearch').value || '').toLowerCase();
+      const { data, error } = await supabase.from("grupos").select("*").order("id", { ascending: true });
+      if (error) {
+        alert("Erro ao carregar grupos: " + error.message);
+        return;
+      }
+      tbody.innerHTML = "";
+      (data || [])
+        .filter(g => !q || (g.nome || '').toLowerCase().includes(q))
+        .forEach(g => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${g.nome || '-'}</td>
+            <td>${g.status}</td>
+            <td>
+              <button class="btn-small" onclick="editar(${g.id})">Editar</button>
+              <button class="btn-small" onclick="excluir(${g.id})">Excluir</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+    }
+
+    document.getElementById("groupForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const nome = document.getElementById("gName").value.trim();
+      const status = document.getElementById("gStatus").value;
+      if (!nome) {
+        alert("Informe o nome do grupo.");
+        return;
+      }
+      const { error } = await supabase.from("grupos").insert([{ nome, status }]);
+      if (error) alert("Erro ao salvar: " + error.message);
+      else {
+        alert("Grupo cadastrado com sucesso!");
+        e.target.reset();
+        carregarGrupos();
+      }
+    });
+
+    window.excluir = async (id) => {
+      if (!confirm("Confirmar exclusão deste grupo?")) return;
+      const { error } = await supabase.from("grupos").delete().eq("id", id);
+      if (error) alert("Erro ao excluir: " + error.message);
+      else {
+        alert("Grupo excluído!");
+        carregarGrupos();
+      }
+    };
+
+    window.editar = async (id) => {
+      const { data } = await supabase.from("grupos").select("*").eq("id", id).single();
+      if (data) {
+        document.getElementById("gName").value = data.nome;
+        document.getElementById("gStatus").value = data.status;
+        document.getElementById("groupForm").onsubmit = async (e) => {
+          e.preventDefault();
+          const nome = document.getElementById("gName").value.trim();
+          const status = document.getElementById("gStatus").value;
+          const { error } = await supabase.from("grupos").update({ nome, status }).eq("id", id);
+          if (error) alert("Erro ao atualizar: " + error.message);
+          else {
+            alert("Grupo atualizado!");
+            carregarGrupos();
+            e.target.reset();
+            document.getElementById("groupForm").onsubmit = null;
+          }
+        };
+      }
+    };
+
+    document.getElementById("gSearch").addEventListener("input", carregarGrupos);
+
+    function exportCSV() {
+      const header = ['Nome','Status'];
+      const rows = [...tbody.querySelectorAll("tr")].map(tr => {
+        const tds = tr.querySelectorAll("td");
+        return [tds[0].innerText, tds[1].innerText];
+      });
+      const csv = [header.join(';'), ...rows.map(r => r.join(';'))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'grupos.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    carregarGrupos();
+  </script>
+</body>
+</html>

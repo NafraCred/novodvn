@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Detalhe do contrato</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+</head>
+<body>
+  <div class="layout">
+    <div class="sidebar">
+      <div class="brand">DVN Soluções</div>
+      <a href="../dashboard.html">Dashboard</a>
+      <a class="active" href="./contrato-detalhe.html">Operacional</a>
+      <a href="../financeiro/despesas.html">Financeiro</a>
+      <a href="../cadastros/bancos.html">Cadastros</a>
+      <a href="../relatorios/geral.html">Relatórios</a>
+    </div>
+
+    <main class="content">
+      <h2>Detalhe do contrato</h2>
+      <div id="contractCard" class="card">
+        <!-- Dados renderizados via JS -->
+      </div>
+    </main>
+  </div>
+
+  <script src="../assets/core.js"></script>
+  <script>
+    guard();
+    const contracts = store('proposals') || [];
+    const banks = store('banks') || [];
+    const agreements = store('agreements') || [];
+    const productTables = store('product_tables') || [];
+    const commissions = store('commissions') || [];
+
+    // Recupera ID do contrato via query string (?id=123)
+    const params = new URLSearchParams(window.location.search);
+    const contractId = parseInt(params.get('id'), 10);
+    const contract = contracts.find(c => c.id === contractId);
+
+    function renderContract() {
+      if (!contract) {
+        document.getElementById('contractCard').innerHTML = "<p>Contrato não encontrado.</p>";
+        return;
+      }
+
+      const bankName = (banks.find(b => b.id === contract.data.bank_id) || {}).name || '-';
+      const agName = (agreements.find(a => a.id === contract.data.agreement_id) || {}).name || '-';
+      const tableName = (productTables.find(t => t.id === contract.data.product_table_id) || {}).name || '-';
+
+      // calcular comissão prevista
+      const typingDate = new Date(contract.data.typing_date);
+      const comm = commissions.find(cm => {
+        if (String(cm.bank_id) !== String(contract.data.bank_id)) return false;
+        if (String(cm.product_table_id) !== String(contract.data.product_table_id)) return false;
+        const s = new Date(cm.start_valid);
+        const e = cm.end_valid ? new Date(cm.end_valid) : null;
+        return typingDate >= s && (!e || typingDate <= e);
+      });
+      const base = contract.data.released_amount || contract.data.requested_amount;
+      let expectedCommission = 0;
+      if (comm) {
+        expectedCommission = comm.commission_type === 'percent'
+          ? base * (Number(comm.percent || 0) / 100)
+          : Number(comm.fixed_amount || 0);
+      }
+
+      document.getElementById('contractCard').innerHTML = `
+        <h3>Cliente</h3>
+        <p><strong>Nome:</strong> ${contract.client.name}</p>
+        <p><strong>CPF/CNPJ:</strong> ${contract.client.cpf_cnpj}</p>
+        <p><strong>Celular:</strong> ${contract.client.mobile}</p>
+        <p><strong>E-mail:</strong> ${contract.client.email || '-'}</p>
+
+        <h3>Convênio</h3>
+        <p><strong>Convênio:</strong> ${agName}</p>
+        <p><strong>Matrícula:</strong> ${contract.client_agreement.registration_number || '-'}</p>
+        <p><strong>Espécie:</strong> ${contract.client_agreement.species || '-'}</p>
+        <p><strong>Cartão magnético:</strong> ${contract.client_agreement.receives_card ? 'Sim' : 'Não'}</p>
+
+        <h3>Dados bancários</h3>
+        <p><strong>Banco:</strong> ${(banks.find(b => b.id === contract.client_bank.bank_id) || {}).name || '-'}</p>
+        <p><strong>Agência:</strong> ${contract.client_bank.agency || '-'}</p>
+        <p><strong>Conta:</strong> ${contract.client_bank.account || '-'}</p>
+
+        <h3>Dados do contrato</h3>
+        <p><strong>Banco:</strong> ${bankName}</p>
+        <p><strong>Convênio:</strong> ${agName}</p>
+        <p><strong>Tabela:</strong> ${tableName}</p>
+        <p><strong>Tipo de contrato:</strong> ${contract.data.contract_type_id}</p>
+        <p><strong>Valor solicitado:</strong> R$ ${contract.data.requested_amount.toFixed(2)}</p>
+        <p><strong>Valor liberado:</strong> R$ ${contract.data.released_amount.toFixed(2)}</p>
+        <p><strong>Parcela:</strong> R$ ${contract.data.installment_amount.toFixed(2)}</p>
+        <p><strong>Prazo:</strong> ${contract.data.term} meses</p>
+        <p><strong>Fator:</strong> ${contract.data.factor}</p>
+        <p><strong>Data digitação:</strong> ${contract.data.typing_date}</p>
+        <p><strong>Nº Proposta/ADE:</strong> ${contract.data.proposal_number || '-'}</p>
+        <p><strong>Nº Contrato:</strong> ${contract.data.contract_number || '-'}</p>
+        <p><strong>Correspondente:</strong> ${contract.data.correspondent || '-'}</p>
+        <p><strong>Status atual:</strong> ${contract.data.status}</p>
+        <div class="form-row">
+          <label>Alterar status:</label>
+          <select id="newStatus" onchange="updateStatus(this.value)">
+            <option ${contract.data.status==='Nova Solicitação'?'selected':''}>Nova Solicitação</option>
+            <option ${contract.data.status==='Pendente Promotora'?'selected':''}>Pendente Promotora</option>
+            <option ${contract.data.status==='Pendente Parceiro'?'selected':''}>Pendente Parceiro</option>
+            <option ${contract.data.status==='Cancelado'?'selected':''}>Cancelado</option>
+            <option ${contract.data.status==='Pago'?'selected':''}>Pago</option>
+          </select>
+        </div>
+
+        <h3>Comissão</h3>
+        <p><strong>Comissão prevista:</strong> R$ ${expectedCommission.toFixed(2)}</p>
+      `;
+    }
+
+    function updateStatus(newStatus) {
+      const user = getUser()?.name || 'Sistema';
+      const oldStatus = contract.data.status;
+      contract.data.status = newStatus;
+      store('proposals', contracts);
+
+      // registrar auditoria
+      const audits = store('audits') || [];
+      audits.push({
+        id: Date.now(),
+        date: new Date().toLocaleString(),
+        user,
+        action: 'Alteração de status',
+        details: `Contrato ${contract.data.contract_number || contract.id} alterado de "${oldStatus}" para "${newStatus}"`
+      });
+      store('audits', audits);
+
+      renderContract();
+    }
+
+    renderContract();
+  </script>
+</body>
+</html>

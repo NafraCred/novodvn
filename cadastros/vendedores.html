@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Vendedores</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:20px; margin-bottom:20px; color:#2c3e50; }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:24px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:16px; }
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .btn-primary { background:#3498db; color:#fff; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#2980b9; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .list-actions { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px; }
+    .search-input { width:280px; max-width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Cadastro de vendedores</h2>
+
+    <section class="grid-2">
+      <!-- Formulário -->
+      <form id="sellerForm" class="card">
+        <h3>Cadastrar vendedor</h3>
+        <div class="grid-2">
+          <div class="form-row"><label>Código*</label><input id="sCode" required /></div>
+          <div class="form-row"><label>Nome*</label><input id="sName" required /></div>
+          <div class="form-row"><label>CPF/CNPJ*</label><input id="sCpfCnpj" required /></div>
+          <div class="form-row"><label>E-mail</label><input id="sEmail" type="email" /></div>
+          <div class="form-row"><label>Celular*</label><input id="sMobile" required /></div>
+          <div class="form-row">
+            <label>Grupo</label>
+            <select id="sGroup"></select>
+          </div>
+        </div>
+        <div class="actions">
+          <button type="submit" class="btn-primary">Cadastrar</button>
+          <button type="reset" class="btn-secondary">Limpar</button>
+        </div>
+      </form>
+
+      <!-- Lista -->
+      <div class="card">
+        <h3>Lista de vendedores</h3>
+        <div class="list-actions">
+          <input type="text" id="sSearch" class="search-input" placeholder="Procurar por nome, código ou CPF/CNPJ..." />
+          <button class="btn-small" type="button" id="btnExport">Exportar CSV</button>
+        </div>
+        <table class="table" id="sTable">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Nome</th>
+              <th>CPF/CNPJ</th>
+              <th>Grupo</th>
+              <th style="width:120px;">Ações</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    const form = document.getElementById('sellerForm');
+    const tbody = document.querySelector('#sTable tbody');
+    const sGroup = document.getElementById('sGroup');
+    const searchInput = document.getElementById('sSearch');
+    const exportBtn = document.getElementById('btnExport');
+
+    let editId = null;
+    let gruposCache = [];
+
+    async function carregarGrupos() {
+      const { data, error } = await supabase.from("grupos").select("id, nome").order("nome", { ascending: true });
+      if (error) { alert("Erro ao carregar grupos: " + error.message); return; }
+      gruposCache = data || [];
+      sGroup.innerHTML = '<option value="">Selecione</option>' + gruposCache.map(g => `<option value="${g.id}">${g.nome}</option>`).join('');
+    }
+
+    async function carregarVendedores() {
+      const q = (searchInput.value || '').toLowerCase();
+      const { data, error } = await supabase
+        .from("vendedores")
+        .select("*")
+        .order("id", { ascending: true });
+      if (error) { alert("Erro ao carregar vendedores: " + error.message); return; }
+
+      tbody.innerHTML = "";
+      (data || [])
+        .filter(s =>
+          !q ||
+          (s.nome || '').toLowerCase().includes(q) ||
+          (s.codigo || '').toLowerCase().includes(q) ||
+          (s.cpf_cnpj || '').toLowerCase().includes(q)
+        )
+        .forEach(s => {
+          const grupo = gruposCache.find(g => g.id === s.grupo_id);
+          const grupoNome = grupo ? grupo.nome : '-';
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${s.codigo || '-'}</td>
+            <td>${s.nome || '-'}</td>
+            <td>${s.cpf_cnpj || '-'}</td>
+            <td>${grupoNome}</td>
+            <td>
+              <button class="btn-small" data-edit="${s.id}">Editar</button>
+              <button class="btn-small" data-del="${s.id}">Excluir</button>
+            </td>`;
+          tbody.appendChild(tr);
+        });
+    }
+
+    async function inserirVendedor(payload) {
+      const { error } = await supabase.from("vendedores").insert([payload]);
+      if (error) throw error;
+    }
+    async function atualizarVendedor(id, payload) {
+      const { error } = await supabase.from("vendedores").update(payload).eq("id", id);
+      if (error) throw error;
+    }
+    async function excluirVendedor(id) {
+      const { error } = await supabase.from("vendedores").delete().eq("id", id);
+      if (error) throw error;
+    }
+    async function obterVendedor(id) {
+      const { data, error } = await supabase.from("vendedores").select("*").eq("id", id).single();
+      if (error) throw error;
+      return data;
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        codigo: document.getElementById('sCode').value.trim(),
+        nome: document.getElementById('sName').value.trim(),
+        cpf_cnpj: document.getElementById('sCpfCnpj').value.trim(),
+        email: document.getElementById('sEmail').value.trim() || null,
+        celular: document.getElementById('sMobile').value.trim(),
+        grupo_id: sGroup.value ? parseInt(sGroup.value, 10) : null
+      };
+
+      if (!payload.codigo || !payload.nome || !payload.cpf_cnpj || !payload.celular) {
+        alert('Preencha os campos obrigatórios: Código, Nome, CPF/CNPJ e Celular.');
+        return;
+      }
+
+      try {
+        if (editId) {
+          await atualizarVendedor(editId, payload);
+          alert('Vendedor atualizado!');
+          editId = null;
+        } else {
+          await inserirVendedor(payload);
+          alert('Vendedor cadastrado com sucesso!');
+        }
+        form.reset();
+        sGroup.value = "";
+        await carregarVendedores();
+      } catch (err) {
+        alert("Erro ao salvar: " + (err?.message || err));
+      }
+    });
+
+    tbody.addEventListener('click', async (e) => {
+      const editBtn = e.target.closest('[data-edit]');
+      const delBtn = e.target.closest('[data-del]');
+
+      if (editBtn) {
+        const id = parseInt(editBtn.getAttribute('data-edit'), 10);
+        try {
+          const s = await obterVendedor(id);
+          document.getElementById('sCode').value = s.codigo || '';
+          document.getElementById('sName').value = s.nome || '';
+          document.getElementById('sCpfCnpj').value = s.cpf_cnpj || '';
+          document.getElementById('sEmail').value = s.email || '';
+          document.getElementById('sMobile').value = s.celular || '';
+          sGroup.value = s.grupo_id || "";
+          editId = id;
+        } catch (err) {
+          alert("Erro ao carregar vendedor: " + (err?.message || err));
+        }
+      }
+
+      if (delBtn) {
+        const id = parseInt(delBtn.getAttribute('data-del'), 10);
+        if (!confirm('Confirmar exclusão deste vendedor?')) return;
+        try {
+          await excluirVendedor(id);
+          alert('Vendedor excluído!');
+          await carregarVendedores();
+        } catch (err) {
+          alert("Erro ao excluir: " + (err?.message || err));
+        }
+      }
+    });
+
+    searchInput.addEventListener('input', carregarVendedores);
+
+    exportBtn.addEventListener('click', () => {
+      const header = ['Código','Nome','CPF/CNPJ','Grupo'];
+      const rows = [...tbody.querySelectorAll("tr")].map(tr => {
+        const tds = tr.querySelectorAll("td");
+        return [tds[0].innerText, tds[1].innerText, tds[2].innerText, tds[3].innerText];
+      });
+      const csv = [header.join(';'), ...rows.map(r => r.map(c => String(c).replace(/;/g, ',')).join(';'))].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'vendedores.csv'; a.click();
+      URL.revokeObjectURL(url);
+    });
+
+    // Inicialização
+    await carregarGrupos();
+    await carregarVendedores();
+  </script>
+</body>
+</html>

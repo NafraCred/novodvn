@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Usuários de Bancos e Promotoras</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul {
+      list-style:none; margin:0; padding:0 10px;
+      display:flex; gap:20px; align-items:center; flex-wrap:wrap;
+    }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul {
+      position:absolute; top:100%; left:0; background:#3d566e;
+      min-width:220px; display:none; flex-direction:column; padding:8px 0;
+      border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10;
+    }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:20px; margin-bottom:20px; color:#2c3e50; }
+    .card {
+      background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08);
+      padding:20px; margin-bottom:24px;
+    }
+    .card h3 {
+      font-size:16px; color:#2c3e50; margin-bottom:12px;
+      border-bottom:1px solid #eee; padding-bottom:6px;
+    }
+
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select {
+      width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff;
+    }
+    .grid-2 {
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px;
+    }
+
+    .actions { display:flex; gap:12px; flex-wrap:wrap; margin-top:10px; }
+    .btn-primary {
+      background:#3498db; color:#fff; border:none; padding:12px 20px;
+      font-size:14px; border-radius:6px; cursor:pointer;
+    }
+    .btn-primary:hover { background:#2980b9; }
+    .btn-secondary {
+      background:#bdc3c7; color:#2c3e50; border:none; padding:12px 20px;
+      font-size:14px; border-radius:6px; cursor:pointer;
+    }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .btn-small {
+      background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px;
+      font-size:13px; border-radius:6px; cursor:pointer;
+    }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+
+    .list-actions {
+      display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:10px;
+    }
+    .search-input {
+      width:280px; max-width:100%;
+      padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px;
+    }
+
+    .empty { text-align:center; color:#7f8c8d; padding:16px; display:none; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Usuários de Bancos e Promotoras</h2>
+
+    <div class="card">
+      <h3>Cadastrar / Editar vínculo</h3>
+      <form id="userForm" class="grid-2">
+        <input type="hidden" id="editId" />
+        <div class="form-row">
+          <label>Promotora</label>
+          <select id="promotora" required></select>
+        </div>
+        <div class="form-row">
+          <label>Banco</label>
+          <select id="banco">
+            <option value="">Nenhum</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Link do banco</label>
+          <input type="url" id="linkBanco" required placeholder="https://..." />
+        </div>
+        <div class="form-row">
+          <label>Usuário</label>
+          <input type="text" id="usuario" required />
+        </div>
+        <div class="form-row">
+          <label>Senha</label>
+          <input type="text" id="senha" required />
+        </div>
+      </form>
+      <div class="actions">
+        <button class="btn-primary" id="btnSalvar">Salvar</button>
+        <button class="btn-secondary" id="btnCancelar">Cancelar edição</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Vínculos cadastrados</h3>
+      <div class="list-actions">
+        <input type="text" id="uSearch" class="search-input" placeholder="Procurar por promotora, banco ou usuário..." />
+        <button class="btn-small" id="btnExport">Exportar CSV</button>
+      </div>
+      <table class="table" id="usersTable">
+        <thead>
+          <tr>
+            <th>Promotora</th>
+            <th>Banco</th>
+            <th>Link</th>
+            <th>Usuário</th>
+            <th>Senha</th>
+            <th style="width:140px;">Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="emptyMsg" class="empty">Nenhum vínculo cadastrado.</div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    const tbody = document.querySelector('#usersTable tbody');
+    const btnSalvar = document.getElementById('btnSalvar');
+    const btnCancelar = document.getElementById('btnCancelar');
+    const btnExport = document.getElementById('btnExport');
+    const searchInput = document.getElementById('uSearch');
+    const emptyMsg = document.getElementById('emptyMsg');
+
+    let rowsCache = [];
+
+    function aplicarPrivilegios() {
+      const categoria = (sessionStorage.getItem('userCategoria') || '').toLowerCase();
+      if (!categoria) return;
+
+      if (categoria === 'gestor') {
+        document.querySelectorAll('nav ul li ul li a[href*="comissoes"]').forEach(el => el.style.display = "none");
+      } else if (categoria === 'vendedor') {
+        document.querySelectorAll('nav > ul > li').forEach(li => {
+          const link = li.querySelector('a'); if (!link) return;
+          const texto = link.textContent.trim().toLowerCase();
+          if (texto !== "operacional") li.style.display = "none";
+        });
+        if (location.pathname.includes("/admin/")) {
+          window.location.href = "../operacional/contratos.html";
+        }
+      }
+    }
+
+    async function carregarPromotoras() {
+      const { data, error } = await supabase
+        .from("promotoras")
+        .select("id, promotora")
+        .order("promotora", { ascending: true });
+      if (error) { console.error("Erro promotoras:", error.message); return; }
+      const sel = document.getElementById("promotora");
+      sel.innerHTML = '<option value="">-- selecione --</option>';
+      (data || []).forEach(p => sel.innerHTML += `<option value="${p.id}">${p.promotora}</option>`);
+    }
+
+    async function carregarBancos() {
+      const { data, error } = await supabase
+        .from("bancos")
+        .select("id, name, identified_name")
+        .order("name", { ascending: true });
+      if (error) { console.error("Erro bancos:", error.message); return; }
+      const sel = document.getElementById("banco");
+      sel.innerHTML = '<option value="">Nenhum</option>';
+      (data || []).forEach(b => {
+        const display = b.name || b.identified_name || `Banco ${b.id}`;
+        sel.innerHTML += `<option value="${b.id}">${display}</option>`;
+      });
+    }
+
+    async function carregarVinculos() {
+      const { data, error } = await supabase
+        .from("usuarios_bancos_promotoras")
+        .select(`
+          id, usuario, senha, linkbanco, promotora_id, banco_id,
+          promotoras:promotora_id (promotora),
+          bancos:banco_id (name, identified_name)
+        `)
+        .order("id", { ascending: false });
+      if (error) { console.error("Erro vínculos:", error.message); return; }
+      rowsCache = data || [];
+      renderRows();
+    }
+
+    function renderRows() {
+      const q = (searchInput.value || '').toLowerCase();
+      const rows = rowsCache.filter(u =>
+        !q ||
+        (u.promotoras?.promotora || '').toLowerCase().includes(q) ||
+        ((u.bancos?.name || u.bancos?.identified_name || '').toLowerCase().includes(q)) ||
+        (u.usuario || '').toLowerCase().includes(q)
+      );
+
+      tbody.innerHTML = '';
+      emptyMsg.style.display = rows.length ? 'none' : 'block';
+
+      rows.forEach(u => {
+        const bancoNome = u.banco_id
+          ? (u.bancos?.name || u.bancos?.identified_name || `Banco ${u.banco_id}`)
+          : 'Nenhum';
+        const promNome = u.promotoras?.promotora || '-';
+        const linkTxt = u.linkbanco || '';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${promNome}</td>
+          <td>${bancoNome}</td>
+          <td>${linkTxt ? `<a href="${linkTxt}" target="_blank" rel="noopener">Abrir</a>` : '-'}</td>
+          <td>${u.usuario || '-'}</td>
+          <td>${u.senha || '-'}</td>
+          <td>
+            <button class="btn-small" data-id="${u.id}" data-action="edit">Editar</button>
+            <button class="btn-small" data-id="${u.id}" data-action="delete">Excluir</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function salvar() {
+      const id = document.getElementById('editId').value;
+      const promotora_id = document.getElementById('promotora').value;
+      const banco_id = document.getElementById('banco').value; // opcional
+      const linkBancoInput = document.getElementById('linkBanco').value.trim();
+      const usuario = document.getElementById('usuario').value.trim();
+      const senha = document.getElementById('senha').value.trim();
+
+      // Banco NÃO é obrigatório
+      if (!promotora_id || !linkBancoInput || !usuario || !senha) {
+        alert('Preencha todos os campos.');
+        return;
+      }
+
+      const payload = {
+        promotora_id: Number(promotora_id),
+        linkbanco: linkBancoInput,
+        usuario,
+        senha
+      };
+      if (banco_id) {
+        payload.banco_id = Number(banco_id);
+      } else {
+        // se sua coluna aceitar NULL, pode enviar null; se não, omita
+        payload.banco_id = null;
+      }
+
+      if (id) {
+        const { error } = await supabase
+          .from("usuarios_bancos_promotoras")
+          .update(payload)
+          .eq("id", Number(id));
+        if (error) { alert("Erro ao atualizar: " + error.message); return; }
+      } else {
+        const { error } = await supabase
+          .from("usuarios_bancos_promotoras")
+          .insert(payload);
+        if (error) { alert("Erro ao cadastrar: " + error.message); return; }
+      }
+
+      resetForm();
+      await carregarVinculos();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function editar(id) {
+      const { data, error } = await supabase
+        .from("usuarios_bancos_promotoras")
+        .select("*")
+        .eq("id", Number(id))
+        .single();
+      if (error || !data) { alert("Erro ao carregar vínculo."); return; }
+
+      document.getElementById('promotora').value = String(data.promotora_id || '');
+      document.getElementById('banco').value = String(data.banco_id || '');
+      document.getElementById('linkBanco').value = data.linkbanco || '';
+      document.getElementById('usuario').value = data.usuario || '';
+      document.getElementById('senha').value = data.senha || '';
+      document.getElementById('editId').value = String(data.id);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    async function excluir(id) {
+      if (!confirm('Confirmar exclusão?')) return;
+      const { error } = await supabase
+        .from("usuarios_bancos_promotoras")
+        .delete()
+        .eq("id", Number(id));
+      if (error) { alert("Erro ao excluir: " + error.message); return; }
+      await carregarVinculos();
+    }
+
+    function resetForm() {
+      document.getElementById('userForm').reset();
+      document.getElementById('editId').value = '';
+    }
+
+    function exportCSV() {
+      let csv = "Promotora,Banco,Link,Usuário,Senha\n";
+      rowsCache.forEach(u => {
+        const prom = (u.promotoras?.promotora || '').replace(/"/g,'""');
+        const banco = (u.banco_id ? (u.bancos?.name || u.bancos?.identified_name || `Banco ${u.banco_id}`) : 'Nenhum').replace(/"/g,'""');
+        const link = (u.linkbanco || '').replace(/"/g,'""');
+        const user = (u.usuario || '').replace(/"/g,'""');
+        const pass = (u.senha || '').replace(/"/g,'""');
+        csv += `"${prom}","${banco}","${link}","${user}","${pass}"\n`;
+      });
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const linkEl = document.createElement("a");
+      linkEl.href = URL.createObjectURL(blob);
+      linkEl.download = "usuarios-bancos-promotoras.csv";
+      linkEl.click();
+      URL.revokeObjectURL(linkEl.href);
+    }
+
+    // Delegação de eventos para botões da tabela
+    tbody.addEventListener('click', async (e) => {
+      const btn = e.target.closest('button[data-action]');
+      if (!btn) return;
+      const id = btn.getAttribute('data-id');
+      const action = btn.getAttribute('data-action');
+      if (action === 'edit') await editar(id);
+      if (action === 'delete') await excluir(id);
+    });
+
+    // Eventos
+    btnSalvar.addEventListener('click', salvar);
+    btnCancelar.addEventListener('click', resetForm);
+    btnExport.addEventListener('click', exportCSV);
+    searchInput.addEventListener('input', renderRows);
+
+    // Inicialização
+    aplicarPrivilegios();
+    await carregarPromotoras();
+    await carregarBancos();
+    await carregarVinculos();
+  </script>
+</body>
+</html>
