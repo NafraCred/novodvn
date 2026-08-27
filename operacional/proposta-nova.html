@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Nova proposta</title>
+<script type="module">
+  import { protectRoute } from '../assets/protect-route.js';
+  protectRoute();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul > li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul > li:hover > a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+    main { padding:30px 20px; }
+    main h2 { font-size:22px; margin-bottom:20px; color:#2c3e50; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:20px; }
+    .form-actions { margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; }
+    .btn-primary { background:#1abc9c; color:#fff; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#16a085; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .currency { text-align:right; }
+    .hint { font-size:12px; color:#7f8c8d; margin-top:-6px; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="./proposta-nova.html">Proposta nova</a></li>
+          <li><a href="./cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="./contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Nova proposta</h2>
+
+    <form id="proposalForm">
+      <div class="card">
+        <h3>Informações do cliente</h3>
+        <div class="grid-2">
+          <div class="form-row"><label>CPF/CNPJ*</label><input id="pCpfCnpj" required maxlength="18" /></div>
+          <div class="form-row"><label>Nome*</label><input id="pName" required /></div>
+          <!-- removed required from birth date to make it optional and allow paste -->
+          <div class="form-row"><label>Data de nascimento</label><input type="date" id="pBirthDate" /></div>
+          <!-- removed required from RG to make it optional -->
+          <div class="form-row"><label>RG</label><input id="pRg" /></div>
+          <!-- removed required from RG emission to make it optional and allow paste -->
+          <div class="form-row"><label>Data de emissão</label><input type="date" id="pRgEmission" /></div>
+          <div class="form-row"><label>Órgão emissor</label><input id="pRgOrg" /></div>
+          <div class="form-row"><label>Nome da mãe</label><input id="pMotherName" /></div>
+          <div class="form-row"><label>Naturalidade</label><input id="pNaturalidade" /></div>
+          <div class="form-row">
+            <label>Sexo</label>
+            <select id="pSexo">
+              <option value="">Selecione</option>
+              <option value="M">Masculino</option>
+              <option value="F">Feminino</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Estado civil</label>
+            <select id="pEstadoCivil">
+              <option value="">Selecione</option>
+              <option>Solteiro</option>
+              <option>Casado</option>
+              <option>Divorciado</option>
+              <option>Viúvo</option>
+              <option>União estável</option>
+            </select>
+          </div>
+          <div class="form-row"><label>CEP*</label><input id="pCep" required onblur="buscarEndereco()" /></div>
+          <div class="form-row"><label>Número</label><input id="pNumero" /></div>
+          <div class="form-row"><label>Logradouro</label><input id="pLogradouro" /></div>
+          <div class="form-row"><label>Bairro</label><input id="pBairro" /></div>
+          <div class="form-row"><label>Cidade</label><input id="pCidade" /></div>
+          <div class="form-row"><label>UF</label><input id="pUf" /></div>
+          <div class="form-row"><label>Celular*</label><input id="pMobile" required /></div>
+          <div class="form-row"><label>E-mail</label><input id="pEmail" type="email" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Convênio do cliente</h3>
+        <div class="grid-2">
+          <div class="form-row"><label>Convênio*</label><select id="pAgreement"></select></div>
+          <div class="form-row"><label>Matrícula</label><input id="pRegistration" /></div>
+          <div class="form-row"><label>Espécie</label><input id="pSpecies" /></div>
+          <div class="form-row"><label>Senha</label><input id="pSenhaCliente" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Dados bancários</h3>
+        <div class="grid-2">
+          <div class="form-row">
+            <label>Tipo de conta</label>
+            <select id="pAccountType">
+              <option value="">Selecione</option>
+              <option value="Corrente">Corrente</option>
+              <option value="Poupança">Poupança</option>
+            </select>
+          </div>
+          <div class="form-row"><label>Banco</label><input id="pBankAccount" /></div>
+          <div class="form-row"><label>Agência</label><input id="pAgency" /></div>
+          <div class="form-row"><label>Conta</label><input id="pAccount" /></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Dados da proposta</h3>
+        <div class="grid-2">
+          <div class="form-row"><label>Banco*</label><select id="bankSelect"></select></div>
+          <div class="form-row"><label>Convênio*</label><select id="agreementSelect"></select></div>
+          <div class="form-row"><label>Tipo de contrato*</label><select id="contractType"></select></div>
+          <div class="form-row"><label>Promotora*</label><select id="promotoraSelect"></select></div>
+          <div class="form-row"><label>Tabela*</label><select id="tableSelect"></select></div>
+          <div class="form-row"><label>Prazo*</label><select id="prazoSelect"></select></div>
+          <div class="form-row"><label>Fator</label><input type="number" step="0.000001" id="factor" /></div>
+          <div class="form-row"><label>Comissão (%)</label><input type="number" step="0.01" id="commission" /></div>
+          <div class="form-row"><label>Parcela (R$)</label><input id="installmentAmount" class="currency" /></div>
+          <div class="form-row"><label>Valor liberado (R$)</label><input id="releasedAmount" class="currency" /></div>
+          <div class="form-row"><label>Valor solicitado (R$)*</label><input id="requestedAmount" class="currency" required /></div>
+          <div class="form-row"><label>Data de digitação*</label><input type="date" id="typingDate" required readonly /></div>
+          <div class="form-row"><label>Nº Proposta/ADE</label><input id="proposalNumber" /></div>
+          <div class="form-row"><label>Nº Contrato</label><input id="contractNumber" /></div>
+          <div class="form-row">
+            <label>Status</label>
+            <input id="statusDisplay" value="Nova Solicitação" readonly />
+            <div class="hint">O status é definido automaticamente.</div>
+          </div>
+          <div class="form-row">
+            <label for="pVendedor">Vendedor*</label>
+            <select id="pVendedor" required>
+              <option value="">Selecione</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>Grupo</label>
+            <div id="pGrupoNome">-</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button class="btn-primary" type="submit">Salvar</button>
+        <button class="btn-secondary" type="button" id="btnLimpar">Limpar</button>
+      </div>
+    </form>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    function getParam(name) { const url = new URL(window.location.href); return url.searchParams.get(name); }
+
+    function todayISO() {
+      const d = new Date(); const tzOffset = d.getTimezoneOffset() * 60000;
+      const local = new Date(d.getTime() - tzOffset);
+      return local.toISOString().split('T')[0];
+    }
+    document.getElementById('typingDate').value = todayISO();
+
+    async function buscarEndereco() {
+      const cep = (document.getElementById('pCep').value || '').replace(/\D/g, '');
+      if (cep.length !== 8) return;
+      try {
+        const res = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
+        const data = await res.json();
+        if (data && !data.erro) {
+          document.getElementById('pLogradouro').value = data.logradouro || '';
+          document.getElementById('pBairro').value = data.bairro || '';
+          document.getElementById('pCidade').value = data.localidade || '';
+          document.getElementById('pUf').value = data.uf || '';
+        }
+      } catch (e) { console.warn('Falha ao buscar CEP', e); }
+    }
+    window.buscarEndereco = buscarEndereco;
+
+    function formatCurrencyInput(el) {
+      el.addEventListener('input', () => {
+        let digits = (el.value || '').replace(/\D/g, '');
+        if (!digits) { el.value = ''; return; }
+        const num = parseInt(digits, 10) / 100;
+        el.value = num.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      });
+    }
+    function parseCurrency(el) {
+      const digits = (el.value || '').replace(/\D/g, '');
+      return digits ? (parseInt(digits, 10) / 100) : 0;
+    }
+    formatCurrencyInput(document.getElementById('installmentAmount'));
+    formatCurrencyInput(document.getElementById('releasedAmount'));
+    formatCurrencyInput(document.getElementById('requestedAmount'));
+
+    function calcValorLiberado() {
+      const parcela = parseCurrency(document.getElementById('installmentAmount'));
+      const fator = parseFloat(document.getElementById('factor').value || '0');
+      if (parcela > 0 && fator > 0) {
+        const valor = parcela / fator;
+        document.getElementById('releasedAmount').value = valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      }
+    }
+    document.getElementById('installmentAmount').addEventListener('input', calcValorLiberado);
+    document.getElementById('factor').addEventListener('input', calcValorLiberado);
+
+    function aplicarMascaraCpfCnpj(valor) {
+      valor = valor.replace(/\D/g, '');
+      if (valor.length <= 11) {
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      } else {
+        valor = valor.replace(/^(\d{2})(\d)/, "$1.$2");
+        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+        valor = valor.replace(/\.(\d{3})(\d)/, ".$1/$2");
+        valor = valor.replace(/(\d{4})(\d)/, "$1-$2");
+      }
+      return valor;
+    }
+    const cpfInput = document.getElementById('pCpfCnpj');
+    cpfInput.addEventListener('input', () => { cpfInput.value = aplicarMascaraCpfCnpj(cpfInput.value); });
+
+    function fillSelect(el, arr, label='name') {
+      el.innerHTML = '<option value="">Selecione</option>' +
+        (arr || []).map(a => `<option value="${a.id}">${a[label] ?? a.tipo ?? a.name}</option>`).join('');
+    }
+
+    async function carregarBases() {
+      try {
+        const [bRes, aRes, cRes] = await Promise.all([
+          supabase.from("bancos").select("id,name").order("name", { ascending: true }),
+          supabase.from("convenios").select("id,name").order("name", { ascending: true }),
+          supabase.from("tipos_contrato").select("id,name").order("name", { ascending: true })
+        ]);
+        if (bRes.error) throw new Error(bRes.error.message);
+        if (aRes.error) throw new Error(aRes.error.message);
+        if (cRes.error) throw new Error(cRes.error.message);
+
+        fillSelect(document.getElementById('pAgreement'), aRes.data || []);
+        fillSelect(document.getElementById('agreementSelect'), aRes.data || []);
+        fillSelect(document.getElementById('bankSelect'), bRes.data || []);
+        fillSelect(document.getElementById('contractType'), cRes.data || [], 'name');
+      } catch (err) {
+        console.error("Erro ao carregar bases:", err);
+        alert("Erro ao carregar bases: " + err.message);
+      }
+    }
+
+    async function updatePromotoras() {
+      const bankId = document.getElementById('bankSelect').value;
+      const agreementId = document.getElementById('agreementSelect').value;
+      const contractId = document.getElementById('contractType').value;
+      const promotoraSelect = document.getElementById('promotoraSelect');
+
+      promotoraSelect.innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('tableSelect').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('prazoSelect').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('factor').value = '';
+      document.getElementById('commission').value = '';
+      document.getElementById('releasedAmount').value = '';
+
+      if (!bankId || !agreementId || !contractId) return;
+
+      const { data, error } = await supabase
+        .from("tabelas_produto")
+        .select("promotoras:promotora_id (id, promotora)")
+        .eq("bank_id", bankId)
+        .eq("agreement_id", agreementId)
+        .eq("contract_id", contractId)
+        .eq("status", true);
+
+      if (error) { alert("Erro ao carregar promotoras: " + error.message); return; }
+
+      const uniquePromotoras = [];
+      (data || []).forEach(d => {
+        if (d.promotoras && !uniquePromotoras.find(p => p.id === d.promotoras.id)) {
+          uniquePromotoras.push(d.promotoras);
+        }
+      });
+
+      fillSelect(promotoraSelect, uniquePromotoras, 'promotora');
+      promotoraSelect.onchange = updateTables;
+    }
+
+    async function updateTables() {
+      const bankId = document.getElementById('bankSelect').value;
+      const agreementId = document.getElementById('agreementSelect').value;
+      const contractId = document.getElementById('contractType').value;
+      const promotoraId = document.getElementById('promotoraSelect').value;
+      const typingDateVal = document.getElementById('typingDate').value;
+      const typingDate = typingDateVal ? new Date(typingDateVal) : null;
+
+      const tableSelect = document.getElementById('tableSelect');
+      const prazoSelect = document.getElementById('prazoSelect');
+      tableSelect.innerHTML = '<option value="">Selecione</option>';
+      prazoSelect.innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('factor').value = '';
+      document.getElementById('commission').value = '';
+      document.getElementById('releasedAmount').value = '';
+
+      if (!bankId || !agreementId || !contractId || !promotoraId) return;
+
+      const { data, error } = await supabase
+        .from("tabelas_produto")
+        .select(`
+          id, table_name, start_date, status,
+          prazos:tabelas_produto_prazos (prazo, fator, comissao)
+        `)
+        .eq("bank_id", bankId)
+        .eq("agreement_id", agreementId)
+        .eq("contract_id", contractId)
+        .eq("promotora_id", promotoraId)
+        .eq("status", true)
+        .order("table_name", { ascending: true });
+
+      if (error) { alert("Erro ao carregar tabelas: " + error.message); return; }
+
+      const tablesFiltered = (data || []).filter(pt => {
+        if (typingDate) {
+          const s = new Date(pt.start_date);
+          if (typingDate < s) return false;
+        }
+        return Array.isArray(pt.prazos) && pt.prazos.length;
+      });
+
+      fillSelect(tableSelect, tablesFiltered, 'table_name');
+
+      tableSelect.onchange = () => {
+        const selId = tableSelect.value;
+        const tb = tablesFiltered.find(t => String(t.id) === String(selId));
+        prazoSelect.innerHTML = '<option value="">Selecione</option>';
+
+        if (tb && Array.isArray(tb.prazos)) {
+          tb.prazos
+            .slice()
+            .sort((a, b) => a.prazo - b.prazo)
+            .forEach(p => {
+              const opt = document.createElement('option');
+              opt.value = p.prazo;
+              opt.textContent = `${p.prazo}x`;
+              prazoSelect.appendChild(opt);
+            });
+        }
+
+        prazoSelect.onchange = () => {
+          const prazoEscolhido = tb?.prazos?.find(p => String(p.prazo) === prazoSelect.value);
+          if (prazoEscolhido) {
+            document.getElementById('factor').value = prazoEscolhido.fator ?? '';
+            document.getElementById('commission').value = prazoEscolhido.comissao ?? '';
+            calcValorLiberado();
+          }
+        };
+      };
+    }
+
+    let vendedores = [], grupos = [];
+
+    async function carregarVendedoresEGrupos() {
+      const { data: vends, error: errV } = await supabase
+        .from("vendedores")
+        .select("id, nome, grupo_id");
+      if (errV) { alert("Erro ao carregar vendedores: " + errV.message); return; }
+      vendedores = vends || [];
+
+      const grupoIds = [...new Set(vendedores.map(v => v.grupo_id).filter(Boolean))];
+      if (grupoIds.length) {
+        const { data: grps, error: errG } = await supabase
+          .from("grupos")
+          .select("id, nome")
+          .in("id", grupoIds);
+        if (errG) { alert("Erro ao carregar grupos: " + errG.message); return; }
+        grupos = grps || [];
+      }
+
+      const select = document.getElementById("pVendedor");
+      select.innerHTML = '<option value="">Selecione</option>';
+      vendedores.forEach(v => {
+        const opt = document.createElement("option");
+        opt.value = v.id;
+        opt.textContent = v.nome;
+        select.appendChild(opt);
+      });
+
+      select.addEventListener("change", () => {
+        const vendedor = vendedores.find(v => String(v.id) === String(select.value));
+        const grupo = grupos.find(g => String(g.id) === String(vendedor?.grupo_id));
+        document.getElementById("pGrupoNome").textContent = grupo?.nome || "-";
+      });
+    }
+
+    function preencherFormulario(proposta) {
+      if (!proposta) return;
+
+      // Cliente
+      document.getElementById("pCpfCnpj").value = proposta.client?.cpf_cnpj || "";
+      document.getElementById("pName").value = proposta.client?.name || "";
+      document.getElementById("pBirthDate").value = proposta.client?.birth_date || "";
+      document.getElementById("pRg").value = proposta.client?.rg || "";
+      document.getElementById("pRgEmission").value = proposta.client?.rg_emission || "";
+      document.getElementById("pRgOrg").value = proposta.client?.rg_org || "";
+      document.getElementById("pMotherName").value = proposta.client?.mother_name || "";
+      document.getElementById("pNaturalidade").value = proposta.client?.naturalidade || "";
+      document.getElementById("pSexo").value = proposta.client?.sexo || "";
+      document.getElementById("pEstadoCivil").value = proposta.client?.estado_civil || "";
+      document.getElementById("pCep").value = proposta.client?.cep || "";
+      document.getElementById("pNumero").value = proposta.client?.numero || "";
+      document.getElementById("pLogradouro").value = proposta.client?.logradouro || "";
+      document.getElementById("pBairro").value = proposta.client?.bairro || "";
+      document.getElementById("pCidade").value = proposta.client?.cidade || "";
+      document.getElementById("pUf").value = proposta.client?.uf || "";
+      document.getElementById("pMobile").value = proposta.client?.mobile || "";
+      document.getElementById("pEmail").value = proposta.client?.email || "";
+
+      // Convênio
+      document.getElementById("pAgreement").value = proposta.client_agreement?.agreement_id || "";
+      document.getElementById("pRegistration").value = proposta.client_agreement?.registration_number || "";
+      document.getElementById("pSpecies").value = proposta.client_agreement?.species || "";
+      document.getElementById("pSenhaCliente").value = proposta.client_agreement?.senha_cliente || "";
+
+      // Bancários
+      document.getElementById("pAccountType").value = proposta.client_bank?.account_type || "";
+      document.getElementById("pBankAccount").value = proposta.client_bank?.bank_name || "";
+      document.getElementById("pAgency").value = proposta.client_bank?.agency || "";
+      document.getElementById("pAccount").value = proposta.client_bank?.account || "";
+
+      // Proposta
+      document.getElementById("bankSelect").value = proposta.data?.bank_id || "";
+      document.getElementById("agreementSelect").value = proposta.data?.agreement_id || "";
+      document.getElementById("contractType").value = proposta.data?.contract_type_id || "";
+      document.getElementById("promotoraSelect").value = proposta.data?.promotora_id || "";
+      document.getElementById("tableSelect").value = proposta.data?.product_table_id || "";
+      document.getElementById("prazoSelect").value = proposta.data?.prazo_escolhido || "";
+      document.getElementById("factor").value = proposta.data?.factor ?? "";
+      document.getElementById("commission").value = proposta.data?.commission ?? "";
+      document.getElementById("installmentAmount").value = proposta.data?.installment_amount
+        ? Number(proposta.data.installment_amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "";
+      document.getElementById("releasedAmount").value = proposta.data?.released_amount
+        ? Number(proposta.data.released_amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "";
+      document.getElementById("requestedAmount").value = proposta.data?.requested_amount
+        ? Number(proposta.data.requested_amount).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' }) : "";
+      const typing = proposta.data?.typing_date || todayISO();
+      document.getElementById("typingDate").value = String(typing).slice(0,10);
+      document.getElementById("proposalNumber").value = proposta.data?.proposal_number || "";
+      document.getElementById("contractNumber").value = proposta.data?.contract_number || "";
+      document.getElementById("statusDisplay").value = proposta.data?.status || "Nova Solicitação";
+
+      // Vendedor e Grupo
+      document.getElementById("pVendedor").value = proposta.vendedor_id || "";
+      if (proposta.vendedor_id) {
+        const vendedor = vendedores.find(v => String(v.id) === String(proposta.vendedor_id));
+        const grupo = grupos.find(g => String(g.id) === String(vendedor?.grupo_id));
+        document.getElementById("pGrupoNome").textContent = grupo?.nome || "-";
+      }
+    }
+
+    document.getElementById('pCpfCnpj').addEventListener('blur', async () => {
+      const raw = (document.getElementById('pCpfCnpj').value || '').trim();
+      if (!raw) return;
+      const digits = raw.replace(/\D/g, '');
+      try {
+        const { data: clientData, error: clientErr } = await supabase
+          .from('clients').select('*')
+          .or(`cpf_cnpj.ilike.%${raw}%,cpf_cnpj.ilike.%${digits}%`).limit(1);
+        if (clientErr) console.warn('Erro clients:', clientErr);
+        let cliente = (clientData && clientData[0]) || null;
+
+        if (!cliente) {
+          const { data: props, error: propErr } = await supabase
+            .from('proposals')
+            .select('client, client_agreement, client_bank')
+            .or(`client->>cpf_cnpj.ilike.%${raw}%,client->>cpf_cnpj.ilike.%${digits}%`)
+            .limit(1);
+          if (propErr) console.warn('Erro proposals:', propErr);
+          if (props && props[0]) {
+            const c = props[0];
+            cliente = { ...(c.client || {}), ...(c.client_agreement || {}), ...(c.client_bank || {}) };
+          }
+        }
+        if (!cliente) return;
+
+        document.getElementById('pName').value = cliente.name || '';
+        document.getElementById('pBirthDate').value = cliente.birth_date || '';
+        document.getElementById('pRg').value = cliente.rg || '';
+        document.getElementById('pRgEmission').value = cliente.rg_emission || '';
+        document.getElementById('pRgOrg').value = cliente.rg_org || '';
+        document.getElementById('pMotherName').value = cliente.mother_name || '';
+        document.getElementById('pNaturalidade').value = cliente.naturalidade || '';
+        document.getElementById('pSexo').value = cliente.sexo || '';
+        document.getElementById('pEstadoCivil').value = cliente.estado_civil || '';
+        document.getElementById('pCep').value = cliente.cep || '';
+        document.getElementById('pNumero').value = cliente.numero || '';
+        document.getElementById('pLogradouro').value = cliente.logradouro || '';
+        document.getElementById('pBairro').value = cliente.bairro || '';
+        document.getElementById('pCidade').value = cliente.cidade || '';
+        document.getElementById('pUf').value = cliente.uf || '';
+        document.getElementById('pMobile').value = cliente.mobile || '';
+        document.getElementById('pEmail').value = cliente.email || '';
+        document.getElementById('pAgreement').value = cliente.agreement_id || '';
+        document.getElementById('pRegistration').value = cliente.registration_number || '';
+        document.getElementById('pSpecies').value = cliente.species || '';
+        document.getElementById('pSenhaCliente').value = cliente.senha_cliente || '';
+        document.getElementById('pAccountType').value = cliente.account_type || '';
+        document.getElementById('pBankAccount').value = cliente.bank_name || '';
+        document.getElementById('pAgency').value = cliente.agency || '';
+        document.getElementById('pAccount').value = cliente.account || '';
+      } catch (e) { console.warn('Erro ao buscar CPF:', e); }
+    });
+
+    // -------------------------
+    // Date paste helpers (allow pasting common date formats into date inputs)
+    // -------------------------
+    function parseDateFromString(s) {
+      if (!s) return null;
+      s = String(s).trim();
+      // common formats: dd/mm/yyyy, dd-mm-yyyy, yyyy-mm-dd, yyyy/mm/dd, ddmmyyyy
+      let m;
+      // dd/mm/yyyy or dd-mm-yyyy
+      m = s.match(/^(\d{2})[\/\-](\d{2})[\/\-](\d{4})$/);
+      if (m) {
+        const day = Number(m[1]), month = Number(m[2]), year = Number(m[3]);
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+          return `${String(year).padStart(4,'0')}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        }
+      }
+      // yyyy-mm-dd or yyyy/mm/dd
+      m = s.match(/^(\d{4})[\/\-](\d{2})[\/\-](\d{2})$/);
+      if (m) {
+        const year = Number(m[1]), month = Number(m[2]), day = Number(m[3]);
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+          return `${String(year).padStart(4,'0')}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        }
+      }
+      // ddmmyyyy
+      m = s.match(/^(\d{2})(\d{2})(\d{4})$/);
+      if (m) {
+        const day = Number(m[1]), month = Number(m[2]), year = Number(m[3]);
+        if (month >= 1 && month <= 12 && day >= 1 && day <= 31) {
+          return `${String(year).padStart(4,'0')}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+        }
+      }
+      // fallback: try Date parse and convert to yyyy-mm-dd if valid
+      const d = new Date(s);
+      if (!isNaN(d.getTime())) {
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        return `${String(year).padStart(4,'0')}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+      }
+      return null;
+    }
+
+    function enableDatePaste(inputEl) {
+      if (!inputEl) return;
+      inputEl.addEventListener('paste', (ev) => {
+        try {
+          ev.preventDefault();
+          const text = (ev.clipboardData || window.clipboardData).getData('text') || '';
+          const iso = parseDateFromString(text);
+          if (iso) {
+            inputEl.value = iso;
+            // trigger change event if needed
+            inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+          } else {
+            // if not parsed, allow the raw paste into a temporary input (do nothing)
+            // keep it simple: do not set value
+          }
+        } catch (e) {
+          console.warn('Erro ao colar data', e);
+        }
+      });
+      // also allow drop
+      inputEl.addEventListener('drop', (ev) => {
+        try {
+          ev.preventDefault();
+          const text = (ev.dataTransfer && ev.dataTransfer.getData('text')) || '';
+          const iso = parseDateFromString(text);
+          if (iso) {
+            inputEl.value = iso;
+            inputEl.dispatchEvent(new Event('change', { bubbles: true }));
+          }
+        } catch (e) { console.warn('Erro ao dropar data', e); }
+      });
+    }
+
+    // enable paste on birth date and RG emission date
+    enableDatePaste(document.getElementById('pBirthDate'));
+    enableDatePaste(document.getElementById('pRgEmission'));
+    // -------------------------
+
+    document.getElementById('proposalForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const bankId = parseInt(document.getElementById('bankSelect').value || '0', 10);
+      const agreementId = parseInt(document.getElementById('agreementSelect').value || '0', 10);
+      const tableId = parseInt(document.getElementById('tableSelect').value || '0', 10);
+      const contractTypeId = parseInt(document.getElementById('contractType').value || '0', 10);
+      const prazoEscolhido = parseInt(document.getElementById('prazoSelect').value || '0', 10);
+      const promotoraId = parseInt(document.getElementById('promotoraSelect').value || '0', 10);
+      const vendedorId = parseInt(document.getElementById('pVendedor').value || '0', 10);
+
+      if (!document.getElementById('pCpfCnpj').value.trim() ||
+          !document.getElementById('pName').value.trim() ||
+          !document.getElementById('pMobile').value.trim()) {
+        alert('Preencha CPF/CNPJ, Nome e Celular.');
+        return;
+      }
+      if (!bankId || !agreementId || !contractTypeId || !promotoraId || !tableId || !prazoEscolhido) {
+        alert('Selecione Banco, Convênio, Tipo de contrato, Promotora, Tabela e Prazo.');
+        return;
+      }
+      if (!vendedorId) {
+        alert('Selecione um vendedor.');
+        return;
+      }
+
+      const proposal = {
+        client: {
+          cpf_cnpj: document.getElementById('pCpfCnpj').value.trim(),
+          name: document.getElementById('pName').value.trim(),
+          birth_date: document.getElementById('pBirthDate').value,
+          rg: document.getElementById('pRg').value.trim(),
+          rg_emission: document.getElementById('pRgEmission').value,
+          rg_org: document.getElementById('pRgOrg').value.trim(),
+          mother_name: document.getElementById('pMotherName').value.trim(),
+          naturalidade: document.getElementById('pNaturalidade').value.trim(),
+          sexo: document.getElementById('pSexo').value,
+          estado_civil: document.getElementById('pEstadoCivil').value,
+          cep: document.getElementById('pCep').value.trim(),
+          numero: document.getElementById('pNumero').value.trim(),
+          logradouro: document.getElementById('pLogradouro').value.trim(),
+          bairro: document.getElementById('pBairro').value.trim(),
+          cidade: document.getElementById('pCidade').value.trim(),
+          uf: document.getElementById('pUf').value.trim(),
+          mobile: document.getElementById('pMobile').value.trim(),
+          email: document.getElementById('pEmail').value.trim()
+        },
+        client_agreement: {
+          agreement_id: parseInt(document.getElementById('pAgreement').value || '0', 10),
+          registration_number: document.getElementById('pRegistration').value.trim(),
+          species: document.getElementById('pSpecies').value.trim(),
+          senha_cliente: document.getElementById('pSenhaCliente').value.trim()
+        },
+        client_bank: {
+          account_type: document.getElementById('pAccountType').value,
+          bank_name: document.getElementById('pBankAccount').value.trim(),
+          agency: document.getElementById('pAgency').value.trim(),
+          account: document.getElementById('pAccount').value.trim()
+        },
+        data: {
+          bank_id: bankId,
+          agreement_id: agreementId,
+          product_table_id: tableId,
+          contract_type_id: contractTypeId,
+          promotora_id: promotoraId,
+          prazo_escolhido: prazoEscolhido,
+          requested_amount: parseCurrency(document.getElementById('requestedAmount')),
+          released_amount: parseCurrency(document.getElementById('releasedAmount')),
+          installment_amount: parseCurrency(document.getElementById('installmentAmount')),
+          factor: parseFloat(document.getElementById('factor').value || '0'),
+          commission: parseFloat(document.getElementById('commission').value || '0'),
+          percentual: parseFloat(document.getElementById('commission').value || '0'),
+          typing_date: todayISO(),
+          proposal_number: document.getElementById('proposalNumber').value.trim(),
+          contract_number: document.getElementById('contractNumber').value.trim(),
+          status: document.getElementById('statusDisplay').value || 'Nova Solicitação'
+        }
+      };
+
+      try {
+        // Upsert cliente
+        const rawCpf = proposal.client.cpf_cnpj.trim();
+        const digitsCpf = rawCpf.replace(/\D/g, '');
+        const { data: existingClient, error: getClientError } = await supabase
+          .from("clients").select("id, cpf_cnpj")
+          .or(`cpf_cnpj.ilike.%${rawCpf}%,cpf_cnpj.ilike.%${digitsCpf}%`).limit(1);
+        if (getClientError) throw getClientError;
+
+        const clientPayload = {
+          cpf_cnpj: proposal.client.cpf_cnpj,
+          name: proposal.client.name,
+          birth_date: proposal.client.birth_date,
+          rg: proposal.client.rg,
+          rg_emission: proposal.client.rg_emission,
+          rg_org: proposal.client.rg_org,
+          mother_name: proposal.client.mother_name,
+          naturalidade: proposal.client.naturalidade,
+          sexo: proposal.client.sexo,
+          estado_civil: proposal.client.estado_civil,
+          cep: proposal.client.cep,
+          numero: proposal.client.numero,
+          logradouro: proposal.client.logradouro,
+          bairro: proposal.client.bairro,
+          cidade: proposal.client.cidade,
+          uf: proposal.client.uf,
+          mobile: proposal.client.mobile,
+          email: proposal.client.email,
+          agreement_id: proposal.client_agreement.agreement_id,
+          registration_number: proposal.client_agreement.registration_number,
+          species: proposal.client_agreement.species,
+          senha_cliente: proposal.client_agreement.senha_cliente,
+          account_type: proposal.client_bank.account_type,
+          bank_name: proposal.client_bank.bank_name,
+          agency: proposal.client_bank.agency,
+          account: proposal.client_bank.account
+        };
+
+        let clienteId = null;
+        if (existingClient && existingClient[0]) {
+          clienteId = existingClient[0].id;
+          const { error: updateError } = await supabase
+            .from("clients").update(clientPayload).eq("id", clienteId);
+          if (updateError) throw updateError;
+        } else {
+          const { data: novoCliente, error: insertError } = await supabase
+            .from("clients").insert([clientPayload]).select("id").limit(1);
+          if (insertError) throw insertError;
+          clienteId = novoCliente[0].id;
+        }
+
+        const propostaId = getParam("propostaId");
+        const mode = getParam("mode");
+        let newId = propostaId;
+
+        if (propostaId && mode === "edit") {
+          const { error: propUpdateError } = await supabase
+            .from("proposals").update(proposal).eq("id", propostaId);
+          if (propUpdateError) throw propUpdateError;
+
+          const { error: contratoUpdateError } = await supabase
+            .from("contratos")
+            .update({
+              cliente_id: clienteId,
+              numero_proposta: proposal.data.proposal_number,
+              numero_contrato: proposal.data.contract_number,
+              status: proposal.data.status,
+              typing_date: proposal.data.typing_date,
+              requested_amount: proposal.data.requested_amount,
+              released_amount: proposal.data.released_amount,
+              installment_amount: proposal.data.installment_amount,
+              contract_type_id: proposal.data.contract_type_id,
+              bank_id: proposal.data.bank_id,
+              agreement_id: proposal.data.agreement_id,
+              product_table_id: proposal.data.product_table_id,
+              prazo: proposal.data.prazo_escolhido,
+              promotora_id: proposal.data.promotora_id,
+              commission: proposal.data.commission, 
+              percentual: proposal.data.percentual,
+              vendedor_id: vendedorId
+            }).eq("proposta_id", propostaId);
+          if (contratoUpdateError) throw contratoUpdateError;
+
+          window.location.href = './contrato-historico.html?propostaId=' + propostaId;
+        } else {
+          const { data: propInserted, error: propError } = await supabase
+            .from("proposals").insert([proposal]).select("id").limit(1);
+          if (propError) throw propError;
+          newId = (propInserted && propInserted[0]?.id) || Date.now();
+
+          const { data: contratoInserted, error: errContrato } = await supabase
+            .from("contratos")
+            .insert([{
+              proposta_id: newId,
+              cliente_id: clienteId,
+              filial: "MATRIZ",
+              numero_proposta: proposal.data.proposal_number,
+              numero_contrato: proposal.data.contract_number,
+              status: proposal.data.status,
+              typing_date: proposal.data.typing_date,
+              requested_amount: proposal.data.requested_amount,
+              released_amount: proposal.data.released_amount,
+              installment_amount: proposal.data.installment_amount,
+              contract_type_id: proposal.data.contract_type_id,
+              bank_id: proposal.data.bank_id,
+              agreement_id: proposal.data.agreement_id,
+              product_table_id: proposal.data.product_table_id,
+              prazo: proposal.data.prazo_escolhido,
+              promotora_id: proposal.data.promotora_id,
+              commission: proposal.data.commission,
+              percentual: proposal.data.percentual,
+              vendedor_id: vendedorId
+            }]).select("id").single();
+          if (errContrato) throw errContrato;
+
+          window.location.href = './contrato-historico.html?propostaId=' + newId;
+        }
+      } catch (err) {
+        console.error("Erro ao salvar proposta:", err);
+        alert("Erro ao salvar proposta: " + (err?.message || err));
+      }
+    });
+
+    document.getElementById('btnLimpar').addEventListener('click', () => {
+      document.getElementById('proposalForm').reset();
+      document.getElementById('typingDate').value = todayISO();
+      document.getElementById('promotoraSelect').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('tableSelect').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('prazoSelect').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('factor').value = '';
+      document.getElementById('commission').value = '';
+      document.getElementById('releasedAmount').value = '';
+      document.getElementById('installmentAmount').value = '';
+      document.getElementById('requestedAmount').value = '';
+      document.getElementById('pVendedor').innerHTML = '<option value="">Selecione</option>';
+      document.getElementById('pGrupoNome').textContent = '-';
+      void carregarVendedoresEGrupos();
+    });
+
+    document.getElementById('bankSelect').addEventListener('change', updatePromotoras);
+    document.getElementById('agreementSelect').addEventListener('change', updatePromotoras);
+    document.getElementById('contractType').addEventListener('change', updatePromotoras);
+    document.getElementById('typingDate').addEventListener('change', updatePromotoras);
+
+    async function init() {
+      await carregarBases();
+      await carregarVendedoresEGrupos();
+      await updatePromotoras();
+
+      const propostaId = getParam("propostaId");
+      const mode = getParam("mode");
+
+      if (propostaId) {
+        let proposta = null;
+
+        const { data: contrato, error: contratoErr } = await supabase
+          .from("contratos")
+          .select(`
+            *,
+            clientes:cliente_id (*),
+            convenios:agreement_id (id,name),
+            bancos:bank_id (id,name),
+            tipos_contrato:contract_type_id (id,name),
+            tabelas_produto:product_table_id (id,table_name)
+          `)
+          .eq("proposta_id", propostaId)
+          .single();
+
+        if (!contratoErr && contrato) {
+          proposta = {
+            client: contrato.clientes || {},
+            client_agreement: {
+              agreement_id: contrato.agreement_id,
+              registration_number: contrato.registration_number || '',
+              species: contrato.species || '',
+              senha_cliente: contrato.senha_cliente || ''
+            },
+            client_bank: {
+              account_type: contrato.account_type || '',
+              bank_name: contrato.bank_name || '',
+              agency: contrato.agency || '',
+              account: contrato.account || ''
+            },
+            data: {
+              bank_id: contrato.bank_id,
+              agreement_id: contrato.agreement_id,
+              product_table_id: contrato.product_table_id,
+              contract_type_id: contrato.contract_type_id,
+              promotora_id: contrato.promotora_id || '',
+              prazo_escolhido: contrato.prazo,
+              requested_amount: contrato.requested_amount,
+              released_amount: contrato.released_amount,
+              installment_amount: contrato.installment_amount,
+              factor: contrato.factor,
+              typing_date: contrato.typing_date,
+              proposal_number: contrato.numero_proposta,
+              contract_number: contrato.numero_contrato,
+              status: contrato.status
+            },
+            vendedor_id: contrato.vendedor_id || null
+          };
+        }
+
+        const { data: propData } = await supabase
+          .from("proposals")
+          .select("*")
+          .eq("id", propostaId)
+          .single();
+
+        if (propData) {
+          proposta = proposta || {};
+          proposta.client = proposta.client || propData.client || {};
+          proposta.client_agreement = proposta.client_agreement || propData.client_agreement || {};
+          proposta.client_bank = proposta.client_bank || propData.client_bank || {};
+          proposta.data = proposta.data || {};
+          proposta.data.factor = proposta.data.factor ?? propData.data?.factor ?? '';
+          proposta.data.commission = propData.data?.commission ?? proposta.data.commission ?? '';
+          proposta.data.percentual = propData.data?.percentual ?? proposta.data.percentual ?? '';
+          proposta.data.bank_id = proposta.data.bank_id ?? propData.data?.bank_id ?? '';
+          proposta.data.agreement_id = proposta.data.agreement_id ?? propData.data?.agreement_id ?? '';
+          proposta.data.contract_type_id = proposta.data.contract_type_id ?? propData.data?.contract_type_id ?? '';
+          proposta.data.product_table_id = proposta.data.product_table_id ?? propData.data?.product_table_id ?? '';
+          proposta.data.promotora_id = proposta.data.promotora_id ?? propData.data?.promotora_id ?? '';
+          proposta.data.prazo_escolhido = proposta.data.prazo_escolhido ?? propData.data?.prazo_escolhido ?? '';
+          proposta.data.requested_amount = proposta.data.requested_amount ?? propData.data?.requested_amount ?? 0;
+          proposta.data.released_amount = proposta.data.released_amount ?? propData.data?.released_amount ?? 0;
+          proposta.data.installment_amount = proposta.data.installment_amount ?? propData.data?.installment_amount ?? 0;
+          proposta.data.typing_date = proposta.data.typing_date ?? propData.data?.typing_date ?? todayISO();
+          proposta.data.proposal_number = proposta.data.proposal_number ?? propData.data?.proposal_number ?? '';
+          proposta.data.contract_number = proposta.data.contract_number ?? propData.data?.contract_number ?? '';
+          proposta.data.status = proposta.data.status ?? propData.data?.status ?? 'Nova Solicitação';
+        }
+
+        if (proposta) {
+          preencherFormulario(proposta);
+          await updatePromotoras();
+          await updateTables();
+          document.getElementById("tableSelect").value = proposta?.data?.product_table_id || "";
+          document.getElementById("prazoSelect").value = proposta?.data?.prazo_escolhido || "";
+        }
+
+        if (mode === "edit") {
+          const statusEl = document.getElementById("statusDisplay");
+          if (statusEl && !statusEl.value) statusEl.value = "Em edição";
+        }
+      }
+    }
+    init();
+  </script>
+</body>
+</html>

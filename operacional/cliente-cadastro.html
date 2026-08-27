@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Cadastro de cliente</title>
+<script type="module">
+  import { protectRoute } from '../assets/protect-route.js';
+  protectRoute();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+    nav ul > li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul > li:hover > a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    h2 { font-size:20px; margin-bottom:20px; color:#2c3e50; }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .grid-2 { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; }
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input,.form-row select,.form-row textarea { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .actions { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; }
+    .btn-primary { background:#3498db; color:#fff; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#2980b9; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:12px 20px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .btn-danger { background:#e74c3c; color:#fff; border:none; padding:8px 14px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-danger:hover { background:#c0392b; }
+
+    .search-box { margin-bottom:20px; }
+    .search-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    .search-box input,.search-box select { padding:8px; border:1px solid #ccc; border-radius:6px; width:100%; }
+
+    table { width:100%; border-collapse:collapse; font-size:14px; }
+    th,td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:top; }
+    thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="./proposta-nova.html">Proposta nova</a></li>
+          <li><a href="./cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="./contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Cadastro de cliente</h2>
+
+    <!-- Pesquisa -->
+    <div class="card">
+      <h3>Pesquisar clientes</h3>
+      <div class="search-box">
+        <div class="search-grid">
+          <input id="searchTag" placeholder="TAG" />
+          <input id="searchNome" placeholder="Nome" />
+          <input id="searchCpf" placeholder="CPF/CNPJ" />
+          <select id="searchConvenio"><option value="">Convênio (todos)</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulário -->
+    <form id="clientForm">
+      <div class="card">
+        <h3>Dados do Cliente</h3>
+        <div class="grid-2">
+          <div class="form-row">
+            <label>TAG</label>
+            <select id="tag">
+              <option value="">Selecione</option>
+              <option value="Simulação enviada">Simulação enviada</option>
+              <option value="Sem margem">Sem margem</option>
+              <option value="Sem interesse">Sem interesse</option>
+              <option value="Com interesse">Com interesse</option>
+              <option value="Telefone incorreto">Telefone incorreto</option>
+            </select>
+          </div>
+          <div class="form-row"><label>CPF/CNPJ*</label><input id="cpf_cnpj" required /></div>
+          <div class="form-row"><label>Nome*</label><input id="nome" required /></div>
+          <div class="form-row"><label>Matrícula</label><input id="matricula" /></div>
+          <div class="form-row"><label>Nascimento</label><input type="date" id="nascimento" /></div>
+          <div class="form-row"><label>Telefone*</label><input id="telefone" required /></div>
+          <div class="form-row"><label>E-mail</label><input id="email" type="email" /></div>
+          <div class="form-row"><label>Convênio</label><select id="convenio"></select></div>
+          <div class="form-row"><label>Margem Consignado</label><input id="margem_consignado" /></div>
+          <div class="form-row"><label>Margem Cartão</label><input id="margem_cartao" /></div>
+          <div class="form-row"><label>Margem Benefício</label><input id="margem_beneficio" /></div>
+          <div class="form-row">
+            <label>Origem Prospecção</label>
+            <select id="origem_prospeccao">
+              <option value="">Selecione</option>
+              <option value="Disparo">Disparo</option>
+              <option value="Indicação">Indicação</option>
+              <option value="Trafego Pago">Tráfego Pago</option>
+              <option value="Ura Reversa">URA Reversa</option>
+              <option value="Ligação">Ligação</option>
+              <option value="Parceiro">Parceiro</option>
+            </select>
+          </div>
+          <div class="form-row"><label>Órgão</label><input id="orgao" /></div>
+          <div class="form-row"><label>Data do Cadastro</label><input id="data_cadastro" readonly /></div>
+          <div class="form-row"><label>Observação</label><textarea id="observacao"></textarea></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn-primary" id="btnSalvar" type="button">Salvar</button>
+        <button class="btn-secondary" type="button" onclick="history.back()">Voltar</button>
+      </div>
+    </form>
+
+    <!-- Lista de clientes -->
+    <div class="card">
+      <h3>Clientes</h3>
+      <div class="actions">
+        <button class="btn-primary" type="button" id="btnExportarTodos">Exportar Excel (Todos)</button>
+        <button class="btn-secondary" type="button" id="btnExportarFiltrados">Exportar Excel (Filtrados)</button>
+      </div>
+      <table id="clientesTable">
+        <thead>
+          <tr>
+            <th>TAG</th>
+            <th>Nome</th>
+            <th>CPF/CNPJ</th>
+            <th>Convênio</th>
+            <th>Telefone</th>
+            <th>Data Cadastro</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </main>
+
+  <footer>
+    <p>DVN Soluções © 2025 — Todos os direitos reservados</p>
+  </footer>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+    import * as XLSX from "https://cdn.jsdelivr.net/npm/xlsx@0.18.5/xlsx.mjs";
+
+    let clientes = [];
+    let conveniosMap = {};
+
+    function formatDate(d) {
+      if (!d) return '—';
+      const s = String(d);
+      return s.length >= 10 ? s.slice(0,10) : s;
+    }
+
+    function normalizaNumero(v) {
+      const s = String(v || "").replace(/\./g, "").replace(",", ".");
+      const n = parseFloat(s);
+      return isNaN(n) ? null : n;
+    }
+
+    async function carregarConvenios() {
+      try {
+        const { data, error } = await supabase.from("convenios").select("id,name").order("name");
+        if (error) throw error;
+
+        conveniosMap = (data||[]).reduce((acc,c)=>{ acc[c.id]=c.name; return acc; }, {});
+        const select = document.getElementById("convenio");
+        const searchSelect = document.getElementById("searchConvenio");
+
+        // Preenche o select do formulário
+        select.innerHTML = '<option value="">Selecione</option>';
+        (data||[]).forEach(c=>{
+          const opt=document.createElement("option");
+          opt.value=c.id; opt.textContent=c.name;
+          select.appendChild(opt);
+        });
+
+        // Preenche o select de pesquisa
+        searchSelect.innerHTML = '<option value="">Convênio (todos)</option>';
+        (data||[]).forEach(c=>{
+          const opt=document.createElement("option");
+          opt.value=c.id; opt.textContent=c.name;
+          searchSelect.appendChild(opt);
+        });
+      } catch (e) {
+        console.error("Erro ao carregar convênios:", e);
+        alert("Falha ao carregar convênios.");
+      }
+    }
+
+    async function salvarCliente() {
+      const cliente = {
+        tag: document.getElementById("tag").value,
+        cpf_cnpj: document.getElementById("cpf_cnpj").value.trim(),
+        nome: document.getElementById("nome").value.trim(),
+        matricula: document.getElementById("matricula").value.trim(),
+        nascimento: document.getElementById("nascimento").value || null, // yyyy-mm-dd
+        telefone: document.getElementById("telefone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        convenio_id: document.getElementById("convenio").value || null,
+        margem_consignado: normalizaNumero(document.getElementById("margem_consignado").value),
+        margem_cartao: normalizaNumero(document.getElementById("margem_cartao").value),
+        margem_beneficio: normalizaNumero(document.getElementById("margem_beneficio").value),
+        origem_prospeccao: document.getElementById("origem_prospeccao").value,
+        orgao: document.getElementById("orgao").value.trim(),
+        data_cadastro: new Date().toISOString().slice(0,10),
+        observacao: document.getElementById("observacao").value.trim()
+      };
+
+      if (!cliente.nome || !cliente.cpf_cnpj || !cliente.telefone) {
+        alert("Preencha os campos obrigatórios: Nome, CPF/CNPJ e Telefone.");
+        return;
+      }
+
+      try {
+        const { error } = await supabase.from("clientes").insert([cliente]);
+        if (error) throw error;
+
+        alert("Cliente salvo com sucesso!");
+        document.getElementById("clientForm").reset();
+        document.getElementById("data_cadastro").value = new Date().toISOString().slice(0,10);
+        await carregarClientes();
+        renderClientes();
+      } catch (ex) {
+        console.error("Falha ao salvar cliente:", ex);
+        alert("Erro ao salvar cliente: " + (ex?.message || "verifique colunas e permissões"));
+      }
+    }
+
+    async function carregarClientes() {
+      try {
+        const { data, error } = await supabase
+          .from("clientes")
+          .select("id, tag, cpf_cnpj, nome, telefone, convenio_id, data_cadastro")
+          .order("id", { ascending:false });
+
+        if (error) throw error;
+
+        clientes = (data||[]).map(r=>({
+          id:r.id,
+          tag:r.tag || '',
+          cpf_cnpj:r.cpf_cnpj || '',
+          nome:r.nome || '',
+          telefone:r.telefone || '',
+          convenio_id:r.convenio_id || null,
+          convenio_nome: conveniosMap[r.convenio_id] || '—',
+          data_cadastro: formatDate(r.data_cadastro)
+        }));
+      } catch (e) {
+        console.error("Erro ao carregar clientes:", e);
+        clientes = [];
+      }
+    }
+
+    async function excluirCliente(id) {
+      if (!confirm("Deseja realmente excluir este cliente?")) return;
+      try {
+        const { error } = await supabase.from("clientes").delete().eq("id", id);
+        if (error) throw error;
+        alert("Cliente excluído com sucesso!");
+        await carregarClientes();
+        renderClientes();
+      } catch (e) {
+        console.error("Erro ao excluir:", e);
+        alert("Erro ao excluir: " + (e?.message || e));
+      }
+    }
+
+    function getFiltro() {
+      const fTag = document.getElementById("searchTag").value.trim().toLowerCase();
+      const fNome = document.getElementById("searchNome").value.trim().toLowerCase();
+      const fCpf = document.getElementById("searchCpf").value.trim().toLowerCase();
+      const fConv = document.getElementById("searchConvenio").value;
+      return { fTag, fNome, fCpf, fConv };
+    }
+
+    function filtrarClientesLocal() {
+      const { fTag, fNome, fCpf, fConv } = getFiltro();
+      return clientes.filter(c =>
+        (!fTag || c.tag.toLowerCase().includes(fTag)) &&
+        (!fNome || c.nome.toLowerCase().includes(fNome)) &&
+        (!fCpf || c.cpf_cnpj.toLowerCase().includes(fCpf)) &&
+        (!fConv || String(c.convenio_id) === String(fConv))
+      );
+    }
+
+    function renderClientes() {
+      const tbody = document.querySelector("#clientesTable tbody");
+      tbody.innerHTML = '';
+
+      const filtrados = filtrarClientesLocal();
+
+      filtrados.forEach(c=>{
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${c.tag || '—'}</td>
+          <td>${c.nome || '—'}</td>
+          <td>${c.cpf_cnpj || '—'}</td>
+          <td>${c.convenio_nome || '—'}</td>
+          <td>${c.telefone || '—'}</td>
+          <td>${c.data_cadastro || '—'}</td>
+          <td><button class="btn-danger" data-id="${c.id}">Excluir</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      // Delegação de evento para exclusão
+      tbody.querySelectorAll("button.btn-danger").forEach(btn=>{
+        btn.addEventListener("click", (e)=>{
+          const id = e.currentTarget.getAttribute("data-id");
+          excluirCliente(id);
+        });
+      });
+    }
+
+    function exportarExcel(dados, nomeArquivo = "clientes.xlsx") {
+      // Converte para um formato amigável
+      const rows = dados.map(c => ({
+        TAG: c.tag || '',
+        Nome: c.nome || '',
+        "CPF/CNPJ": c.cpf_cnpj || '',
+        Convênio: c.convenio_nome || '',
+        Telefone: c.telefone || '',
+        "Data Cadastro": c.data_cadastro || ''
+      }));
+      const ws = XLSX.utils.json_to_sheet(rows);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, "Clientes");
+      XLSX.writeFile(wb, nomeArquivo);
+    }
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      document.getElementById("data_cadastro").value = new Date().toISOString().slice(0,10);
+      await carregarConvenios();
+      await carregarClientes();
+      renderClientes();
+
+      ["searchTag","searchNome","searchCpf","searchConvenio"].forEach(id=>{
+        const el = document.getElementById(id);
+        if (!el) return;
+        if (id === "searchConvenio") el.addEventListener('change', renderClientes);
+        else el.addEventListener('input', renderClientes);
+      });
+
+      document.getElementById("btnSalvar").addEventListener("click", salvarCliente);
+
+      // Exportar todos
+      document.getElementById("btnExportarTodos").addEventListener("click", ()=>{
+        exportarExcel(clientes, "clientes_todos.xlsx");
+      });
+
+      // Exportar filtrados
+      document.getElementById("btnExportarFiltrados").addEventListener("click", ()=>{
+        const filtrados = filtrarClientesLocal();
+        exportarExcel(filtrados, "clientes_filtrados.xlsx");
+      });
+    });
+  </script>
+</body>
+</html>

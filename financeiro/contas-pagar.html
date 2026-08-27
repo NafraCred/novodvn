@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Contas a Pagar</title>
+<script type="module">
+  import { protectRoute } from '../assets/protect-route.js';
+  protectRoute();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:22px; margin-bottom:20px; color:#2c3e50; }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .toolbar { display:flex; gap:10px; margin-bottom:8px; flex-wrap:wrap; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+
+    .filters { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; margin-bottom:12px; }
+    .filters .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .filters .form-row input, .filters .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:middle; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+
+    .status-ok { color:#2e7d32; font-weight:600; }
+    .status-alert { color:#c0392b; font-weight:600; }
+    .status-pending { color:#b9770e; font-weight:600; }
+
+    .muted { color:#7f8c8d; font-size:12px; }
+
+    @media (max-width:860px) {
+      thead { display:none; }
+      table, tbody, tr, td { display:block; width:100%; }
+      tbody tr { border-top:1px solid #eee; padding:8px 10px; }
+      tbody td { border:none; padding:6px 0; }
+      tbody td::before { content:attr(data-label); display:block; font-size:12px; color:#7f8c8d; margin-bottom:3px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Contas a Pagar</h2>
+
+    <div class="card">
+      <div class="toolbar">
+        <button class="btn-secondary" onclick="exportCSV()">Exportar CSV</button>
+        <button class="btn-secondary" onclick="recarregar()">Recarregar</button>
+      </div>
+      <h3>Resumo</h3>
+      <div class="filters">
+        <div class="form-row">
+          <label>Filtrar por status</label>
+          <select id="fStatus">
+            <option value="">Todos</option>
+            <option value="agendado">Agendado</option>
+            <option value="quitado">Quitado</option>
+            <option value="cancelado">Cancelado</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Filtrar por fornecedor</label>
+          <input type="text" id="fSupplier" placeholder="Digite o fornecedor..." />
+        </div>
+
+        <!-- FILTRO POR CATEGORIA -->
+        <div class="form-row">
+          <label>Filtrar por categoria</label>
+          <select id="fCategory">
+            <option value="all">Todas</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <label>Período inicial</label>
+          <input type="date" id="fStart" />
+        </div>
+        <div class="form-row">
+          <label>Período final</label>
+          <input type="date" id="fEnd" />
+        </div>
+      </div>
+
+      <p><strong>Total vencidas:</strong> <span id="totalVencidas">R$ 0,00</span></p>
+      <p><strong>Total a vencer:</strong> <span id="totalVencer">R$ 0,00</span></p>
+      <p><strong>Total quitadas:</strong> <span id="totalQuitadas">R$ 0,00</span></p>
+      <p class="muted">Os totais consideram filtros aplicados.</p>
+    </div>
+
+    <div class="card">
+      <div class="toolbar">
+        <button class="btn-secondary" onclick="clearFilters()">Limpar filtros</button>
+      </div>
+      <h3>Lista de despesas</h3>
+      <table class="table" id="payTable">
+        <thead>
+          <tr>
+            <th>Fornecedor</th>
+            <th>Categoria</th>
+            <th>Forma de pagamento</th>
+            <th>Valor</th>
+            <th>Vencimento</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="muted">Total de registros: <span id="count">0</span></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    function dinheiro(n) {
+      return 'R$ ' + (Number(n || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function parseDate(str) {
+      if (!str) return null;
+      const d = new Date(str);
+      return isNaN(d.getTime()) ? null : d;
+    }
+
+    let expenses = [];
+    const tbody = document.querySelector('#payTable tbody');
+    const countEl = document.getElementById('count');
+
+    const fStatus = document.getElementById('fStatus');
+    const fSupplier = document.getElementById('fSupplier');
+    const fCategory = document.getElementById('fCategory');
+    const fStart = document.getElementById('fStart');
+    const fEnd = document.getElementById('fEnd');
+
+    // Popula select de categorias com valores únicos (mantém "Todas")
+    function populateCategoryFilter() {
+      const set = new Set();
+      (expenses || []).forEach(r => {
+        const c = (r.category || '').trim();
+        if (c) set.add(c);
+      });
+      const current = fCategory.value || 'all';
+      fCategory.innerHTML = '<option value="all">Todas</option>';
+      Array.from(set).sort((a,b) => a.localeCompare(b, 'pt-BR')).forEach(cat => {
+        const opt = document.createElement('option');
+        opt.value = cat;
+        opt.textContent = cat;
+        fCategory.appendChild(opt);
+      });
+      if (current && Array.from(fCategory.options).some(o => o.value === current)) {
+        fCategory.value = current;
+      } else {
+        fCategory.value = 'all';
+      }
+    }
+
+    function aplicaFiltros(lista) {
+      const st = (fStatus.value || '').toLowerCase();
+      const sup = (fSupplier.value || '').toLowerCase();
+      const catSel = (fCategory.value || 'all').toLowerCase();
+      const start = parseDate(fStart.value);
+      const end = parseDate(fEnd.value);
+
+      return lista.filter(e => {
+        const okStatus = !st || (String(e.status || '').toLowerCase() === st);
+        const okSupplier = !sup || (String(e.supplier || '').toLowerCase().includes(sup));
+        const okCategory = (catSel === 'all') || (String(e.category || '').toLowerCase() === catSel);
+        const d = parseDate(e.due_date || e.vencimento);
+        const okStart = !start || (d && d >= start);
+        const okEnd = !end || (d && d <= end);
+        return okStatus && okSupplier && okCategory && okStart && okEnd;
+      });
+    }
+
+    async function carregarContas() {
+      const { data, error } = await supabase
+        .from("despesas")
+        .select("*")
+        .order("due_date", { ascending: true });
+
+      if (error) {
+        alert("Erro ao carregar contas: " + error.message);
+        return;
+      }
+      expenses = (data || []).map(row => ({
+        id: row.id,
+        supplier: row.supplier ?? row.fornecedor ?? '',
+        category: row.category ?? row.categoria ?? '',
+        payment: row.payment ?? row.forma_pagamento ?? '',
+        valor: Number(row.valor ?? row.amount ?? 0),
+        due_date: row.due_date ?? row.vencimento ?? null,
+        status: row.status ?? ''
+      }));
+      populateCategoryFilter();
+      renderPayables();
+    }
+
+    function renderPayables() {
+      tbody.innerHTML = '';
+      const today = new Date();
+      const todayDateOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+      let vencidas = 0, vencer = 0, quitadas = 0;
+      const filtradas = aplicaFiltros(expenses);
+
+      filtradas.forEach(e => {
+        const dRaw = e.due_date;
+        const d = parseDate(dRaw);
+        const st = String(e.status || '').toLowerCase();
+        let statusClass = 'status-pending';
+        const valor = Number(e.valor || 0);
+
+        if (st === 'quitado' || st === 'quitadas' || st === 'pago') {
+          quitadas += valor;
+          statusClass = 'status-ok';
+        } else if (st === 'cancelado') {
+          statusClass = '';
+        } else if (d && (new Date(d.getFullYear(), d.getMonth(), d.getDate()) < todayDateOnly)) {
+          vencidas += valor;
+          statusClass = 'status-alert';
+        } else {
+          vencer += valor;
+          statusClass = 'status-pending';
+        }
+
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td data-label="Fornecedor">${e.supplier || '—'}</td>
+          <td data-label="Categoria">${e.category || '—'}</td>
+          <td data-label="Forma de pagamento">${e.payment || '—'}</td>
+          <td data-label="Valor">${dinheiro(e.valor ?? 0)}</td>
+          <td data-label="Vencimento">${d ? (String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear()) : '—'}</td>
+          <td data-label="Status" class="${statusClass}">${e.status || '—'}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+
+      document.getElementById('totalVencidas').textContent = dinheiro(vencidas);
+      document.getElementById('totalVencer').textContent = dinheiro(vencer);
+      document.getElementById('totalQuitadas').textContent = dinheiro(quitadas);
+      countEl.textContent = filtradas.length;
+    }
+
+    // Export CSV respeitando filtros (inclui categoria)
+    function exportCSV() {
+      const filtradas = aplicaFiltros(expenses);
+      const header = ['Fornecedor','Categoria','Forma de pagamento','Valor','Vencimento','Status'];
+      const rows = filtradas.map(r => [
+        r.supplier || '',
+        r.category || '',
+        r.payment || '',
+        (r.valor ?? 0),
+        r.due_date ? (function(d){ const dt = parseDate(d); if(!dt) return ''; return `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`; })(r.due_date) : '',
+        r.status || ''
+      ]).map(r => r.map(v => String(v ?? '').replace(/;/g, ',')).join(';'));
+      const csv = [header.join(';'), ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'contas_pagar.csv'; a.click();
+      URL.revokeObjectURL(url);
+    }
+    window.exportCSV = exportCSV;
+
+    // Limpar filtros
+    function clearFilters() {
+      fStatus.value = '';
+      fSupplier.value = '';
+      fCategory.value = 'all';
+      fStart.value = '';
+      fEnd.value = '';
+      renderPayables();
+    }
+    window.clearFilters = clearFilters;
+
+    // Recarregar dados
+    async function recarregar() { await carregarContas(); }
+    window.recarregar = recarregar;
+
+    // Eventos para re-render quando filtros mudam
+    fStatus.addEventListener('change', renderPayables);
+    fSupplier.addEventListener('input', renderPayables);
+    fCategory.addEventListener('change', renderPayables);
+    fStart.addEventListener('change', renderPayables);
+    fEnd.addEventListener('change', renderPayables);
+
+    // Inicialização
+    carregarContas();
+  </script>
+</body>
+</html>

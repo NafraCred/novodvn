@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Contratos</title>
+<script type="module">
+  import { protectRoute } from '../assets/protect-route.js';
+  protectRoute();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; opacity:0; transform:scale(0.5); animation:logoFade 1.2s ease-out forwards; }
+    @keyframes logoFade { to { opacity:1; transform:scale(1); } }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none;
+      flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:30px 20px; }
+    main h2 { font-size:22px; margin-bottom:20px; color:#2c3e50; }
+
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:30px; }
+    .card h3 { font-size:16px; color:#2c3e50; margin-bottom:12px; border-bottom:1px solid #eee; padding-bottom:6px; }
+
+    .form-row { margin-bottom:12px; }
+    .form-row label { display:block; font-size:13px; color:#34495e; margin-bottom:4px; }
+    .form-row input, .form-row select { width:100%; padding:8px; border:1px solid #ccc; border-radius:6px; font-size:14px; background:#fff; }
+
+    .grid-row { display:flex; flex-wrap:wrap; gap:20px; }
+    .grid-row .form-row { flex:1 1 220px; }
+
+    .form-actions { margin-top:10px; display:flex; gap:12px; flex-wrap:wrap; }
+    .btn-primary { background:#1abc9c; color:#fff; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#16a085; }
+    .btn-secondary { background:#bdc3c7; color:#2c3e50; border:none; padding:10px 16px; font-size:14px; border-radius:6px; cursor:pointer; }
+    .btn-secondary:hover { background:#aeb6bf; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; font-size:13px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+
+    .table { width:100%; border-collapse:collapse; font-size:14px; }
+    .table th, .table td { border:1px solid #eee; padding:10px; text-align:left; vertical-align:top; }
+    .table thead th { background:#f7f8f9; color:#2c3e50; font-weight:600; }
+
+    .pagination { margin-top:10px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+    .pagination button { padding:6px 12px; border:none; border-radius:6px; cursor:pointer; background:#bdc3c7; color:#2c3e50; font-size:14px; }
+    .pagination button:hover { background:#aeb6bf; }
+    .pagination .active { background:#1abc9c; color:#fff; }
+
+    .muted { color:#7f8c8d; font-size:12px; }
+
+    /* Estilo para telefone herdando fonte/estilo do container (nome/idade) */
+    .client-phone { font: inherit; color: inherit; margin-top: 4px; display:inline-block; }
+    .client-phone-value { font-weight: 600; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="./proposta-nova.html">Proposta nova</a></li>
+          <li><a href="./cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="./contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+  <main>
+    <h2>Esteira de análise</h2>
+
+    <div class="card">
+      <h3>Filtros</h3>
+      <div class="grid-row">
+        <div class="form-row"><label>CPF/CNPJ</label><input id="fCpfCnpj" maxlength="18" /></div>
+        <div class="form-row"><label>Nº Proposta</label><input id="fProposta" /></div>
+        <div class="form-row"><label>Nº Contrato</label><input id="fContrato" /></div>
+        <div class="form-row"><label>ID Contrato</label><input id="fIdContrato" /></div>
+      </div>
+
+      <div class="grid-row">
+        <div class="form-row"><label>Vendedor</label>
+          <select id="fVendedor">
+            <option value="">— Todos —</option>
+          </select>
+        </div>
+
+        <div class="form-row"><label>Nome do cliente</label><input id="fNomeCliente" placeholder="Pesquisar por nome" /></div>
+
+        <div class="form-row"><label>Status</label>
+          <select id="fStatus">
+            <option value="">— Todos —</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="grid-row">
+        <div class="form-row"><label>Data inicial</label><input type="date" id="fDataInicio" /></div>
+        <div class="form-row"><label>Data final</label><input type="date" id="fDataFim" /></div>
+        <div class="form-row">
+          <label>Tipo de data</label>
+          <select id="fTipoData">
+            <option value="digitacao">Digitação no banco</option>
+            <option value="cadastro">Cadastro</option>
+            <option value="pagamento">Pagamento</option>
+          </select>
+        </div>
+      </div>
+      <div class="grid-row">
+        <div class="form-row"><label><input type="checkbox" id="fOcultarCancelados" /> Ocultar CANCELADOS/RECUSADOS/REPROVADOS</label></div>
+        <div class="form-row"><label><input type="checkbox" id="fOcultarPagos" /> Ocultar PAGOS</label></div>
+      </div>
+      <div class="form-actions">
+        <button class="btn-primary" id="btnPesquisar">Pesquisar</button>
+        <button class="btn-secondary" id="btnLimpar">Limpar filtro</button>
+        <button class="btn-small" id="btnExportar">Exportar CSV</button>
+        <button class="btn-primary" id="btnNovoContrato">Novo contrato</button>
+      </div>
+      <div class="muted" id="resultadoInfo"></div>
+    </div>
+
+    <div class="card">
+      <h3>Contratos encontrados</h3>
+      <div class="grid-row">
+        <div class="form-row">
+          <label>Itens por página</label>
+          <select id="itensPorPagina">
+            <option value="10" selected>10</option>
+            <option value="20">20</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+            <option value="200">200</option>
+            <option value="500">500</option>
+          </select>
+        </div>
+        <div class="form-row">
+          <label>Ordenação</label>
+          <select id="ordenacao">
+            <option value="recente" selected>Mais recentes primeiro</option>
+            <option value="antigo">Mais antigos primeiro</option>
+          </select>
+        </div>
+      </div>
+      <table class="table" id="contratosTabela">
+        <thead>
+          <tr>
+            <th>Cliente</th>
+            <th>Venda</th>
+            <th>Contrato</th>
+            <th>Produto</th>
+            <th>Status</th>
+            <th>Ações</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div id="paginacao" class="pagination"></div>
+    </div>
+  </main>
+
+  <script type="module">
+    import { supabase, store } from "../assets/core.js";
+
+    let contratos = [];
+    let bancos = [], convenios = [], tipos = [], tabelas = [];
+    let vendedores = []; // lista de vendedores para popular select
+    let paginaAtual = 1;
+    let porPagina = parseInt(document.getElementById('itensPorPagina').value, 10);
+
+    // -------------------------
+    // Utilitários de data (tratam strings YYYY-MM-DD como local, evitando shift de fuso)
+    // -------------------------
+    function parseDateLocal(isoOrDateStr) {
+      if (!isoOrDateStr) return null;
+      const s = String(isoOrDateStr).trim();
+      // se for no formato YYYY-MM-DD (apenas data), cria Date local sem shift
+      const m = s.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+      if (m) {
+        return new Date(Number(m[1]), Number(m[2]) - 1, Number(m[3]));
+      }
+      // se começar com YYYY-MM-DD seguido de T (ISO completo), extraímos a parte de data para evitar shift
+      const m2 = s.match(/^(\d{4})-(\d{2})-(\d{2})T/);
+      if (m2) {
+        return new Date(Number(m2[1]), Number(m2[2]) - 1, Number(m2[3]));
+      }
+      // fallback para outros formatos
+      const d = new Date(s);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function formatarDataSomenteData(dateStr) {
+      const d = parseDateLocal(dateStr);
+      if (!d) return '-';
+      return String(d.getDate()).padStart(2,'0') + '/' + String(d.getMonth()+1).padStart(2,'0') + '/' + d.getFullYear();
+    }
+    function isoDateForInput(dateStr) {
+      const d = parseDateLocal(dateStr);
+      if (!d) return '';
+      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+    }
+    // -------------------------
+
+    // Utils
+    function dinheiroBR(n) { const v = Number(n || 0); return v.toLocaleString('pt-BR', { minimumFractionDigits: 2 }); }
+    // Retorna apenas a data (DD/MM/AAAA) — sem shift
+    function formatarData(data) { if (!data) return '-'; return formatarDataSomenteData(data); }
+    function calcularIdade(dataNasc) {
+      if (!dataNasc) return '-';
+      const hoje = new Date();
+      const nasc = parseDateLocal(dataNasc);
+      if (!nasc) return '-';
+      let idade = hoje.getFullYear() - nasc.getFullYear();
+      const m = hoje.getMonth() - nasc.getMonth();
+      if (m < 0 || (m === 0 && hoje.getDate() < nasc.getDate())) idade--;
+      return idade;
+    }
+    function formatarDoc(valor) {
+      let v = String(valor || '').replace(/\D/g, '');
+      if (!v) return '-';
+      if (v.length <= 11) {
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d)/, "$1.$2");
+        v = v.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      } else {
+        v = v.replace(/^(\d{2})(\d)/, "$1.$2");
+        v = v.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+        v = v.replace(/\.(\d{3})(\d)/, ".$1/$2");
+        v = v.replace(/(\d{4})(\d)/, "$1-$2");
+      }
+      return v;
+    }
+    function buscarNome(lista, id) { if (!id && id !== 0) return '-'; const item = lista.find(x => String(x.id) === String(id)); return item?.name || '-'; }
+    function buscarNomeTabela(id) { if (!id && id !== 0) return '-'; const item = tabelas.find(t => String(t.id) === String(id)); return item?.table_name || '-'; }
+
+    // Ações globais
+    window.editar = propostaId => location.href = `proposta-nova.html?propostaId=${propostaId}&mode=edit`;
+    window.verHistorico = propostaId => {
+      if (!propostaId) {
+        alert("Proposta ID não encontrado.");
+        return;
+      }
+      location.href = `contrato-historico.html?propostaId=${propostaId}`;
+    };
+    window.marcarPago = async id => {
+      try {
+        // grava payment_date como ISO completo no banco; ao carregar normalizamos para apenas data local
+        const { error } = await supabase.from("contratos").update({ status: 'Pago', payment_date: new Date().toISOString() }).eq("id", id);
+        if (error) throw error;
+        await carregarContratos();
+      } catch (err) { alert("Erro ao marcar como pago: " + (err?.message || err)); }
+    };
+
+    // Filtros
+    function aplicaFiltrosBase(dataArr) {
+      const cpfRaw = (document.getElementById('fCpfCnpj').value || '').trim();
+      const cpf = cpfRaw.replace(/\D/g, '');
+      const nProp = (document.getElementById('fProposta').value || '').trim();
+      const nContrato = (document.getElementById('fContrato').value || '').trim();
+      const idContrato = (document.getElementById('fIdContrato').value || '').trim();
+      const dtIni = document.getElementById('fDataInicio').value;
+      const dtFim = document.getElementById('fDataFim').value;
+      const tipoData = document.getElementById('fTipoData').value;
+      const ocultarCanc = document.getElementById('fOcultarCancelados').checked;
+      const ocultarPagos = document.getElementById('fOcultarPagos').checked;
+
+      // novos filtros
+      const vendedorFiltro = (document.getElementById('fVendedor').value || '').trim();
+      const nomeClienteFiltro = (document.getElementById('fNomeCliente').value || '').trim().toLowerCase();
+      const statusFiltro = (document.getElementById('fStatus').value || '').trim();
+
+      // parse start/end as local dates (no shift)
+      const startDate = dtIni ? parseDateLocal(dtIni) : null;
+      const endDate = dtFim ? (() => { const d = parseDateLocal(dtFim); if (d) d.setHours(23,59,59,999); return d; })() : null;
+
+      return dataArr.filter(c => {
+        if (cpf && !String(c.client?.cpf_cnpj || '').replace(/\D/g,'').includes(cpf)) return false;
+        if (nProp && !String(c.data?.proposal_number || '').includes(nProp)) return false;
+        if (nContrato && !String(c.data?.contract_number || '').includes(nContrato)) return false;
+        if (idContrato && String(c.id) !== String(idContrato)) return false;
+
+        // filtro por vendedor (id)
+        if (vendedorFiltro && String(c.vendedor_id) !== vendedorFiltro) return false;
+
+        // filtro por nome do cliente (contains, case-insensitive)
+        if (nomeClienteFiltro && !(String(c.client?.name || '').toLowerCase().includes(nomeClienteFiltro))) return false;
+
+        // filtro por status (exato)
+        if (statusFiltro && String((c.data?.status || '')).trim() !== statusFiltro) return false;
+
+        const status = (c.data?.status || '').toUpperCase();
+        if (ocultarCanc && (status.includes('CANCELADO') || status.includes('RECUSADO') || status.includes('REPROVADO'))) return false;
+        if (ocultarPagos && status.includes('PAGO')) return false;
+
+        let dataRefStr = null;
+        if (tipoData === 'digitacao') dataRefStr = c.data?.typing_date;
+        else if (tipoData === 'cadastro') dataRefStr = c.data?.created_at;
+        else if (tipoData === 'pagamento') dataRefStr = c.data?.payment_date;
+
+        if (startDate || endDate) {
+          if (!dataRefStr) return false;
+          const d = parseDateLocal(dataRefStr);
+          if (!d) return false;
+          if (startDate && d < startDate) return false;
+          if (endDate && d > endDate) return false;
+        }
+        return true;
+      });
+    }
+
+    // Ordenação/paginação
+    const ordenacaoEl = document.getElementById('ordenacao');
+    const itensPorPaginaEl = document.getElementById('itensPorPagina');
+    const resultadoInfo = document.getElementById('resultadoInfo');
+
+    function ordenar(lista) {
+      return lista.sort((a, b) => {
+        const da = parseDateLocal(a.data?.typing_date)?.getTime() || 0;
+        const db = parseDateLocal(b.data?.typing_date)?.getTime() || 0;
+        return (ordenacaoEl.value === 'recente') ? (db - da) : (da - db);
+      });
+    }
+    function renderPaginacao(totalRegistros) {
+      porPagina = parseInt(itensPorPaginaEl.value, 10);
+      const totalPaginas = Math.max(1, Math.ceil(totalRegistros / porPagina));
+      const pagDiv = document.getElementById('paginacao');
+      pagDiv.innerHTML = '';
+      if (totalPaginas <= 1) return;
+
+      const addBtn = (label, page, active = false, disabled = false) => {
+        const btn = document.createElement('button');
+        btn.textContent = label;
+        if (active) btn.classList.add('active');
+        if (disabled) btn.disabled = true;
+        btn.addEventListener('click', () => { paginaAtual = page; void atualizarTabela(); });
+        pagDiv.appendChild(btn);
+      };
+
+      const addReticencias = () => {
+        const span = document.createElement('span');
+        span.textContent = '…';
+        span.style.padding = '0 6px';
+        span.style.color = '#7f8c8d';
+        span.style.alignSelf = 'center';
+        pagDiv.appendChild(span);
+      };
+
+      addBtn('«', Math.max(1, paginaAtual - 1), false, paginaAtual === 1);
+
+      // Mostra: primeira página, última página, e algumas ao redor da atual — com "…" nos buracos.
+      const vizinhas = 2;
+      const paginasAMostrar = new Set([1, totalPaginas]);
+      for (let i = paginaAtual - vizinhas; i <= paginaAtual + vizinhas; i++) {
+        if (i >= 1 && i <= totalPaginas) paginasAMostrar.add(i);
+      }
+      const ordenadas = Array.from(paginasAMostrar).sort((a, b) => a - b);
+
+      let anterior = 0;
+      for (const p of ordenadas) {
+        if (anterior && p - anterior > 1) addReticencias();
+        addBtn(String(p), p, p === paginaAtual);
+        anterior = p;
+      }
+
+      addBtn('»', Math.min(totalPaginas, paginaAtual + 1), false, paginaAtual === totalPaginas);
+
+      // Campo para ir direto a uma página específica (útil quando há muitas páginas)
+      const irWrap = document.createElement('span');
+      irWrap.style.marginLeft = '10px';
+      irWrap.style.display = 'inline-flex';
+      irWrap.style.gap = '4px';
+      irWrap.style.alignItems = 'center';
+
+      const irInput = document.createElement('input');
+      irInput.type = 'number';
+      irInput.min = '1';
+      irInput.max = String(totalPaginas);
+      irInput.placeholder = `1-${totalPaginas}`;
+      irInput.style.width = '70px';
+      irInput.style.padding = '5px 8px';
+      irInput.style.borderRadius = '6px';
+      irInput.style.border = '1px solid #bdc3c7';
+
+      const irBtn = document.createElement('button');
+      irBtn.textContent = 'Ir';
+      const irParaPagina = () => {
+        const valor = parseInt(irInput.value, 10);
+        if (valor >= 1 && valor <= totalPaginas) { paginaAtual = valor; void atualizarTabela(); }
+      };
+      irBtn.addEventListener('click', irParaPagina);
+      irInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') irParaPagina(); });
+
+      irWrap.appendChild(irInput);
+      irWrap.appendChild(irBtn);
+      pagDiv.appendChild(irWrap);
+    }
+
+    // Pré-carregar vendedores e grupos
+    async function carregarVendedoresPorIds(ids) {
+      if (!ids.length) return new Map();
+      const { data } = await supabase.from("vendedores").select("id, nome, grupo_id").in("id", ids);
+      const map = new Map(); (data || []).forEach(v => map.set(String(v.id), v)); return map;
+    }
+    async function carregarGruposPorIds(ids) {
+      if (!ids.length) return new Map();
+      const { data } = await supabase.from("grupos").select("id, nome").in("id", ids);
+      const map = new Map(); (data || []).forEach(g => map.set(String(g.id), g.nome)); return map;
+    }
+
+    // Buscar status mais recente
+    async function carregarStatusMaisRecente(contratoIds) {
+      if (!contratoIds.length) return new Map();
+      const { data } = await supabase
+        .from("historicos")
+        .select("contrato_id, status, data")
+        .in("contrato_id", contratoIds)
+        .order("data", { ascending: false });
+      const map = new Map();
+      (data || []).forEach(h => { const key = String(h.contrato_id); if (!map.has(key)) map.set(key, h.status); });
+      return map;
+    }
+
+    // Renderização
+    async function renderTabelaPaginada(lista) {
+      porPagina = parseInt(itensPorPaginaEl.value, 10);
+      const total = lista.length;
+      const inicio = (paginaAtual - 1) * porPagina;
+      const fim = inicio + porPagina;
+      const page = lista.slice(inicio, fim);
+
+      const tbody = document.querySelector('#contratosTabela tbody');
+      tbody.innerHTML = '';
+      resultadoInfo.textContent = `Total: ${total} contratos | Página ${paginaAtual} de ${Math.max(1, Math.ceil(total / porPagina))}`;
+
+      if (page.length === 0) {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td colspan="6" class="muted">Nenhum contrato encontrado.</td>`;
+        tbody.appendChild(tr);
+      } else {
+        const vendedorIds = Array.from(new Set(page.map(c => c.vendedor_id).filter(Boolean)));
+        const vendedoresMap = await carregarVendedoresPorIds(vendedorIds);
+        const grupoIds = Array.from(new Set(Array.from(vendedoresMap.values()).map(v => v.grupo_id).filter(Boolean)));
+        const gruposMap = await carregarGruposPorIds(grupoIds);
+
+        const contratoIds = page.map(c => c.id);
+        const statusMap = await carregarStatusMaisRecente(contratoIds);
+
+        for (const c of page) {
+          const tipoNome = c.data?.contract_type_name || buscarNome(tipos, c.data?.contract_type_id);
+          const bancoNome = buscarNome(bancos, c.data?.bank_id);
+          const convenioNome = buscarNome(convenios, c.data?.agreement_id);
+          const tabelaNome = buscarNomeTabela(c.data?.product_table_id);
+          const docFmt = formatarDoc(c.client?.cpf_cnpj || '');
+
+          const vendInfo = vendedoresMap.get(String(c.vendedor_id));
+          const vendedorNome = vendInfo?.nome || '-';
+          const grupoNome = vendInfo?.grupo_id ? (gruposMap.get(String(vendInfo.grupo_id)) || '-') : '-';
+
+          const statusAtual = statusMap.get(String(c.id)) || c.data?.status || 'Nova Solicitação';
+
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>
+              <strong>${c.client?.name || '-'}</strong><br>
+              CPF/CNPJ: ${docFmt}<br>
+              Idade: ${calcularIdade(c.client?.birth_date)}<br>
+              Nb/Mat: ${c.client_agreement?.registration_number || '-'}<br>
+              <span class="client-phone">Telefone: <span class="client-phone-value">${c.client?.mobile || '-'}</span></span>
+            </td>
+            <td>
+              Filial: ${c.filial || 'MATRIZ'}<br>
+              Vendedor: ${vendedorNome}<br>
+              Grupo: ${grupoNome}<br>
+              Digitado: ${formatarData(c.data?.typing_date)}
+            </td>
+            <td>
+              Solicitado: R$ ${dinheiroBR(c.data?.requested_amount)}<br>
+              Liberado: R$ ${dinheiroBR(c.data?.released_amount)}<br>
+              Parcela: R$ ${dinheiroBR(c.data?.installment_amount)}<br>
+              Nº Prop/ADE: ${c.data?.proposal_number || '-'}<br>
+              Nº Contrato: ${c.data?.contract_number || '-'}<br>
+              ID: ${c.proposta_id}
+            </td>
+            <td>
+              Tipo: ${tipoNome || '-'}<br>
+              Banco: ${bancoNome || '-'}<br>
+              Convênio: ${convenioNome || '-'}<br>
+              Tabela: ${tabelaNome || '-'}<br>
+              Prazo: ${c.data?.prazo_escolhido || '-'}x<br>
+              Promotora: ${c.promotora_nome || '-'}
+            </td>
+            <td>
+              Status: ${statusAtual}
+            </td>
+            <td>
+              <button class="btn-small" onclick="editar(${c.proposta_id})">Editar proposta</button>
+              <button class="btn-small" onclick="verHistorico(${c.proposta_id})">Ver histórico</button>
+              <button class="btn-small" onclick="marcarPago(${c.id})">Marcar como Pago</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        }
+      }
+
+      renderPaginacao(total);
+    }
+
+    async function atualizarTabela() {
+      const filtrados = aplicaFiltrosBase(contratos);
+      const ordenados = ordenar(filtrados);
+      await renderTabelaPaginada(ordenados);
+    }
+
+    // Eventos
+    document.getElementById('btnPesquisar').addEventListener('click', () => { paginaAtual = 1; void atualizarTabela(); });
+    document.getElementById('btnLimpar').addEventListener('click', () => {
+      document.getElementById('fCpfCnpj').value = '';
+      document.getElementById('fProposta').value = '';
+      document.getElementById('fContrato').value = '';
+      document.getElementById('fIdContrato').value = '';
+      document.getElementById('fDataInicio').value = '';
+      document.getElementById('fDataFim').value = '';
+      document.getElementById('fTipoData').value = 'digitacao';
+      document.getElementById('fOcultarCancelados').checked = false;
+      document.getElementById('fOcultarPagos').checked = false;
+      document.getElementById('fVendedor').value = '';
+      document.getElementById('fNomeCliente').value = '';
+      document.getElementById('fStatus').value = '';
+      paginaAtual = 1;
+      void atualizarTabela();
+    });
+    document.getElementById('btnExportar').addEventListener('click', () => {
+      const data = ordenar(aplicaFiltrosBase(contratos)).map(c => ({
+        id: c.id,
+        nome: c.client?.name || '',
+        cpf_cnpj: c.client?.cpf_cnpj || '',
+        telefone: c.client?.mobile || '',
+        vendedor: c.vendedor_id || '',
+        solicitado: c.data?.requested_amount || '',
+        liberado: c.data?.released_amount || '',
+        parcela: c.data?.installment_amount || '',
+        proposta: c.data?.proposal_number || '',
+        contrato: c.data?.contract_number || '',
+        tipo: c.data?.contract_type_name || buscarNome(tipos, c.data?.contract_type_id),
+        banco: buscarNome(bancos, c.data?.bank_id),
+        convenio: buscarNome(convenios, c.data?.agreement_id),
+        tabela: buscarNomeTabela(c.data?.product_table_id),
+        prazo: c.data?.prazo_escolhido || '',
+        status: c.data?.status || '',
+        promotora: c.promotora_nome || ''
+      }));
+      const header = Object.keys(data[0] || {}).join(';');
+      const rows = data.map(obj => Object.values(obj).map(v => String(v ?? '').replace(/;/g, ',')).join(';'));
+      const csv = [header, ...rows].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'contratos.csv'; a.click();
+      URL.revokeObjectURL(url);
+    });
+    document.getElementById('btnNovoContrato').addEventListener('click', () => { location.href = "./proposta-nova.html?mode=new"; });
+    document.getElementById('ordenacao').addEventListener('change', () => { paginaAtual = 1; void atualizarTabela(); });
+    document.getElementById('itensPorPagina').addEventListener('change', () => { paginaAtual = 1; void atualizarTabela(); });
+
+    // Máscara CPF/CNPJ nos filtros
+    function aplicarMascaraCpfCnpj(el) {
+      let valor = String(el.value || '').replace(/\D/g, '');
+      if (valor.length <= 11) {
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
+        valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+      } else {
+        valor = valor.replace(/^(\d{2})(\d)/, "$1.$2");
+        valor = valor.replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3");
+        valor = valor.replace(/\.(\d{3})(\d)/, ".$1/$2");
+        valor = valor.replace(/(\d{4})(\d)/, "$1-$2");
+      }
+      el.value = valor;
+    }
+    const filtroCpfEl = document.getElementById('fCpfCnpj');
+    if (filtroCpfEl) {
+      filtroCpfEl.addEventListener('keyup', () => aplicarMascaraCpfCnpj(filtroCpfEl));
+      filtroCpfEl.addEventListener('blur', () => aplicarMascaraCpfCnpj(filtroCpfEl));
+    }
+
+    // Popula selects de filtros (vendedores e status)
+    function popularFiltros() {
+      const selVendedor = document.getElementById('fVendedor');
+      selVendedor.innerHTML = '<option value="">— Todos —</option>';
+      (vendedores || []).forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = String(v.id);
+        opt.textContent = v.nome;
+        selVendedor.appendChild(opt);
+      });
+
+      // status a partir dos contratos carregados (únicos)
+      const selStatus = document.getElementById('fStatus');
+      const statusSet = new Set((contratos || []).map(c => (c.data?.status || '').trim()).filter(s => s));
+      selStatus.innerHTML = '<option value="">— Todos —</option>';
+      Array.from(statusSet).sort().forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s;
+        opt.textContent = s;
+        selStatus.appendChild(opt);
+      });
+    }
+
+    // Busca TODOS os contratos, ignorando o limite padrão de 1000 linhas do Supabase.
+    // Faz várias requisições em lotes (páginas de 1000) usando .range() até não sobrar mais nada.
+    async function fetchTodosContratos() {
+      const TAMANHO_LOTE = 1000;
+      let de = 0;
+      let todasLinhas = [];
+      while (true) {
+        const { data, error } = await supabase
+          .from("contratos")
+          .select(`
+            *,
+            promotoras:promotora_id (promotora),
+            clientes:cliente_id (name, cpf_cnpj, birth_date, registration_number, mobile),
+            bancos:bank_id (name),
+            convenios:agreement_id (name),
+            tipos_contrato:contract_type_id (name),
+            tabelas_produto:product_table_id (table_name)
+          `)
+          .order("id", { ascending: false })
+          .range(de, de + TAMANHO_LOTE - 1);
+
+        if (error) return { data: null, error };
+
+        todasLinhas = todasLinhas.concat(data || []);
+
+        if (!data || data.length < TAMANHO_LOTE) break; // último lote (menor que o tamanho do lote = acabou)
+        de += TAMANHO_LOTE;
+      }
+      return { data: todasLinhas, error: null };
+    }
+
+    // Carregar bases e contratos do Supabase
+    async function carregarContratos() {
+      try { bancos = await store('bancos') || []; } catch(e) { bancos = []; }
+      try { convenios = await store('convenios') || []; } catch(e) { convenios = []; }
+      try { tipos = await store('tipos_contrato') || []; } catch(e) { tipos = []; }
+      try { tabelas = await store('tabelas_produto') || []; } catch(e) { tabelas = []; }
+
+      // carregar lista de vendedores para filtro
+      try {
+        const { data: vendData } = await supabase.from("vendedores").select("id, nome").order("nome");
+        vendedores = vendData || [];
+      } catch (e) {
+        vendedores = [];
+      }
+
+      // O Supabase/PostgREST limita cada requisição a 1000 linhas por padrão.
+      // Para trazer TODOS os contratos (mesmo com mais de 1000), buscamos em lotes usando .range().
+      const { data, error } = await fetchTodosContratos();
+
+      if (error) {
+        alert("Erro ao carregar contratos: " + error.message);
+        contratos = [];
+      } else {
+        // Normalizamos as datas para strings YYYY-MM-DD (sem shift) ao mapear os registros.
+        contratos = (data || []).map(row => {
+          const rawTyping = row.typing_date || row.created_at || new Date().toISOString();
+          const rawCreated = row.created_at || null;
+          const rawPayment = row.payment_date || null;
+          return {
+            id: row.id,
+            proposta_id: row.proposta_id,
+            promotora_nome: row.promotoras?.promotora || '-', // nome correto vindo do Supabase
+            filial: row.filial || 'MATRIZ',
+            vendedor_id: row.vendedor_id || null,
+            client: {
+              name: row.clientes?.name || '',
+              cpf_cnpj: row.clientes?.cpf_cnpj || '',
+              birth_date: row.clientes?.birth_date || '',
+              mobile: row.clientes?.mobile || ''
+            },
+            client_agreement: {
+              registration_number: row.clientes?.registration_number || ''
+            },
+            data: {
+              requested_amount: row.requested_amount || 0,
+              released_amount: row.released_amount || 0,
+              installment_amount: row.installment_amount || 0,
+              proposal_number: row.numero_proposta || '',
+              contract_number: row.numero_contrato || '',
+              // aqui normalizamos para YYYY-MM-DD (isoDateForInput) para evitar shift ao exibir
+              typing_date: isoDateForInput(rawTyping),
+              contract_type_id: row.contract_type_id || null,
+              contract_type_name: row.tipos_contrato?.name || '',
+              bank_id: row.bank_id || null,
+              agreement_id: row.agreement_id || null,
+              product_table_id: row.product_table_id || null,
+              prazo_escolhido: row.prazo || null,
+              status: row.status || '',
+              payment_date: rawPayment ? isoDateForInput(rawPayment) : null,
+              created_at: rawCreated ? isoDateForInput(rawCreated) : null
+            }
+          };
+        });
+      }
+
+      // popular selects de filtros com os dados carregados
+      popularFiltros();
+
+      await atualizarTabela();
+    }
+
+    void carregarContratos();
+  </script>
+
+  <script>
+    // Intercepta cliques na fase de captura para evitar que o onclick inline execute
+    document.addEventListener('click', function (event) {
+      // só nos interessa botões (ou elementos que contenham onclick verHistorico)
+      const btn = event.target.closest('button, [onclick]');
+      if (!btn) return;
+
+      const text = (btn.textContent || '').trim();
+      const onclickAttr = btn.getAttribute('onclick') || '';
+
+      const isVerHistorico = /verHistorico\s*\(/i.test(onclickAttr) || /ver historico/i.test(text);
+      if (!isVerHistorico) return;
+
+      if (event.ctrlKey) {
+        // impede a execução do handler inline e qualquer outro listener
+        event.preventDefault();
+        event.stopImmediatePropagation();
+
+        // tenta extrair o id do atributo onclick: verHistorico(123) ou verHistorico('123')
+        let propostaId = null;
+        const m = onclickAttr.match(/verHistorico\s*\(\s*([^\)]+)\s*\)/i);
+        if (m && m[1]) {
+          propostaId = m[1].replace(/['"\s]/g, '');
+        }
+
+        // fallback para data attribute caso queira adicionar futuramente
+        if (!propostaId) {
+          propostaId = btn.dataset.propostaId || btn.getAttribute('data-proposta-id') || null;
+        }
+
+        const href = propostaId ? `contrato-historico.html?propostaId=${propostaId}` : 'contrato-historico.html';
+        window.open(href, '_blank');
+      }
+    }, true); // <-- capture = true
+  </script>
+</body>
+</html>

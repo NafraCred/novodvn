@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <title>DVN — Metas</title>
+<script type="module">
+  import { protectRoute } from '../assets/protect-route.js';
+  protectRoute();
+</script>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="../assets/styles.css" />
+  <style>
+    header { background:#2c3e50; text-align:center; padding:10px; }
+    header img.logo { height:60px; }
+
+    nav { background:#34495e; font-size:14px; }
+    nav ul { list-style:none; margin:0; padding:0 10px; display:flex; gap:20px; align-items:center; }
+    nav ul>li { position:relative; }
+    nav a { display:block; color:#ecf0f1; text-decoration:none; padding:12px 10px; }
+    nav ul>li:hover>a { color:#1abc9c; background:#3d566e; border-radius:6px; }
+    nav ul li ul { position:absolute; top:100%; left:0; background:#3d566e; min-width:220px; display:none; flex-direction:column; padding:8px 0; border-radius:6px; box-shadow:0 2px 6px rgba(0,0,0,0.15); z-index:10; }
+    nav ul li:hover ul { display:flex; }
+    nav ul li ul li a { padding:10px 14px; color:#ecf0f1; font-size:14px; white-space:nowrap; }
+    nav ul li ul li a:hover { background:#435d78; color:#1abc9c; }
+
+    main { padding:20px; }
+    .card { background:#fff; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.08); padding:20px; margin-bottom:20px; }
+    .form-row { margin-bottom:12px; display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .form-row label { min-width:160px; color:#34495e; font-size:14px; }
+    .form-row input { flex:1; padding:8px; border:1px solid #ccc; border-radius:6px; }
+    .btn-primary { background:#1abc9c; color:#fff; border:none; padding:10px 16px; border-radius:6px; cursor:pointer; }
+    .btn-primary:hover { background:#16a085; }
+    .btn-small { background:#ecf0f1; color:#2c3e50; border:none; padding:8px 12px; border-radius:6px; cursor:pointer; }
+    .btn-small:hover { background:#d5d8dc; }
+    .day-row { display:flex; gap:12px; align-items:center; flex-wrap:wrap; margin-bottom:10px; }
+    .day-row span { font-size:14px; color:#2c3e50; }
+    .muted { color:#7f8c8d; font-size:13px; }
+
+    /* Tabela de meses realizados */
+    table.meses-table { width:100%; border-collapse:collapse; margin-top:12px; }
+    table.meses-table th, table.meses-table td { padding:8px 10px; border-bottom:1px solid #eee; text-align:left; font-size:14px; }
+    table.meses-table th { background:#f7f9fa; color:#34495e; }
+    .link-month { color:#2980b9; cursor:pointer; text-decoration:underline; background:none; border:none; padding:0; font-size:14px; }
+    .summary-row { display:flex; gap:20px; align-items:center; justify-content:flex-end; margin-top:8px; font-weight:600; }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="../assets/logo-dvn.png" alt="DVN SOLUÇÕES" class="logo" />
+  </header>
+
+  <nav>
+    <ul>
+      <li><a href="../dashboard.html">Dashboard</a></li>
+      <li>
+        <a href="#">Operacional</a>
+        <ul>
+          <li><a href="../operacional/proposta-nova.html">Proposta nova</a></li>
+          <li><a href="../operacional/cliente-cadastro.html">Cadastro de cliente</a></li>
+          <li><a href="../operacional/contratos.html">Contratos</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Financeiro</a>
+        <ul>
+          <li><a href="../financeiro/despesas.html">Despesas</a></li>
+          <li><a href="../financeiro/receitas.html">Receitas</a></li>
+          <li><a href="../financeiro/contas-pagar.html">Contas a Pagar</a></li>
+          <li><a href="../financeiro/contas-receber.html">Contas a Receber</a></li>
+          <li><a href="../financeiro/baixa.html">Baixa de Comissão</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Cadastros</a>
+        <ul>
+          <li><a href="../cadastros/bancos.html">Bancos</a></li>
+          <li><a href="../cadastros/convenios.html">Convênios</a></li>
+          <li><a href="../cadastros/tabelas.html">Tabelas</a></li>
+          <li><a href="../cadastros/comissoes.html">Comissões</a></li>
+          <li><a href="../cadastros/vendedores.html">Vendedores</a></li>
+          <li><a href="../cadastros/grupos.html">Grupos</a></li>
+          <li><a href="../cadastros/tipos-contrato.html">Tipos de contrato</a></li>
+          <li><a href="../cadastros/promotora.html">Promotora</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Relatórios</a>
+        <ul>
+          <li><a href="../relatorios/geral.html">Relatório Geral</a></li>
+          <li><a href="../relatorios/mes-a-mes.html">Relatório Mês a Mês</a></li>
+        </ul>
+      </li>
+      <li>
+        <a href="#">Administração</a>
+        <ul>
+          <li><a href="../admin/usuarios.html">Usuários</a></li>
+          <li><a href="../admin/auditoria.html">Auditoria</a></li>
+          <li><a href="../admin/usuarios-bancos-promotoras.html">Usuários de Bancos e Promotoras</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
+
+
+  <main>
+    <h2>Metas de Faturamento</h2>
+
+    <div class="card">
+      <h3>Configuração da meta</h3>
+      <div class="form-row">
+        <label>Mês da meta</label>
+        <input type="month" id="mesMeta" />
+      </div>
+      <div class="form-row">
+        <label>Meta mensal (R$)</label>
+        <input type="number" id="metaMensal" step="0.01" />
+      </div>
+      <div class="form-row">
+        <label>Feriados (YYYY-MM-DD)</label>
+        <input type="text" id="feriadosInput" placeholder="Separe por vírgula, ex: 2026-01-01,2026-01-20" />
+      </div>
+      <div class="form-actions" style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn-primary" id="btnDefinirMeta" type="button">Definir meta</button>
+        <button class="btn-small" id="btnRecalcular" type="button">Recalcular metas</button>
+      </div>
+      <div class="muted">As metas dos dias restantes são ajustadas automaticamente com base no realizado acumulado.</div>
+    </div>
+
+    <div class="card">
+      <h3>Controle diário</h3>
+      <div id="controleDiario"></div>
+    </div>
+
+    <div class="card">
+      <h3>Gráfico Meta x Realizado</h3>
+      <canvas id="chartMeta" height="120"></canvas>
+    </div>
+
+    <div class="card">
+      <h3>Meses realizados</h3>
+      <div style="display:flex; gap:10px; align-items:center; margin-bottom:8px;">
+        <button class="btn-small" id="btnAtualizarMeses">Atualizar meses realizados</button>
+        <div class="muted">Clique em um mês para ver o detalhe dia a dia.</div>
+      </div>
+      <div id="mesesRealizadosContainer">
+        <table class="meses-table" id="mesesTable">
+          <thead>
+            <tr>
+              <th>Mês</th>
+              <th>Meta mensal</th>
+              <th>Realizado total</th>
+              <th>Diferença</th>
+            </tr>
+          </thead>
+          <tbody id="mesesTableBody">
+            <!-- preenchido dinamicamente -->
+          </tbody>
+        </table>
+        <div class="summary-row" id="mesesSummary" style="display:none;">
+          <div id="totalMeta">Total Meta: R$ 0,00</div>
+          <div id="totalRealizado">Total Realizado: R$ 0,00</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script type="module">
+    import { supabase } from "../assets/core.js";
+
+    // Estado
+    let metaMensal = 0;
+    let diasUteis = 0;
+    let feriadosLista = [];
+    let chartInstance = null;
+
+    // Utilidades
+    function dinheiro(n) {
+      return 'R$ ' + (Number(n || 0)).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function parseDate(str) {
+      if (!str) return null;
+      const d = new Date(str);
+      return isNaN(d.getTime()) ? null : d;
+    }
+    function ymd(ano, mes, dia) {
+      return `${ano}-${String(mes).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
+    }
+    function ehDiaUtil(ano, mes, dia) {
+      const d = new Date(ano, mes-1, dia);
+      const dow = d.getDay(); // 0 dom, 6 sáb
+      const dataStr = ymd(ano, mes, dia);
+      return (dow >= 1 && dow <= 5) && !feriadosLista.includes(dataStr);
+    }
+    function diasUteisNoMes(ano, mes) {
+      let count = 0;
+      const ultimoDia = new Date(ano, mes, 0).getDate();
+      for (let dia = 1; dia <= ultimoDia; dia++) {
+        if (ehDiaUtil(ano, mes, dia)) count++;
+      }
+      return count;
+    }
+
+    // IO Supabase
+    async function carregarContratosPagosMes(ano, mes) {
+      const { data, error } = await supabase
+        .from("contratos")
+        .select("*")
+        .ilike("status", "pago");
+      if (error) { console.error(error); return []; }
+      return (data || []).filter(c => {
+        const dt = parseDate(c.payment_date);
+        return dt && (dt.getMonth()+1) === mes && dt.getFullYear() === ano;
+      });
+    }
+
+    async function upsertMetaMensal(ano, mes, meta, dias) {
+      const { error } = await supabase.from("metas").upsert({ ano, mes, meta_mensal: meta, dias_uteis: dias });
+      if (error) console.error("Erro ao salvar metas:", error);
+    }
+
+    async function carregarMetaMensal(ano, mes) {
+      const { data, error } = await supabase
+        .from("metas").select("*")
+        .eq("ano", ano).eq("mes", mes).single();
+      if (error) return null;
+      return data || null;
+    }
+
+    async function carregarMetasDiarias(ano, mes) {
+      const { data, error } = await supabase
+        .from("metas_diarias")
+        .select("*")
+        .eq("ano", ano).eq("mes", mes)
+        .order("dia", { ascending: true });
+      if (error) { console.error(error); return []; }
+      return data || [];
+    }
+
+    async function salvarMetaDia(ano, mes, dia, meta, realizado) {
+      const { error } = await supabase.from("metas_diarias").upsert({ ano, mes, dia, meta, realizado });
+      if (error) console.error("Erro ao salvar meta diária:", error);
+    }
+
+    // Agrega meses já realizados (meta mensal x realizado total) usando comissão bruta
+    async function carregarMesesRealizados() {
+      // Carrega metas mensais
+      const { data: metasData, error: errMetas } = await supabase
+        .from("metas")
+        .select("*")
+        .order("ano", { ascending: false })
+        .order("mes", { ascending: false });
+      if (errMetas) { console.error(errMetas); return []; }
+
+      const meses = [];
+      for (const m of (metasData || [])) {
+        const ano = Number(m.ano);
+        const mes = Number(m.mes);
+
+        // Busca contratos pagos no mês e soma a comissão bruta
+        const contratos = await carregarContratosPagosMes(ano, mes);
+        // Se no seu banco já existir um campo com a comissão bruta, substitua o cálculo abaixo por soma direta desse campo.
+        const totalComissaoBruta = (contratos || []).reduce((soma, c) => {
+          const base = Number(c.requested_amount ?? c.requested_value ?? c.requested_value_amount ?? 0);
+          const perc = Number(c.percentual ?? c.percent ?? c.percentual_commission ?? 0);
+          // cálculo padrão: requested_amount * percentual / 100
+          const comissao = (base * perc / 100);
+          return soma + comissao;
+        }, 0);
+
+        meses.push({
+          ano,
+          mes,
+          meta_mensal: Number(m.meta_mensal || 0),
+          realizado_total: totalComissaoBruta
+        });
+      }
+      return meses;
+    }
+
+    // Comissão do dia (requested_amount * percentual / 100)
+    function comissaoDoDia(contratos, ano, mes, dia) {
+      return contratos
+        .filter(c => {
+          const dt = parseDate(c.payment_date);
+          return dt && dt.getDate() === dia && (dt.getMonth()+1) === mes && dt.getFullYear() === ano;
+        })
+        .reduce((soma, c) => {
+          const base = Number(c.requested_amount || 0);
+          const perc = Number(c.percentual || 0);
+          return soma + (base * perc / 100);
+        }, 0);
+    }
+
+    async function atualizarMetasDiasRestantes(ano, mes) {
+      const ultimoDiaMes = new Date(ano, mes, 0).getDate();
+      const linhas = await carregarMetasDiarias(ano, mes);
+
+      // realizado acumulado até hoje (se mês atual) ou até último dia (se passado)
+      const hoje = new Date();
+      const corteDia =
+        (ano < hoje.getFullYear() || (ano === hoje.getFullYear() && mes < (hoje.getMonth()+1))) ? ultimoDiaMes
+        : (ano === hoje.getFullYear() && mes === (hoje.getMonth()+1)) ? hoje.getDate()
+        : 0;
+
+      let realizadoAteCorte = 0;
+      for (const r of linhas) {
+        if (ehDiaUtil(ano, mes, r.dia) && r.dia <= corteDia) {
+          realizadoAteCorte += Number(r.realizado || 0);
+        }
+      }
+
+      // dias úteis restantes
+      let diasRestantes = 0;
+      for (let d = corteDia + 1; d <= ultimoDiaMes; d++) {
+        if (ehDiaUtil(ano, mes, d)) diasRestantes++;
+      }
+
+      const restanteMeta = metaMensal - realizadoAteCorte;
+      if (diasRestantes <= 0) return;
+
+      const novaMeta = Math.max(0, restanteMeta / diasRestantes);
+
+      for (let d = corteDia + 1; d <= ultimoDiaMes; d++) {
+        if (!ehDiaUtil(ano, mes, d)) continue;
+        await supabase.from("metas_diarias")
+          .update({ meta: novaMeta })
+          .eq("ano", ano).eq("mes", mes).eq("dia", d);
+      }
+    }
+
+    async function renderTabela(ano, mes) {
+      const div = document.getElementById("controleDiario");
+      div.innerHTML = "";
+
+      const contratosPagos = await carregarContratosPagosMes(ano, mes);
+      let linhas = await carregarMetasDiarias(ano, mes);
+
+      // Se não há linhas, cria base proporcional
+      if (!linhas || linhas.length === 0) {
+        const ultimoDia = new Date(ano, mes, 0).getDate();
+        const baseDiaria = diasUteis > 0 ? (metaMensal / diasUteis) : 0;
+        for (let dia = 1; dia <= ultimoDia; dia++) {
+          if (!ehDiaUtil(ano, mes, dia)) continue;
+          const realizado = comissaoDoDia(contratosPagos, ano, mes, dia);
+          await salvarMetaDia(ano, mes, dia, baseDiaria, realizado);
+        }
+        linhas = await carregarMetasDiarias(ano, mes);
+      } else {
+        // Atualiza realizado automático no banco (para persistir)
+        const ultimoDia = new Date(ano, mes, 0).getDate();
+        for (let dia = 1; dia <= ultimoDia; dia++) {
+          if (!ehDiaUtil(ano, mes, dia)) continue;
+          const realizadoAuto = comissaoDoDia(contratosPagos, ano, mes, dia);
+          await supabase.from("metas_diarias")
+            .update({ realizado: realizadoAuto })
+            .eq("ano", ano).eq("mes", mes).eq("dia", dia);
+        }
+        linhas = await carregarMetasDiarias(ano, mes);
+      }
+
+      // Recalcula metas restantes com base no realizado acumulado
+      await atualizarMetasDiasRestantes(ano, mes);
+      linhas = await carregarMetasDiarias(ano, mes);
+
+      // Render
+      const ultimoDia = new Date(ano, mes, 0).getDate();
+      const dadosGrafico = [];
+      for (let dia = 1; dia <= ultimoDia; dia++) {
+        if (!ehDiaUtil(ano, mes, dia)) continue;
+        const row = linhas.find(r => r.dia === dia) || { meta: 0, realizado: 0 };
+
+        const container = document.createElement("div");
+        container.className = "day-row";
+        container.innerHTML = `
+          <span>Dia ${String(dia).padStart(2,'0')}/${String(mes).padStart(2,'0')}/${ano}:</span>
+          <span>Meta: ${dinheiro(row.meta)}</span>
+          <span>Realizado: ${dinheiro(row.realizado)}</span>
+        `;
+        div.appendChild(container);
+
+        dadosGrafico.push({ dia, meta: Number(row.meta || 0), realizado: Number(row.realizado || 0) });
+      }
+
+      renderChart(dadosGrafico);
+    }
+
+    function renderChart(dados) {
+      const ctx = document.getElementById('chartMeta').getContext('2d');
+      const labels = dados.map(d => String(d.dia));
+      const metas = dados.map(d => d.meta);
+      const realizados = dados.map(d => d.realizado);
+
+      if (chartInstance) chartInstance.destroy();
+
+      chartInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Meta', data: metas, borderColor: '#3498db', backgroundColor: 'transparent', tension: 0.25 },
+            { label: 'Realizado', data: realizados, borderColor: '#2ecc71', backgroundColor: 'transparent', tension: 0.25 }
+          ]
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            legend: { display: true },
+            tooltip: { callbacks: { label: (ctx) => ' ' + dinheiro(ctx.parsed.y) } }
+          },
+          scales: {
+            y: { ticks: { callback: (v) => dinheiro(v) } }
+          }
+        }
+      });
+    }
+
+    // Renderiza tabela de meses realizados
+    async function renderMesesRealizados() {
+      const tbody = document.getElementById("mesesTableBody");
+      tbody.innerHTML = "";
+      const meses = await carregarMesesRealizados();
+
+      let totalMeta = 0;
+      let totalRealizado = 0;
+
+      if (!meses || meses.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="4" class="muted">Nenhuma meta mensal encontrada.</td></tr>';
+        document.getElementById("mesesSummary").style.display = "none";
+        return;
+      }
+
+      meses.sort((a,b) => (b.ano - a.ano) || (b.mes - a.mes));
+
+      for (const m of meses) {
+        const tr = document.createElement("tr");
+        const mesLabel = `${String(m.mes).padStart(2,'0')}/${m.ano}`;
+        const diff = Number(m.realizado_total || 0) - Number(m.meta_mensal || 0);
+
+        tr.innerHTML = `
+          <td><button class="link-month" data-ano="${m.ano}" data-mes="${m.mes}">${mesLabel}</button></td>
+          <td>${dinheiro(m.meta_mensal)}</td>
+          <td>${dinheiro(m.realizado_total)}</td>
+          <td style="color:${diff>=0? '#16a085':'#e74c3c'}">${dinheiro(diff)}</td>
+        `;
+        tbody.appendChild(tr);
+
+        totalMeta += Number(m.meta_mensal || 0);
+        totalRealizado += Number(m.realizado_total || 0);
+      }
+
+      document.getElementById("totalMeta").textContent = "Total Meta: " + dinheiro(totalMeta);
+      document.getElementById("totalRealizado").textContent = "Total Realizado: " + dinheiro(totalRealizado);
+      document.getElementById("mesesSummary").style.display = "flex";
+
+      // Adiciona evento de clique para carregar mês
+      document.querySelectorAll(".link-month").forEach(btn => {
+        btn.addEventListener("click", async (ev) => {
+          const ano = Number(ev.currentTarget.dataset.ano);
+          const mes = Number(ev.currentTarget.dataset.mes);
+          document.getElementById("mesMeta").value = `${ano}-${String(mes).padStart(2,'0')}`;
+          // Carrega meta mensal salvo (se existir)
+          const meta = await carregarMetaMensal(ano, mes);
+          if (meta) {
+            metaMensal = Number(meta.meta_mensal || 0);
+            diasUteis = Number(meta.dias_uteis || 0);
+            document.getElementById("metaMensal").value = String(metaMensal);
+          }
+          // limpa feriados (ou mantenha se quiser)
+          feriadosLista = [];
+          await renderTabela(ano, mes);
+        });
+      });
+    }
+
+    // Definir meta mensal (cria base e renderiza)
+    document.getElementById("btnDefinirMeta").addEventListener("click", async () => {
+      const mesAno = document.getElementById("mesMeta").value; // YYYY-MM
+      if (!mesAno) return alert("Informe o mês da meta.");
+      const [ano, mes] = mesAno.split("-").map(Number);
+
+      metaMensal = parseFloat(document.getElementById("metaMensal").value || "0");
+
+      // Feriados
+      const feriadosStr = String(document.getElementById("feriadosInput").value || "").trim();
+      feriadosLista = feriadosStr
+        ? feriadosStr.split(",").map(s => s.trim()).filter(s => s.length > 0)
+        : [];
+
+      diasUteis = diasUteisNoMes(ano, mes);
+      if (diasUteis <= 0) return alert("Não há dias úteis neste mês com os feriados informados.");
+
+      // salva meta mensal
+      await upsertMetaMensal(ano, mes, metaMensal, diasUteis);
+
+      // Limpa e recria metas diárias base (opcional: manter existentes se já houver)
+      const existentes = await carregarMetasDiarias(ano, mes);
+      if (!existentes || existentes.length === 0) {
+        const ultimoDia = new Date(ano, mes, 0).getDate();
+        const baseDiaria = metaMensal / diasUteis;
+        for (let dia = 1; dia <= ultimoDia; dia++) {
+          if (!ehDiaUtil(ano, mes, dia)) continue;
+          await salvarMetaDia(ano, mes, dia, baseDiaria, 0);
+        }
+      }
+
+      // recalcula e renderiza
+      await renderTabela(ano, mes);
+      await renderMesesRealizados();
+    });
+
+    // Recalcular metas restantes manualmente (após mudar feriados, por exemplo)
+    document.getElementById("btnRecalcular").addEventListener("click", async () => {
+      const mesAno = document.getElementById("mesMeta").value; // YYYY-MM
+      if (!mesAno) return alert("Informe o mês da meta.");
+      const [ano, mes] = mesAno.split("-").map(Number);
+
+      // Atualiza feriados
+      const feriadosStr = String(document.getElementById("feriadosInput").value || "").trim();
+      feriadosLista = feriadosStr
+        ? feriadosStr.split(",").map(s => s.trim()).filter(s => s.length > 0)
+        : [];
+
+      diasUteis = diasUteisNoMes(ano, mes);
+      await atualizarMetasDiasRestantes(ano, mes);
+      await renderTabela(ano, mes);
+      await renderMesesRealizados();
+    });
+
+    document.getElementById("btnAtualizarMeses").addEventListener("click", async () => {
+      await renderMesesRealizados();
+    });
+
+    // Carrega automaticamente a última meta do mês atual ao abrir
+    (async () => {
+      const hoje = new Date();
+      const ano = hoje.getFullYear();
+      const mes = hoje.getMonth() + 1;
+
+      const meta = await carregarMetaMensal(ano, mes);
+      if (meta) {
+        metaMensal = Number(meta.meta_mensal || 0);
+        diasUteis = Number(meta.dias_uteis || 0);
+        document.getElementById("mesMeta").value = `${ano}-${String(mes).padStart(2,'0')}`;
+        document.getElementById("metaMensal").value = String(metaMensal);
+
+        // Se quiser carregar feriados salvos em outra tabela, aqui seria o lugar. Por ora, usa campo manual.
+        feriadosLista = [];
+
+        await renderTabela(ano, mes);
+      }
+
+      // Carrega lista de meses realizados
+      await renderMesesRealizados();
+    })();
+  </script>
+</body>
+</html>
